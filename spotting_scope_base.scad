@@ -1,4 +1,6 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
+include <../OpenSCAD_Lib/chamferedCylinders.scad>
+
 
 layerHeight = 0.2;
 
@@ -47,7 +49,10 @@ module itemModule()
 module baseExterior()
 {
 	cylinder(d=baseBottomOD, h=baseCylinderZ+nothing);
-	translate([0,0,baseCylinderZ]) cylinder(d1=baseBottomOD, d2=baseTopOD, h=baseConeZ);
+	translate([0,0,baseCylinderZ]) cylinder(d1=baseBottomOD, d2=0, h=baseBottomOD/2);
+	//simpleChamferedCylinder(d=baseBottomOD, h=baseZ, cz=3);
+	baseTopCZ = 6;
+	simpleChamferedCylinder(d=baseTopOD+baseTopCZ, h=baseZ, cz=baseTopCZ/2);
 }
 
 module baseInterior()
