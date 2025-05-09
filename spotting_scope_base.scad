@@ -3,11 +3,10 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 layerHeight = 0.2;
 
-baseBottomOD = 170;
+baseBottomOD = 240;
 baseTopOD = 40;
 baseCylinderZ = 10;
 baseConeZ = 100;
-
 baseZ = 160;
 
 boltRecessDia = 12.9;
@@ -41,8 +40,11 @@ module itemModule()
 	}
 
 	// Sacrificial layer at bottom of bolt-head access recess:
-	// MAGIC NUMBER: 76
-	tcy([0,0,76], d=20, h=layerHeight);
+	// MAGIC NUMBER: 76/170, 91/200
+	// sacrificialLayerZ = 30/170 * baseBottomOD;
+	sacrificialLayerZ = baseBottomOD/2 - 9;
+	echo(str("sacrificialLayerZ = ", sacrificialLayerZ));
+	tcy([0,0,sacrificialLayerZ], d=20, h=layerHeight);
 }
 
 module baseExterior()
@@ -67,7 +69,7 @@ module baseInterior()
 
 module clip(d=0)
 {
-	tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
 }
 
 if(developmentRender)
