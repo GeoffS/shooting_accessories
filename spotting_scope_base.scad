@@ -1,7 +1,6 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
-
 layerHeight = 0.2;
 
 baseBottomOD = 170;
@@ -9,7 +8,7 @@ baseTopOD = 40;
 baseCylinderZ = 10;
 baseConeZ = 100;
 
-baseZ = baseConeZ + baseCylinderZ;
+baseZ = 160;
 
 boltRecessDia = 12.9;
 boltHeadRecessTopZ = baseZ - 14;
@@ -37,7 +36,7 @@ module itemModule()
 		hull()
 		{
 			tcy([0,0,boltHeadRecessBotZ], d=boltRecessDia, h=nothing, $fn=6);
-			tcy([0,0,boltHeadRecessBotZ-boltHeadRecessZ-boltHeadAccessTaperZ-50], d=boltHeadAccessDia, h=50);
+			tcy([0,0,boltHeadRecessBotZ-boltHeadRecessZ-boltHeadAccessTaperZ-100], d=boltHeadAccessDia, h=100);
 		}
 	}
 
@@ -48,9 +47,11 @@ module itemModule()
 
 module baseExterior()
 {
+	// Cone base:
 	cylinder(d=baseBottomOD, h=baseCylinderZ+nothing);
 	translate([0,0,baseCylinderZ]) cylinder(d1=baseBottomOD, d2=0, h=baseBottomOD/2);
-	//simpleChamferedCylinder(d=baseBottomOD, h=baseZ, cz=3);
+
+	// Post:
 	baseTopCZ = 6;
 	simpleChamferedCylinder(d=baseTopOD+baseTopCZ, h=baseZ, cz=baseTopCZ/2);
 }
