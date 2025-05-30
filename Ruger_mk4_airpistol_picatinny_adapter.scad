@@ -2,10 +2,10 @@ include <../OpenSCAD_Lib/MakeInclude.scad>
 
 barrelOD = 22.0;
 fluteDia = 13.5;
-fluteDepth = 2.5;
+fluteDepth = 2;
 fluteAngles = [0, 60, -60, 120, -120];
 
-ringWallThickness = 3;
+ringWallThickness = 5;
 ringOD = barrelOD + 2*ringWallThickness;
 mountZ = 10;
 
