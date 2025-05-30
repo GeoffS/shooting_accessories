@@ -20,8 +20,16 @@ module picatinnyMount()
 	// Main/Central rectangle:
 	tcu([-picMainRectX/2, -picMainRectY, 0], [picMainRectX, picMainRectY, mountZ]);
 
-	// Mount top rectangle:
-	tcu([-picTopRectX/2, -picTopRectY, 0], [picTopRectX, picTopRectY, mountZ]);
+	// Mount top:
+	difference()
+	{
+		// Rectangle:
+		y = 6;
+		tcu([-picTopRectX/2, -y, 0], [picTopRectX, y, mountZ]);
+
+		// Trim corners:
+		translate([0, -picTopRectY/2, 0]) doubleY() doubleX() translate([picTopRectX/2, -picTopRectY/2, 0]) rotate([0,0,45]) tcu([-50,-100 + 1,-10], 100);
+	}
 
 	// Temp. base:
 	translate([0,-4-picMainRectY,0]) hull() doubleY() doubleX() tcy([16, 0, 0], d=8, h=mountZ);
