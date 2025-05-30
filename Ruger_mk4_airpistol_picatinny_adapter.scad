@@ -1,7 +1,7 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 
 barrelOD = 22.0;
-fluteDia = 13.5;
+fluteDia = 13.2;
 fluteDepth = 2;
 fluteAngles = [0, 60, -60, 120, -120];
 
