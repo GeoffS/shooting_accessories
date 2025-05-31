@@ -1,5 +1,8 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 
+makeBarrelTest = false;
+makePicTest = false;
+
 barrelOD = 21.8;
 fluteDia = 11.8;
 fluteDepth = 2;
@@ -76,10 +79,11 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() barrelMount();
-	// display() picatinnyMount();
+	// display() barrelMount();
+	display() picatinnyMount();
 }
 else
 {
-	barrelMount();
+	if(makeBarrelTest) barrelMount();
+	if(makePicTest) picatinnyMount();
 }
