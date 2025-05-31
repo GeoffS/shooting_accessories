@@ -1,8 +1,8 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 
-barrelOD = 22.0;
-fluteDia = 12;
-fluteDepth = 1;
+barrelOD = 21.8;
+fluteDia = 11.8;
+fluteDepth = 2;
 fluteAngles = [0, 60, -60, 120, -120];
 
 ringWallThickness = 5;
