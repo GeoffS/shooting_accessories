@@ -9,7 +9,7 @@ fluteDia = 11.8;
 fluteDepth = 2;
 fluteAngles = [0, 60, -60, 120, -120];
 
-ringWallThickness = 5;
+ringWallThickness = 7;
 ringOD = barrelOD + 2*ringWallThickness;
 mountZ = 40; //10;
 
@@ -25,7 +25,7 @@ picTopRectY = 5.5; //(0.164 - 0.010) * 25.4;
 echo(str("picTopRectX = ", picTopRectX));
 echo(str("picTopRectY = ", picTopRectY));
 
-picMountOffsetX = ringOD/2;
+picMountOffsetX = ringOD/2 - 1.8;
 
 module mount()
 {
@@ -71,11 +71,16 @@ module barrelMount()
 			// Basic mount ring:
 			difference() 
 			{
-				hull()
+				// hull()
+				// {
+				// 	cylinder(d=ringOD, h=mountZ);
+					
+				// 	tcu([picMountOffsetX, -picMainRectX/2, 0], [0.1, picMainRectX, mountZ]);
+				// }
+				difference() 
 				{
 					cylinder(d=ringOD, h=mountZ);
-					
-					tcu([picMountOffsetX, -picMainRectX/2, 0], [0.1, picMainRectX, mountZ]);
+					tcu([picMountOffsetX, -200, -10], 400);
 				}
 
 				tcy([0,0,-10], d=barrelOD, h=200);
