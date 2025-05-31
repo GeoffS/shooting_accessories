@@ -1,4 +1,5 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
+include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 makeBarrelTest = false;
 makePicTest = false;
@@ -9,10 +10,11 @@ fluteDia = 11.8;
 fluteDepth = 2;
 fluteAngles = [0, 60, -60, 120, -120];
 
-ringWallThickness = 7;
+ringWallThickness = 5;
 ringOD = barrelOD + 2*ringWallThickness;
 mountZ = 40; //10;
 ringAngle = 140;
+ringCZ = 2;
 
 picMainRectX = 12.82; //(0.617 - 0.005) * 25.4;
 picMainRectY = 9.0; //(0.367 + 0.010) * 25.4;
@@ -32,13 +34,13 @@ module mount()
 {
 	barrelMount();
 
-	translate([picMainRectY+picMountOffsetX,0,0]) rotate([0,0,-90]) picatinnyMount();
+	translate([picMainRectY+picMountOffsetX, 0, ringCZ]) rotate([0,0,-90]) picatinnyMount(mountZ-2*ringCZ);
 }
 
-module picatinnyMount()
+module picatinnyMount(z)
 {
 	// Main/Central rectangle:
-	tcu([-picMainRectX/2, -picMainRectY, 0], [picMainRectX, picMainRectY, mountZ]);
+	tcu([-picMainRectX/2, -picMainRectY, 0], [picMainRectX, picMainRectY, z]);
 
 	// Mount top:
 	difference()
@@ -48,7 +50,7 @@ module picatinnyMount()
 		union()
 		{
 			y = 7;
-			tcu([-picTopRectX/2, -y, 0], [picTopRectX, y, mountZ]);
+			tcu([-picTopRectX/2, -y, 0], [picTopRectX, y, z]);
 			// tcu([-picTopRectX/2, -y, 0], [picTopRectX/2, y, mountZ]);
 		}
 
@@ -63,6 +65,15 @@ module picatinnyMount()
 	// translate([0,-4-picMainRectY,0]) hull() doubleY() doubleX() tcy([11, 0, 0], d=8, h=mountZ);
 }
 
+module barrelOutside()
+{
+	difference() 
+	{
+		simpleChamferedCylinderDoubleEnded(d = ringOD, h = mountZ, cz = ringCZ);
+		tcu([picMountOffsetX, -200, -10], 400);
+	}
+}
+
 module barrelMount()
 {
 	difference()
@@ -72,17 +83,7 @@ module barrelMount()
 			// Basic mount ring:
 			difference() 
 			{
-				// hull()
-				// {
-				// 	cylinder(d=ringOD, h=mountZ);
-					
-				// 	tcu([picMountOffsetX, -picMainRectX/2, 0], [0.1, picMainRectX, mountZ]);
-				// }
-				difference() 
-				{
-					cylinder(d=ringOD, h=mountZ);
-					tcu([picMountOffsetX, -200, -10], 400);
-				}
+				barrelOutside();
 
 				tcy([0,0,-10], d=barrelOD, h=200);
 			}
@@ -95,7 +96,8 @@ module barrelMount()
 					echo(str("a = ", a));
 					rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=mountZ);
 				}
-				tcy([0,0,-10], d=barrelOD, h=200);
+				
+				barrelOutside();
 			}
 		}
 
@@ -110,9 +112,10 @@ module barrelMount()
 
 	// Add rounded ends for better printing:
 	// doubleY() tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
-	doubleY() difference() 
+	doubleY() intersection() 
 	{
 		rotate([0 ,0, ringAngle-90])  tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
+		barrelOutside();
 	}
 }
 
