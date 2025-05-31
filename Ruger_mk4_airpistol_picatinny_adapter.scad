@@ -12,6 +12,7 @@ fluteAngles = [0, 60, -60, 120, -120];
 ringWallThickness = 7;
 ringOD = barrelOD + 2*ringWallThickness;
 mountZ = 40; //10;
+ringAngle = 140;
 
 picMainRectX = 12.82; //(0.617 - 0.005) * 25.4;
 picMainRectY = 9.0; //(0.367 + 0.010) * 25.4;
@@ -99,11 +100,20 @@ module barrelMount()
 		}
 
 		// Trim:
-		tcu([-400, -200, -200], 400);
+		// tcu([-400, -200, -200], 400);
+		doubleY() difference() 
+		{
+			rotate([0 ,0, ringAngle-90]) tcu([-400, 0, -200], 400);
+			tcu([-400,-400,0], 400);
+		}
 	}
 
 	// Add rounded ends for better printing:
-	doubleY() tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
+	// doubleY() tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
+	doubleY() difference() 
+	{
+		rotate([0 ,0, ringAngle-90])  tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
+	}
 }
 
 module clip(d=0)
