@@ -1,8 +1,8 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 
 barrelOD = 22.0;
-fluteDia = 13.2;
-fluteDepth = 2;
+fluteDia = 12;
+fluteDepth = 1;
 fluteAngles = [0, 60, -60, 120, -120];
 
 ringWallThickness = 5;
@@ -55,7 +55,7 @@ module barrelMount()
 				for (a = fluteAngles) 
 				{
 					echo(str("a = ", a));
-					rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=mountZ);
+					#rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=mountZ);
 				}
 				tcy([0,0,-10], d=barrelOD, h=200);
 			}
@@ -76,8 +76,8 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	// display() barrelMount();
-	display() picatinnyMount();
+	display() barrelMount();
+	// display() picatinnyMount();
 }
 else
 {
