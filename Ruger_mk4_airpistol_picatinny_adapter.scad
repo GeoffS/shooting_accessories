@@ -36,9 +36,9 @@ module picatinnyMount()
 		
 		union()
 		{
-			tcu([-picTopRectX/2, -picTopRectY, 0], [picTopRectX, picTopRectY, mountZ]);
 			y = 7;
-			tcu([-picTopRectX/2, -y, 0], [picTopRectX/2, y, mountZ]);
+			tcu([-picTopRectX/2, -y, 0], [picTopRectX, y, mountZ]);
+			// tcu([-picTopRectX/2, -y, 0], [picTopRectX/2, y, mountZ]);
 		}
 
 		// Trim corners:
