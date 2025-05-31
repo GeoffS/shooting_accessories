@@ -16,6 +16,10 @@ mountZ = 40; //10;
 ringAngle = 140;
 ringCZ = 2;
 
+ringPinRecessDia = 2;
+ringPinRecessDepth = 3;
+ringPinRecessAngle = 125;
+
 picMainRectX = 12.82; //(0.617 - 0.005) * 25.4;
 picMainRectY = 9.0; //(0.367 + 0.010) * 25.4;
 
@@ -28,29 +32,29 @@ picTopRectY = 5.5; //(0.164 - 0.010) * 25.4;
 echo(str("picTopRectX = ", picTopRectX));
 echo(str("picTopRectY = ", picTopRectY));
 
-picMountOffsetX = ringOD/2 - 1.8;
+picMountOffsetX = ringOD/2 - 1.42; //1.8;
 
 module mount()
 {
 	barrelMount();
 
-	translate([picMainRectY+picMountOffsetX, 0, ringCZ]) rotate([0,0,-90]) picatinnyMount(mountZ-2*ringCZ);
+	translate([picMainRectY+picMountOffsetX, 0, 0]) rotate([0,0,-90]) picatinnyMount(mountZ); //-2*ringCZ);
 }
 
 module picatinnyMount(z)
 {
 	// Main/Central rectangle:
-	tcu([-picMainRectX/2, -picMainRectY, 0], [picMainRectX, picMainRectY, z]);
+	mainY = picMainRectY + 2.5;
+	tcu([-picMainRectX/2, -mainY, 0], [picMainRectX, mainY, z]);
 
 	// Mount top:
 	difference()
 	{
 		// Rectangle:
-		
 		union()
 		{
-			y = 7;
-			tcu([-picTopRectX/2, -y, 0], [picTopRectX, y, z]);
+			topY = 7;
+			tcu([-picTopRectX/2, -topY, 0], [picTopRectX, topY, z]);
 			// tcu([-picTopRectX/2, -y, 0], [picTopRectX/2, y, mountZ]);
 		}
 
@@ -58,11 +62,6 @@ module picatinnyMount(z)
 		cornerChamferY = picTopRectY*0.707/2 - 0.1;
 		translate([0, -picTopRectY/2, 0]) doubleY() doubleX() translate([picTopRectX/2, -picTopRectY/2, 0]) rotate([0,0,45]) tcu([-50,-100 + cornerChamferY,-10], 100);
 	}
-
-	// %tcu([-20, -5.5, -20], 40);
-
-	// Temp. base:
-	// translate([0,-4-picMainRectY,0]) hull() doubleY() doubleX() tcy([11, 0, 0], d=8, h=mountZ);
 }
 
 module barrelOutside()
