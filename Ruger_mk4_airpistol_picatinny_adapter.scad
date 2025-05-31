@@ -25,11 +25,13 @@ picTopRectY = 5.5; //(0.164 - 0.010) * 25.4;
 echo(str("picTopRectX = ", picTopRectX));
 echo(str("picTopRectY = ", picTopRectY));
 
+picMountOffsetX = ringOD/2;
+
 module mount()
 {
 	barrelMount();
-	
-	translate([picMainRectY+ringOD/2,0,0]) rotate([0,0,-90]) picatinnyMount();
+
+	translate([picMainRectY+picMountOffsetX,0,0]) rotate([0,0,-90]) picatinnyMount();
 }
 
 module picatinnyMount()
@@ -73,7 +75,7 @@ module barrelMount()
 				{
 					cylinder(d=ringOD, h=mountZ);
 					
-					tcu([ringOD/2, -picMainRectX/2, 0], [0.1, picMainRectX, mountZ]);
+					tcu([picMountOffsetX, -picMainRectX/2, 0], [0.1, picMainRectX, mountZ]);
 				}
 
 				tcy([0,0,-10], d=barrelOD, h=200);
