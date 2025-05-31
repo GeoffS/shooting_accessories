@@ -2,6 +2,7 @@ include <../OpenSCAD_Lib/MakeInclude.scad>
 
 makeBarrelTest = false;
 makePicTest = false;
+makeMount = false;
 
 barrelOD = 21.8;
 fluteDia = 11.8;
@@ -10,7 +11,7 @@ fluteAngles = [0, 60, -60, 120, -120];
 
 ringWallThickness = 5;
 ringOD = barrelOD + 2*ringWallThickness;
-mountZ = 10;
+mountZ = 40; //10;
 
 picMainRectX = 12.82; //(0.617 - 0.005) * 25.4;
 picMainRectY = 9.0; //(0.367 + 0.010) * 25.4;
@@ -23,6 +24,13 @@ picTopRectY = 5.5; //(0.164 - 0.010) * 25.4;
 
 echo(str("picTopRectX = ", picTopRectX));
 echo(str("picTopRectY = ", picTopRectY));
+
+module mount()
+{
+	barrelMount();
+	
+	translate([picMainRectY+ringOD/2,0,0]) rotate([0,0,-90]) picatinnyMount();
+}
 
 module picatinnyMount()
 {
@@ -49,7 +57,7 @@ module picatinnyMount()
 	// %tcu([-20, -5.5, -20], 40);
 
 	// Temp. base:
-	translate([0,-4-picMainRectY,0]) hull() doubleY() doubleX() tcy([11, 0, 0], d=8, h=mountZ);
+	// translate([0,-4-picMainRectY,0]) hull() doubleY() doubleX() tcy([11, 0, 0], d=8, h=mountZ);
 }
 
 module barrelMount()
@@ -61,7 +69,12 @@ module barrelMount()
 			// Basic mount ring:
 			difference() 
 			{
-				cylinder(d=ringOD, h=mountZ);
+				hull()
+				{
+					cylinder(d=ringOD, h=mountZ);
+					
+					tcu([ringOD/2, -picMainRectX/2, 0], [0.1, picMainRectX, mountZ]);
+				}
 
 				tcy([0,0,-10], d=barrelOD, h=200);
 			}
@@ -72,7 +85,7 @@ module barrelMount()
 				for (a = fluteAngles) 
 				{
 					echo(str("a = ", a));
-					#rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=mountZ);
+					rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=mountZ);
 				}
 				tcy([0,0,-10], d=barrelOD, h=200);
 			}
@@ -94,10 +107,12 @@ module clip(d=0)
 if(developmentRender)
 {
 	// display() barrelMount();
-	display() picatinnyMount();
+	// display() picatinnyMount();
+	display() mount();
 }
 else
 {
 	if(makeBarrelTest) barrelMount();
 	if(makePicTest) picatinnyMount();
+	if(makeMount) mount();
 }
