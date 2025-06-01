@@ -3,7 +3,8 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 makeBarrelTest = false;
 makePicTest = false;
-makeMount = false;
+makeMountTop = false;
+makeMountBottom = false;
 
 barrelOD = 21.8;
 fluteDia = 11.8;
@@ -188,21 +189,44 @@ module barrelMount()
 	}
 }
 
+split = 0.1;
+
+module mountTop()
+{
+	difference()
+	{
+		mount();
+		tcu([-400+split/2, -200, -200], 400);
+	}
+}
+
+module mountBottom()
+{
+	difference()
+	{
+		mount();
+		tcu([-split/2, -200, -200], 400);
+	}
+}
+
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-	tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
+	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
 if(developmentRender)
 {
 	// display() barrelMount();
 	// display() picatinnyMount();
-	display() mount();
+	// display() mount();
+	display() mountTop();
+	display() mountBottom();
 }
 else
 {
 	if(makeBarrelTest) barrelMount();
 	if(makePicTest) picatinnyMount();
-	if(makeMount) mount();
+	if(makeMountTop) mountTop();
+	if(makeMountBottom) mountBottom();
 }
