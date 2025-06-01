@@ -6,12 +6,12 @@ makePicTest = false;
 makeMountTop = false;
 makeMountBottom = false;
 
-barrelOD = 21.8;
+barrelOD = 21.6;
 fluteDia = 11.8;
-fluteDepth = 2;
+fluteDepth = 2.1;
 fluteAngles = [0, 60, -60, 120, -120];
 
-ringWallThickness = 5.47;
+ringWallThickness = 5.54;
 ringOD = barrelOD + 2*ringWallThickness;
 mountZ = 40; //10;
 ringAngle = 140;
@@ -28,7 +28,7 @@ picMainRectY = 9.0; //(0.367 + 0.010) * 25.4;
 echo(str("picMainRectX = ", picMainRectX));
 echo(str("picMainRectY = ", picMainRectY));
 
-picTopRectX = (0.835 - 0.003) * 25.4;
+picTopRectX = 20.8; //(0.835 - 0.003) * 25.4;
 picTopRectY = 5.5; //(0.164 - 0.010) * 25.4;
 
 echo(str("picTopRectX = ", picTopRectX));
@@ -61,14 +61,14 @@ module picatinnyMount(z)
 		}
 
 		// Trim corners:
-		cornerChamferY = picTopRectY*0.707/2 - 0.1;
+		cornerChamferY = picTopRectY*0.707/2 - 0.2;
 		translate([0, -picTopRectY/2, 0]) doubleY() doubleX() translate([picTopRectX/2, -picTopRectY/2, 0]) rotate([0,0,45]) tcu([-50,-100 + cornerChamferY,-10], 100);
 	}
 }
 
-screwHeadRecessDia = 5.9;
+screwHeadRecessDia = 6.1;
 screwHeadRecessZ = 3.5;
-screwHoleDia = 3.4;
+screwHoleDia = 3.55;
 nutXY = 5.7;
 nutZ = 2.5;
 screwZ = 16;
