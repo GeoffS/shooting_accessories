@@ -10,12 +10,13 @@ fluteDia = 11.8;
 fluteDepth = 2;
 fluteAngles = [0, 60, -60, 120, -120];
 
-ringWallThickness = 5;
+ringWallThickness = 5.47;
 ringOD = barrelOD + 2*ringWallThickness;
 mountZ = 40; //10;
 ringAngle = 140;
 ringCZ = 2;
 
+ringPinRecessZ = 23.5;
 ringPinRecessDia = 2;
 ringPinRecessDepth = 3;
 ringPinRecessAngle = 125;
@@ -64,13 +65,67 @@ module picatinnyMount(z)
 	}
 }
 
+screwHeadRecessDia = 5.9;
+screwHeadRecessZ = 3.5;
+screwHoleDia = 3.4;
+nutXY = 5.7;
+nutZ = 2.5;
+screwZ = 16;
+
+screwBumpOD = screwHeadRecessDia + 7;
+screwBumpY = 20;
+screwBumpCZ = 1;
+
+screwBumpOffsetY = barrelOD/2 + 1 + screwHoleDia/2; // ringOD/2 - 3;
+screwBumpCtrsZ = mountZ - screwBumpOD - 2*ringCZ - 1;
+
 module barrelOutside()
 {
 	difference() 
 	{
-		simpleChamferedCylinderDoubleEnded(d = ringOD, h = mountZ, cz = ringCZ);
+		union()
+		{
+			// Basic exterior:
+			simpleChamferedCylinderDoubleEnded(d = ringOD, h = mountZ, cz = ringCZ);
+
+			// Screw bumps:
+			difference()
+			{
+				screwBumpCtrsXform() hull()
+				{
+					simpleChamferedCylinderDoubleEnded(d=screwBumpOD, h=screwBumpY, cz=screwBumpCZ, $fn=4);
+					translate([0,-10,0]) simpleChamferedCylinderDoubleEnded(d=screwBumpOD, h=screwBumpY, cz=screwBumpCZ, $fn=8);
+				}
+
+				// Clip the outside points off:
+				doubleY() tcu([-200, screwBumpOffsetY+screwBumpOD/2-1.8, -200], 400);
+			}
+		}
+
+		// Flat-top on ring:
 		tcu([picMountOffsetX, -200, -10], 400);
+
+		// Screw holes:
+		screwBumpCtrsXform() 
+		{
+			// Hole:
+			tcy([0,0,-15], d=screwHoleDia, h=100);
+			// Head recess:
+			tcy([0,0,-100+screwHeadRecessZ], d=screwHeadRecessDia, h=100);
+			// Nut recess:
+			tcy([0,0,screwHeadRecessZ+screwZ-nutZ], d=1.4*nutXY, h=100, $fn=4);
+		}
 	}
+}
+
+module screwBumpCtrsXform()
+{
+	doubleY() 
+		translate([0, screwBumpOffsetY, mountZ/2]) 
+			doubleZ() translate([0, 0, -screwBumpCtrsZ/2]) 
+				rotate([0,-90,0]) 
+					translate([0,0,-screwBumpY/2]) 
+						children();
 }
 
 module barrelMount()
@@ -79,48 +134,64 @@ module barrelMount()
 	{
 		union()
 		{
-			// Basic mount ring:
-			difference() 
+			difference()
 			{
-				barrelOutside();
-
-				tcy([0,0,-10], d=barrelOD, h=200);
-			}
-
-			// Flute:
-			intersection() 
-			{
-				for (a = fluteAngles) 
+				union()
 				{
-					echo(str("a = ", a));
-					rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=mountZ);
+					// Basic mount ring:
+					difference() 
+					{
+						barrelOutside();
+
+						tcy([0,0,-10], d=barrelOD, h=200);
+					}
+
+					// Flute:
+					intersection() 
+					{
+						for (a = fluteAngles) 
+						{
+							echo(str("a = ", a));
+							rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=mountZ);
+						}
+						
+						barrelOutside();
+					}
 				}
-				
+
+				// Trim ends:
+				doubleY() difference() 
+				{
+					rotate([0 ,0, ringAngle-90]) tcu([-400, 0, -200], 400);
+					tcu([-400,-400,0], 400);
+				}
+			}
+
+			// Add rounded ends for better printing:
+			// doubleY() tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
+			doubleY() intersection() 
+			{
+				rotate([0 ,0, ringAngle-90])  tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
 				barrelOutside();
 			}
 		}
 
-		// Trim:
-		// tcu([-400, -200, -200], 400);
-		doubleY() difference() 
+		// Make recess slot for pin:
+		rotate([0,0,-90+ringPinRecessAngle]) hull()
 		{
-			rotate([0 ,0, ringAngle-90]) tcu([-400, 0, -200], 400);
-			tcu([-400,-400,0], 400);
+			translate([0, 0, ringPinRecessZ]) rotate([-90,0,0]) hull()
+			{
+				cylinder(d=ringPinRecessDia, h=barrelOD/2);
+				rotate([0,-30,0]) cylinder(d=ringPinRecessDia*2, h=ringOD/2);
+			}
 		}
-	}
-
-	// Add rounded ends for better printing:
-	// doubleY() tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
-	doubleY() intersection() 
-	{
-		rotate([0 ,0, ringAngle-90])  tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
-		barrelOutside();
 	}
 }
 
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
+	tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
 if(developmentRender)
