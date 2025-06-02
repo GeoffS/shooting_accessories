@@ -3,7 +3,8 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 makeBarrelTest = false;
 makePicTest = false;
-makeintegralPicatinnyMountTop = false;
+makeIntegralPicatinnyMountTop = false;
+makeAttachedPicatinnyMountTop = false;
 makeMountBottom = false;
 
 attachedPicatinnyMountWidth = 16;
@@ -300,6 +301,7 @@ else
 {
 	if(makeBarrelTest) barrelMount();
 	if(makePicTest) picatinnyMount();
-	if(makeintegralPicatinnyMountTop) integralPicatinnyMountTop();
+	if(makeIntegralPicatinnyMountTop) integralPicatinnyMountTop();
+	if(makeAttachedPicatinnyMountTop) attachedPicatinnyMountTop();
 	if(makeMountBottom) mountBottom();
 }
