@@ -43,7 +43,7 @@ module integralPicatinnyMount()
 	translate([picMainRectY+picMountOffsetX, 0, 0]) rotate([0,0,-90]) picatinnyMount(mountZ); //-2*ringCZ);
 }
 
-attachedPicatinnyMountY = 16;
+attachedPicatinnyMountWidth = 16;
 
 // M-Lok dims:
 mLokScrewHoleDia = 5.8;
@@ -55,7 +55,19 @@ mLokSlotEndDia = 12.3;
 
 module attachedPicatinnyMount()
 {
-	barrelMount();
+	difference()
+	{
+		barrelMount();
+		
+		// Flat-top on ring:
+		tcu([14.2, -200, -10], 400);
+
+		// Flot-top limits:
+		// %doubleY() tcu([-50, attachedPicatinnyMountWidth/2, -(100-mountZ)/2], 100);
+
+		// m-5 Holes:
+		
+	}
 }
 
 module picatinnyMount(z)
@@ -117,9 +129,6 @@ module barrelOutside()
 				doubleY() tcu([-200, screwBumpOffsetY+screwBumpOD/2-1.8, -200], 400);
 			}
 		}
-
-		// Flat-top on ring:
-		// tcu([picMountOffsetX, -200, -10], 400);
 
 		// Screw holes:
 		screwBumpCtrsXform() 
