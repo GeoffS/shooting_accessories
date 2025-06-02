@@ -67,21 +67,27 @@ module attachedPicatinnyMount()
 			barrelMount();
 
 			// Flat top:
-			// tcu([ringOD/2-ringCZ-2.5, -attachedPicatinnyMountWidth/2, 0], [100, attachedPicatinnyMountWidth, mountZ]);
-			difference() 
+			difference()
 			{
-				hull() 
-				{
-					translate([ringOD/2-ringCZ-2.5, 0, mountZ/2]) 
-						doubleZ() 
-							translate([0,0,mountZ/2-attachedPicatinnyMountEndRadius]) 
-								rotate([0,90,0])
-									cylinder(r=attachedPicatinnyMountEndRadius, h=100);
-				}
-				
-				// Trim Sides:
-				doubleY() tcu([0, attachedPicatinnyMountWidth/2, -10], 400);
+				tcu([ringOD/2-ringCZ-2.5, -attachedPicatinnyMountWidth/2, 0], [100, attachedPicatinnyMountWidth, mountZ]);
+
+				translate([0, 0, mountZ/2]) doubleY() doubleZ() translate([0, attachedPicatinnyMountWidth/2, mountZ/2]) rotate([-45,0,0]) tcu([0, -100, -ringCZ*0.707], 200);
 			}
+
+			// difference() 
+			// {
+			// 	hull() 
+			// 	{
+			// 		translate([ringOD/2-ringCZ-2.5, 0, mountZ/2]) 
+			// 			doubleZ() 
+			// 				translate([0,0,mountZ/2-attachedPicatinnyMountEndRadius]) 
+			// 					rotate([0,90,0])
+			// 						cylinder(r=attachedPicatinnyMountEndRadius, h=100);
+			// 	}
+				
+			// 	// Trim Sides:
+			// 	doubleY() tcu([0, attachedPicatinnyMountWidth/2, -10], 400);
+			// }
 
 		}
 
@@ -275,7 +281,7 @@ module mountBottom()
 
 module clip(d=0)
 {
-	tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
 	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
