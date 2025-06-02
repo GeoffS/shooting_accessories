@@ -74,22 +74,6 @@ module attachedPicatinnyMount()
 
 				translate([0, 0, mountZ/2]) doubleY() doubleZ() translate([0, attachedPicatinnyMountWidth/2, mountZ/2]) rotate([-45,0,0]) tcu([0, -100, -ringCZ*0.707], 200);
 			}
-
-			// difference() 
-			// {
-			// 	hull() 
-			// 	{
-			// 		translate([ringOD/2-ringCZ-2.5, 0, mountZ/2]) 
-			// 			doubleZ() 
-			// 				translate([0,0,mountZ/2-attachedPicatinnyMountEndRadius]) 
-			// 					rotate([0,90,0])
-			// 						cylinder(r=attachedPicatinnyMountEndRadius, h=100);
-			// 	}
-				
-			// 	// Trim Sides:
-			// 	doubleY() tcu([0, attachedPicatinnyMountWidth/2, -10], 400);
-			// }
-
 		}
 
 		// Flat-top trim:
@@ -122,7 +106,6 @@ module picatinnyMount(z)
 		{
 			topY = 7;
 			tcu([-picTopRectX/2, -topY, 0], [picTopRectX, topY, z]);
-			// tcu([-picTopRectX/2, -y, 0], [picTopRectX/2, y, mountZ]);
 		}
 
 		// Trim corners:
