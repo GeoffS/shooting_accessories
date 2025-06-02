@@ -13,7 +13,7 @@ fluteAngles = [0, 60, -60, 120, -120];
 
 ringWallThickness = 5.54;
 ringOD = barrelOD + 2*ringWallThickness;
-mountZ = 40; //10;
+mountZ = 65; //40;
 ringAngle = 140;
 ringCZ = 2;
 
@@ -36,7 +36,7 @@ echo(str("picTopRectY = ", picTopRectY));
 
 picMountOffsetX = ringOD/2 - 1.42; //1.8;
 
-module mount()
+module integralPicatinnyMount()
 {
 	barrelMount();
 
@@ -139,7 +139,7 @@ module barrelMount()
 			{
 				union()
 				{
-					// Basic mount ring:
+					// Basic integralPicatinnyMount ring:
 					difference() 
 					{
 						barrelOutside();
@@ -195,7 +195,7 @@ module mountTop()
 {
 	difference()
 	{
-		mount();
+		integralPicatinnyMount();
 		tcu([-400+split/2, -200, -200], 400);
 	}
 }
@@ -204,7 +204,7 @@ module mountBottom()
 {
 	difference()
 	{
-		mount();
+		integralPicatinnyMount();
 		tcu([-split/2, -200, -200], 400);
 	}
 }
@@ -219,7 +219,7 @@ if(developmentRender)
 {
 	// display() barrelMount();
 	// display() picatinnyMount();
-	// display() mount();
+	// display() integralPicatinnyMount();
 	display() mountTop();
 	display() mountBottom();
 }
