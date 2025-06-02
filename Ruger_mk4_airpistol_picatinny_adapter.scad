@@ -3,7 +3,7 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 makeBarrelTest = false;
 makePicTest = false;
-makeMountTop = false;
+makeintegralPicatinnyMountTop = false;
 makeMountBottom = false;
 
 barrelOD = 21.6;
@@ -41,6 +41,11 @@ module integralPicatinnyMount()
 	barrelMount();
 
 	translate([picMainRectY+picMountOffsetX, 0, 0]) rotate([0,0,-90]) picatinnyMount(mountZ); //-2*ringCZ);
+}
+
+module attachedPicatinnyMount()
+{
+
 }
 
 module picatinnyMount(z)
@@ -191,7 +196,7 @@ module barrelMount()
 
 split = 0.1;
 
-module mountTop()
+module integralPicatinnyMountTop()
 {
 	difference()
 	{
@@ -220,13 +225,13 @@ if(developmentRender)
 	// display() barrelMount();
 	// display() picatinnyMount();
 	// display() integralPicatinnyMount();
-	display() mountTop();
+	display() integralPicatinnyMountTop();
 	display() mountBottom();
 }
 else
 {
 	if(makeBarrelTest) barrelMount();
 	if(makePicTest) picatinnyMount();
-	if(makeMountTop) mountTop();
+	if(makeintegralPicatinnyMountTop) integralPicatinnyMountTop();
 	if(makeMountBottom) mountBottom();
 }
