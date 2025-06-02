@@ -17,7 +17,7 @@ m5NutDia = 9.0;
 m5NutThickness = 4.0;
 mLokScrewsCtrs = 20.25;
 mLokSlotWidth = 7.2;
-mLokSlotLength = 3.4;
+mLokSlotLength = 32.8;
 mLokSlotDepth = 1.6;
 mLokSlotEndDia = 12.3;
 
@@ -62,7 +62,6 @@ module attachedPicatinnyMount()
 {
 	difference()
 	{
-		picatinnyRailFlatX = ringOD/2 + 3;
 		union()
 		{
 			barrelMount();
@@ -77,9 +76,19 @@ module attachedPicatinnyMount()
 		}
 
 		// Flat-top trim:
-		flatTopX = barrelOD/2 + 7;
+		flatTopX = barrelOD/2 + 7.5;
 		echo(str("flatTopX = ", flatTopX));
 		tcu([flatTopX, -200, -10], 400);
+
+		// M-Lok slot:
+		difference()
+		{
+			translate([flatTopX-mLokSlotDepth, 0, mountZ/2]) hull() doubleZ() translate([0, 0, mLokSlotLength/2-mLokSlotEndDia/2]) rotate([0,90,0]) 
+			{
+				tcy([0,0,0], d=mLokSlotEndDia, h=20);
+			}
+			doubleY() tcu([-100, mLokSlotWidth/2, -10], 200);
+		}
 
 		// m5 Holes:
 		translate([0,0,mountZ/2]) doubleZ() translate([0,0,mLokScrewsCtrs/2]) rotate([0,90,0]) 
@@ -265,7 +274,7 @@ module mountBottom()
 
 module clip(d=0)
 {
-	// tc([-200, -400-d, -10], 400);
+	tc([-200, -400-d, -10], 400);
 	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
