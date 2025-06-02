@@ -25,7 +25,7 @@ fluteDia = 11.8;
 fluteDepth = 2.1;
 fluteAngles = [0, 60, -60, 120, -120];
 
-ringWallThickness = 5.54;
+ringWallThickness = 6.1; //5.54;
 ringOD = barrelOD + 2*ringWallThickness;
 mountZ = attachedPicatinnyMountLength; //65; //40;
 ringAngle = 140;
