@@ -86,11 +86,9 @@ module attachedPicatinnyMount()
 		}
 
 		// Flat-top trim:
-		// Top:
-		tcu([ringOD/2+1, -200, -10], 400);
-
-		// Flot-top limits:
-		// %doubleY() tcu([-50, attachedPicatinnyMountWidth/2, -(100-mountZ)/2], 100);
+		flatTopX = barrelOD/2 + 7;
+		echo(str("flatTopX = ", flatTopX));
+		tcu([flatTopX, -200, -10], 400);
 
 		// m5 Holes:
 		translate([0,0,mountZ/2]) doubleZ() translate([0,0,mLokScrewsCtrs/2]) rotate([0,90,0]) 
@@ -277,7 +275,7 @@ module mountBottom()
 
 module clip(d=0)
 {
-	// tc([-200, -400-d, -10], 400);
+	tc([-200, -400-d, -10], 400);
 	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
