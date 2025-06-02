@@ -44,9 +44,13 @@ module integralPicatinnyMount()
 }
 
 attachedPicatinnyMountWidth = 16;
+attachedPicatinnyMountLength = 65.18;
+attachedPicatinnyMountEndRadius = 20;
 
 // M-Lok dims:
 mLokScrewHoleDia = 5.8;
+m5NutDia = 9.0;
+m5NutThickness = 4.0;
 mLokScrewsCtrs = 20.25;
 mLokSlotWidth = 7.2;
 mLokSlotLength = 3.4;
@@ -57,16 +61,28 @@ module attachedPicatinnyMount()
 {
 	difference()
 	{
-		barrelMount();
-		
-		// Flat-top on ring:
-		tcu([14.2, -200, -10], 400);
+		picatinnyRailFlatX = ringOD/2 + 3;
+		union()
+		{
+			barrelMount();
+			// Flat top:
+			tcu([ringOD/2-ringCZ-2.5, -attachedPicatinnyMountWidth/2, 0], [100, attachedPicatinnyMountWidth, mountZ]);
+		}
+
+		// Flat-top trim:
+		tcu([ringOD/2+1, -200, -10], 400);
 
 		// Flot-top limits:
 		// %doubleY() tcu([-50, attachedPicatinnyMountWidth/2, -(100-mountZ)/2], 100);
 
-		// m-5 Holes:
-		
+		// m5 Holes:
+		translate([0,0,mountZ/2]) doubleZ() translate([0,0,mLokScrewsCtrs/2]) rotate([0,90,0]) 
+		{
+			// Hole:
+			cylinder(d=mLokScrewHoleDia, h=100);
+			// Nut recess:
+			cylinder(d=m5NutDia, h=barrelOD/2 + m5NutThickness, $fn=6);
+		}
 	}
 }
 
@@ -244,8 +260,8 @@ module mountBottom()
 
 module clip(d=0)
 {
-	//tc([-200, -400-d, -10], 400);
-	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
+	tc([-200, -400-d, -10], 400);
+	tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
 if(developmentRender)
