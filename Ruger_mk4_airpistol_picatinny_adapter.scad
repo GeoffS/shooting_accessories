@@ -6,6 +6,20 @@ makePicTest = false;
 makeintegralPicatinnyMountTop = false;
 makeMountBottom = false;
 
+attachedPicatinnyMountWidth = 16;
+attachedPicatinnyMountLength = 65.18;
+attachedPicatinnyMountEndRadius = 20;
+
+// M-Lok dims:
+mLokScrewHoleDia = 5.8;
+m5NutDia = 9.0;
+m5NutThickness = 4.0;
+mLokScrewsCtrs = 20.25;
+mLokSlotWidth = 7.2;
+mLokSlotLength = 3.4;
+mLokSlotDepth = 1.6;
+mLokSlotEndDia = 12.3;
+
 barrelOD = 21.6;
 fluteDia = 11.8;
 fluteDepth = 2.1;
@@ -13,7 +27,7 @@ fluteAngles = [0, 60, -60, 120, -120];
 
 ringWallThickness = 5.54;
 ringOD = barrelOD + 2*ringWallThickness;
-mountZ = 65; //40;
+mountZ = attachedPicatinnyMountLength; //65; //40;
 ringAngle = 140;
 ringCZ = 2;
 
@@ -43,20 +57,6 @@ module integralPicatinnyMount()
 	translate([picMainRectY+picMountOffsetX, 0, 0]) rotate([0,0,-90]) picatinnyMount(mountZ); //-2*ringCZ);
 }
 
-attachedPicatinnyMountWidth = 16;
-attachedPicatinnyMountLength = 65.18;
-attachedPicatinnyMountEndRadius = 20;
-
-// M-Lok dims:
-mLokScrewHoleDia = 5.8;
-m5NutDia = 9.0;
-m5NutThickness = 4.0;
-mLokScrewsCtrs = 20.25;
-mLokSlotWidth = 7.2;
-mLokSlotLength = 3.4;
-mLokSlotDepth = 1.6;
-mLokSlotEndDia = 12.3;
-
 module attachedPicatinnyMount()
 {
 	difference()
@@ -65,11 +65,28 @@ module attachedPicatinnyMount()
 		union()
 		{
 			barrelMount();
+
 			// Flat top:
-			tcu([ringOD/2-ringCZ-2.5, -attachedPicatinnyMountWidth/2, 0], [100, attachedPicatinnyMountWidth, mountZ]);
+			// tcu([ringOD/2-ringCZ-2.5, -attachedPicatinnyMountWidth/2, 0], [100, attachedPicatinnyMountWidth, mountZ]);
+			difference() 
+			{
+				hull() 
+				{
+					translate([ringOD/2-ringCZ-2.5, 0, mountZ/2]) 
+						doubleZ() 
+							translate([0,0,mountZ/2-attachedPicatinnyMountEndRadius]) 
+								rotate([0,90,0])
+									cylinder(r=attachedPicatinnyMountEndRadius, h=100);
+				}
+				
+				// Trim Sides:
+				doubleY() tcu([0, attachedPicatinnyMountWidth/2, -10], 400);
+			}
+
 		}
 
 		// Flat-top trim:
+		// Top:
 		tcu([ringOD/2+1, -200, -10], 400);
 
 		// Flot-top limits:
@@ -260,8 +277,8 @@ module mountBottom()
 
 module clip(d=0)
 {
-	tc([-200, -400-d, -10], 400);
-	tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
+	// tc([-200, -400-d, -10], 400);
+	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
 if(developmentRender)
