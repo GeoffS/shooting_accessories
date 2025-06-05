@@ -4,6 +4,7 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 makeIntegralPicatinnyMountTop = false;
 makeAttachedPicatinnyMountTop = false;
 makeMountBottom = false;
+makeFrontSightCover = false;
 
 attachedPicatinnyMountWidth = 16;
 attachedPicatinnyMountLength = 65.18;
@@ -48,6 +49,14 @@ echo(str("picTopRectX = ", picTopRectX));
 echo(str("picTopRectY = ", picTopRectY));
 
 picMountOffsetX = ringOD/2 - 1.42; //1.8;
+
+module frontSightCover()
+{
+	frontSightCoverZ = 36;
+	frontSightCoverScrewCtrsZ = 0;
+
+	barrelMount(frontSightCoverZ, frontSightCoverScrewCtrsZ);
+}
 
 module integralPicatinnyMount()
 {
@@ -135,19 +144,19 @@ screwBumpCZ = 1;
 screwBumpOffsetY = barrelOD/2 + 1 + screwHoleDia/2; // ringOD/2 - 3;
 screwBumpCtrsZ = mountZ - screwBumpOD - 2*ringCZ - 1;
 
-module barrelOutside()
+module barrelOutside(z, screwCtrsZ)
 {
 	difference() 
 	{
 		union()
 		{
 			// Basic exterior:
-			simpleChamferedCylinderDoubleEnded(d = ringOD, h = mountZ, cz = ringCZ);
+			simpleChamferedCylinderDoubleEnded(d = ringOD, h = z, cz = ringCZ);
 
 			// Screw bumps:
 			difference()
 			{
-				screwBumpCtrsXform() hull()
+				screwBumpCtrsXform(z, screwCtrsZ) hull()
 				{
 					simpleChamferedCylinderDoubleEnded(d=screwBumpOD, h=screwBumpY, cz=screwBumpCZ, $fn=4);
 					translate([0,-10,0]) simpleChamferedCylinderDoubleEnded(d=screwBumpOD, h=screwBumpY, cz=screwBumpCZ, $fn=8);
@@ -159,7 +168,7 @@ module barrelOutside()
 		}
 
 		// Screw holes:
-		screwBumpCtrsXform() 
+		screwBumpCtrsXform(z, screwCtrsZ) 
 		{
 			// Hole:
 			tcy([0,0,-15], d=screwHoleDia, h=100);
@@ -171,17 +180,17 @@ module barrelOutside()
 	}
 }
 
-module screwBumpCtrsXform()
+module screwBumpCtrsXform(z=mountZ, screwCtrsZ)
 {
 	doubleY() 
-		translate([0, screwBumpOffsetY, mountZ/2]) 
-			doubleZ() translate([0, 0, -screwBumpCtrsZ/2]) 
+		translate([0, screwBumpOffsetY, z/2]) 
+			doubleZ() translate([0, 0, -screwCtrsZ/2]) 
 				rotate([0,-90,0]) 
 					translate([0,0,-screwBumpY/2]) 
 						children();
 }
 
-module barrelMount()
+module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ)
 {
 	difference()
 	{
@@ -194,7 +203,7 @@ module barrelMount()
 					// Basic integralPicatinnyMount ring:
 					difference() 
 					{
-						barrelOutside();
+						barrelOutside(z, screwCtrsZ);
 
 						tcy([0,0,-10], d=barrelOD, h=200);
 					}
@@ -205,10 +214,10 @@ module barrelMount()
 						for (a = fluteAngles) 
 						{
 							echo(str("a = ", a));
-							rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=mountZ);
+							rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=z);
 						}
 						
-						barrelOutside();
+						barrelOutside(z, screwCtrsZ);
 					}
 				}
 
@@ -221,11 +230,10 @@ module barrelMount()
 			}
 
 			// Add rounded ends for better printing:
-			// doubleY() tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
 			doubleY() intersection() 
 			{
-				rotate([0 ,0, ringAngle-90])  tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=mountZ);
-				barrelOutside();
+				rotate([0 ,0, ringAngle-90])  tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=z);
+				barrelOutside(z, screwCtrsZ);
 			}
 		}
 
@@ -272,22 +280,29 @@ module mountBottom()
 
 module clip(d=0)
 {
-	tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
 	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
 if(developmentRender)
 {
 	// display() integralPicatinnyMount();
-	display() attachedPicatinnyMountTop();
+	// display() attachedPicatinnyMountTop();
 	// display() integralPicatinnyMountTop();
-	display() mountBottom();
+	// display() mountBottom();
+	display() frontSightCover();
 
-	display() translate([-60,0,0]) integralPicatinnyMountTop();
+	display() translate([-60,0,0])
+	{
+		attachedPicatinnyMountTop();
+		mountBottom();
+	}
+	display() translate([-120,0,0]) integralPicatinnyMountTop();
 }
 else
 {
 	if(makeIntegralPicatinnyMountTop) integralPicatinnyMountTop();
 	if(makeAttachedPicatinnyMountTop) attachedPicatinnyMountTop();
 	if(makeMountBottom) mountBottom();
+	if(makeFrontSightCover) frontSightCover();
 }
