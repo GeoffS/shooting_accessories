@@ -53,9 +53,48 @@ picMountOffsetX = ringOD/2 - 1.42; //1.8;
 module frontSightCover()
 {
 	frontSightCoverZ = 36;
-	frontSightCoverScrewCtrsZ = 0;
+	frontSightCoverOD = 20;
+	frontSightCoverOffsetX = 30;
+	frontSightBaseY = 11;
+	frontSightCoverScrewCtrs = 0;
 
-	barrelMount(frontSightCoverZ, frontSightCoverScrewCtrsZ);
+	difference()
+	{
+		union()
+		{
+			barrelMount(z=frontSightCoverZ, screwCtrsZ=frontSightCoverScrewCtrs);
+			
+			difference() 
+			{
+				hull()
+				{
+					difference() 
+					{
+						basicExteriorCylinder(frontSightCoverZ);
+						frontSightCoverTrim();
+					}
+					translate([frontSightCoverOffsetX-frontSightCoverOD/2,0,0]) basicExteriorCylinder(frontSightCoverZ, od=frontSightCoverOD);
+				}
+
+				// Trim the bottom of the cover:
+				frontSightCoverTrim();
+			}
+		}
+
+		// Trim the inside:
+		translate([0,0,-10]) hull()
+		{
+			tcy([0,0,0], d=frontSightBaseY, h=100);
+			tcy([frontSightCoverOffsetX-frontSightBaseY/2-3,0,0], d=frontSightBaseY, h=100);
+		}
+
+		screwHoles(frontSightCoverZ, frontSightCoverScrewCtrs);
+	}
+}
+
+module frontSightCoverTrim()
+{
+	tcu([-400, -200, -10], 400);
 }
 
 module integralPicatinnyMount()
@@ -144,6 +183,11 @@ screwBumpCZ = 1;
 screwBumpOffsetY = barrelOD/2 + 1 + screwHoleDia/2; // ringOD/2 - 3;
 screwBumpCtrsZ = mountZ - screwBumpOD - 2*ringCZ - 1;
 
+module basicExteriorCylinder(z, od=ringOD)
+{
+	simpleChamferedCylinderDoubleEnded(d = od, h = z, cz = ringCZ);
+}
+
 module barrelOutside(z, screwCtrsZ)
 {
 	difference() 
@@ -151,7 +195,7 @@ module barrelOutside(z, screwCtrsZ)
 		union()
 		{
 			// Basic exterior:
-			simpleChamferedCylinderDoubleEnded(d = ringOD, h = z, cz = ringCZ);
+			basicExteriorCylinder(z);
 
 			// Screw bumps:
 			difference()
@@ -168,7 +212,13 @@ module barrelOutside(z, screwCtrsZ)
 		}
 
 		// Screw holes:
-		screwBumpCtrsXform(z, screwCtrsZ) 
+		screwHoles(z, screwCtrsZ);
+	}
+}
+
+module screwHoles(z, screwCtrsZ)
+{
+	screwBumpCtrsXform(z, screwCtrsZ) 
 		{
 			// Hole:
 			tcy([0,0,-15], d=screwHoleDia, h=100);
@@ -177,7 +227,6 @@ module barrelOutside(z, screwCtrsZ)
 			// Nut recess:
 			tcy([0,0,screwHeadRecessZ+screwZ-nutZ], d=1.4*nutXY, h=100, $fn=4);
 		}
-	}
 }
 
 module screwBumpCtrsXform(z=mountZ, screwCtrsZ)
