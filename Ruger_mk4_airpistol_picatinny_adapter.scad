@@ -1,8 +1,6 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
-makeBarrelTest = false;
-makePicTest = false;
 makeIntegralPicatinnyMountTop = false;
 makeAttachedPicatinnyMountTop = false;
 makeMountBottom = false;
@@ -280,8 +278,6 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	// display() barrelMount();
-	// display() picatinnyMount();
 	// display() integralPicatinnyMount();
 	display() attachedPicatinnyMountTop();
 	// display() integralPicatinnyMountTop();
@@ -291,8 +287,6 @@ if(developmentRender)
 }
 else
 {
-	if(makeBarrelTest) barrelMount();
-	if(makePicTest) picatinnyMount();
 	if(makeIntegralPicatinnyMountTop) integralPicatinnyMountTop();
 	if(makeAttachedPicatinnyMountTop) attachedPicatinnyMountTop();
 	if(makeMountBottom) mountBottom();
