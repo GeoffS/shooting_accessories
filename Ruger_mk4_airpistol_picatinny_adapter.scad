@@ -62,33 +62,52 @@ module frontSightCover()
 	{
 		union()
 		{
-			barrelMount(z=frontSightCoverZ, screwCtrsZ=frontSightCoverScrewCtrs);
-			
-			difference() 
+			barrelMount(z=frontSightCoverZ, screwCtrsZ=frontSightCoverScrewCtrs)
 			{
-				hull()
+				// Front sight exterior:
+				difference() 
 				{
-					difference() 
+					hull()
 					{
-						basicExteriorCylinder(frontSightCoverZ);
-						frontSightCoverTrim();
+						difference() 
+						{
+							basicExteriorCylinder(frontSightCoverZ);
+							frontSightCoverTrim();
+						}
+						translate([frontSightCoverOffsetX-frontSightCoverOD/2,0,0]) basicExteriorCylinder(frontSightCoverZ, od=frontSightCoverOD);
 					}
-					translate([frontSightCoverOffsetX-frontSightCoverOD/2,0,0]) basicExteriorCylinder(frontSightCoverZ, od=frontSightCoverOD);
 				}
 
-				// Trim the bottom of the cover:
-				frontSightCoverTrim();
+				// Front sight cover interior:
+				translate([0,0,-10]) hull()
+				{
+					tcy([0,0,0], d=frontSightBaseY, h=100);
+					tcy([frontSightCoverOffsetX-frontSightBaseY/2-3,0,0], d=frontSightBaseY, h=100);
+				}
 			}
+			
+			// difference() 
+			// {
+			// 	hull()
+			// 	{
+			// 		difference() 
+			// 		{
+			// 			basicExteriorCylinder(frontSightCoverZ);
+			// 			frontSightCoverTrim();
+			// 		}
+			// 		translate([frontSightCoverOffsetX-frontSightCoverOD/2,0,0]) basicExteriorCylinder(frontSightCoverZ, od=frontSightCoverOD);
+			// 	}
+			// }
+
+			// 	// Trim the bottom of the cover:
+			// 	frontSightCoverTrim();
+			// }
 		}
 
 		// Trim the inside:
-		translate([0,0,-10]) hull()
-		{
-			tcy([0,0,0], d=frontSightBaseY, h=100);
-			tcy([frontSightCoverOffsetX-frontSightBaseY/2-3,0,0], d=frontSightBaseY, h=100);
-		}
+		
 
-		screwHoles(frontSightCoverZ, frontSightCoverScrewCtrs);
+		// screwHoles(frontSightCoverZ, frontSightCoverScrewCtrs);
 	}
 }
 
@@ -190,6 +209,7 @@ module basicExteriorCylinder(z, od=ringOD)
 
 module barrelOutside(z, screwCtrsZ)
 {
+	echo(str("barrelOutside() $children = ", $children));
 	difference() 
 	{
 		union()
@@ -209,10 +229,15 @@ module barrelOutside(z, screwCtrsZ)
 				// Clip the outside points off:
 				doubleY() tcu([-200, screwBumpOffsetY+screwBumpOD/2-1.8, -200], 400);
 			}
+
+			if($children > 0) children(0);
 		}
 
 		// Screw holes:
 		screwHoles(z, screwCtrsZ);
+
+		// Any
+		if($children > 1) children(1);
 	}
 }
 
@@ -252,7 +277,9 @@ module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ)
 					// Basic integralPicatinnyMount ring:
 					difference() 
 					{
-						barrelOutside(z, screwCtrsZ);
+						if($children > 1) barrelOutside(z, screwCtrsZ) { children(0); children(1); }
+						else if($children > 0) barrelOutside(z, screwCtrsZ) { children(0); }
+						else barrelOutside(z, screwCtrsZ) { }
 
 						tcy([0,0,-10], d=barrelOD, h=200);
 					}
@@ -266,7 +293,9 @@ module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ)
 							rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=z);
 						}
 						
-						barrelOutside(z, screwCtrsZ);
+						if($children > 1) barrelOutside(z, screwCtrsZ) { children(0); children(1); }
+						else if($children > 0) barrelOutside(z, screwCtrsZ) { children(0); }
+						else barrelOutside(z, screwCtrsZ) { }
 					}
 				}
 
@@ -282,7 +311,9 @@ module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ)
 			doubleY() intersection() 
 			{
 				rotate([0 ,0, ringAngle-90])  tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=z);
-				barrelOutside(z, screwCtrsZ);
+				if($children > 1) barrelOutside(z, screwCtrsZ) { children(0); children(1); }
+				else if($children > 0) barrelOutside(z, screwCtrsZ) { children(0); }
+				else barrelOutside(z, screwCtrsZ) { }
 			}
 		}
 
