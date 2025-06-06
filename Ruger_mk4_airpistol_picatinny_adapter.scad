@@ -25,7 +25,7 @@ fluteDia = 11.8;
 fluteDepth = 2.1;
 fluteAngles = [0, 60, -60, 120, -120];
 
-ringWallThickness = 6.1; //5.54;
+ringWallThickness = 6.1;
 ringOD = barrelOD + 2*ringWallThickness;
 mountZ = attachedPicatinnyMountLength; //65; //40;
 ringAngle = 140;
@@ -36,20 +36,19 @@ ringPinRecessDia = 2;
 ringPinRecessDepth = 3;
 ringPinRecessAngle = 125;
 
-picMainRectX = 12.82; //(0.617 - 0.005) * 25.4;
-picMainRectY = 9.0; //(0.367 + 0.010) * 25.4;
+picMainRectX = 12.82;
+picMainRectY = 9.0; 
 
 echo(str("picMainRectX = ", picMainRectX));
 echo(str("picMainRectY = ", picMainRectY));
 
-picTopRectX = 20.8; //(0.835 - 0.003) * 25.4;
-picTopRectY = 5.5; //(0.164 - 0.010) * 25.4;
+picTopRectX = 20.8;
+picTopRectY = 5.5;
 
 echo(str("picTopRectX = ", picTopRectX));
 echo(str("picTopRectY = ", picTopRectY));
 
-picMountOffsetX = ringOD/2 - 1.42; //1.8;
-
+picMountOffsetX = ringOD/2 - 1.42;
 module frontSightCover()
 {
 	frontSightCoverZ = 36;
@@ -85,29 +84,7 @@ module frontSightCover()
 					tcy([frontSightCoverOffsetX-frontSightBaseY/2-3,0,0], d=frontSightBaseY, h=100);
 				}
 			}
-			
-			// difference() 
-			// {
-			// 	hull()
-			// 	{
-			// 		difference() 
-			// 		{
-			// 			basicExteriorCylinder(frontSightCoverZ);
-			// 			frontSightCoverTrim();
-			// 		}
-			// 		translate([frontSightCoverOffsetX-frontSightCoverOD/2,0,0]) basicExteriorCylinder(frontSightCoverZ, od=frontSightCoverOD);
-			// 	}
-			// }
-
-			// 	// Trim the bottom of the cover:
-			// 	frontSightCoverTrim();
-			// }
 		}
-
-		// Trim the inside:
-		
-
-		// screwHoles(frontSightCoverZ, frontSightCoverScrewCtrs);
 	}
 }
 
@@ -120,7 +97,7 @@ module integralPicatinnyMount()
 {
 	barrelMount();
 
-	translate([picMainRectY+picMountOffsetX, 0, 0]) rotate([0,0,-90]) picatinnyMount(mountZ); //-2*ringCZ);
+	translate([picMainRectY+picMountOffsetX, 0, 0]) rotate([0,0,-90]) picatinnyMount(mountZ);
 }
 
 module attachedPicatinnyMount()
@@ -236,7 +213,7 @@ module barrelOutside(z, screwCtrsZ)
 		// Screw holes:
 		screwHoles(z, screwCtrsZ);
 
-		// Any
+		// Any other things to subtract:
 		if($children > 1) children(1);
 	}
 }
