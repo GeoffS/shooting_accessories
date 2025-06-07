@@ -54,9 +54,9 @@ picMountOffsetX = ringOD/2 - 1.42;
 module frontSightCover()
 {
 	frontSightCoverZ = 36;
-	frontSightCoverOD = 20;
+	frontSightCoverOD = 25;
 	frontSightCoverOffsetX = 30;
-	frontSightBaseY = 11;
+	frontSightBaseY = 10.0;
 	frontSightCoverScrewCtrs = 0;
 
 	difference()
@@ -83,7 +83,7 @@ module frontSightCover()
 				translate([0,0,-10]) hull()
 				{
 					tcy([0,0,0], d=frontSightBaseY, h=100);
-					tcy([frontSightCoverOffsetX-frontSightBaseY/2-3,0,0], d=frontSightBaseY, h=100);
+					tcy([frontSightCoverOffsetX-frontSightBaseY/2-4.5,0,0], d=frontSightBaseY, h=100);
 				}
 			}
 		}
@@ -372,7 +372,7 @@ module makeBottom()
 
 module clip(d=0)
 {
-	tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
 	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
