@@ -24,7 +24,7 @@ mLokSlotEndDia = 12.3;
 barrelOD = 21.6;
 fluteDia = 11.8;
 fluteDepth = 2.1;
-fluteAngles = [0, 60, -60, 120, -120];
+fluteAngles = [0, 60, -60, 120, -120, 180];
 
 ringWallThickness = 6.1;
 ringOD = barrelOD + 2*ringWallThickness;
@@ -63,7 +63,11 @@ module frontSightCover()
 	{
 		union()
 		{
-			barrelMount(z=frontSightCoverZ, screwCtrsZ=frontSightCoverScrewCtrs, fluteOffsetZ=21)
+			barrelMount(
+				z=frontSightCoverZ, 
+				screwCtrsZ=frontSightCoverScrewCtrs, 
+				fluteOffsetZ=21,
+				ringLowerSplitAngle=0)
 			{
 				// Front sight exterior:
 				difference() 
@@ -269,7 +273,7 @@ module screwBumpCtrsXform(z=mountZ, screwCtrsZ)
 						children();
 }
 
-module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ, fluteOffsetZ=0)
+module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ, fluteOffsetZ=0, ringLowerSplitAngle=ringAngle)
 {
 	echo(str("fluteOffsetZ = ", fluteOffsetZ));
 	difference()
@@ -306,7 +310,7 @@ module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ, fluteOffsetZ=0)
 				}
 
 				// Trim ends:
-				doubleY() difference() 
+				if(ringLowerSplitAngle > 0) doubleY() difference() 
 				{
 					rotate([0 ,0, ringAngle-90]) tcu([-400, 0, -200], 400);
 					tcu([-400,-400,0], 400);
@@ -314,7 +318,7 @@ module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ, fluteOffsetZ=0)
 			}
 
 			// Add rounded ends for better printing:
-			doubleY() intersection() 
+			if(ringLowerSplitAngle > 0) doubleY() intersection() 
 			{
 				rotate([0 ,0, ringAngle-90])  tcy([0,barrelOD/2+ringWallThickness/2,0], d=ringWallThickness, h=z);
 				if($children > 1) barrelOutside(z, screwCtrsZ) { children(0); children(1); }
@@ -342,31 +346,32 @@ module mountBottom()
 	makeBottom() integralPicatinnyMount();
 }
 
+frontSightCoverSplit = 0.3;
 module frontSightCoverTop()
 {
-	makeTop() frontSightCover();
+	makeTop(frontSightCoverSplit) frontSightCover();
 }
 
 module frontSightCoverBottom()
 {
-	makeBottom() frontSightCover();
+	makeBottom(frontSightCoverSplit) frontSightCover();
 }
 
-module makeTop()
+module makeTop(splitBetweenTopAndBottom=split)
 {
 	difference()
 	{
 		children();
-		tcu([-400+split/2, -200, -200], 400);
+		tcu([-400+splitBetweenTopAndBottom/2, -200, -200], 400);
 	}
 }
 
-module makeBottom()
+module makeBottom(splitBetweenTopAndBottom=split)
 {
 	difference()
 	{
 		children();
-		tcu([-split/2, -200, -200], 400);
+		tcu([-splitBetweenTopAndBottom/2, -200, -200], 400);
 	}
 }
 
