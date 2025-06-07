@@ -63,7 +63,7 @@ module frontSightCover()
 	{
 		union()
 		{
-			barrelMount(z=frontSightCoverZ, screwCtrsZ=frontSightCoverScrewCtrs)
+			barrelMount(z=frontSightCoverZ, screwCtrsZ=frontSightCoverScrewCtrs, fluteOffsetZ=21)
 			{
 				// Front sight exterior:
 				difference() 
@@ -269,8 +269,9 @@ module screwBumpCtrsXform(z=mountZ, screwCtrsZ)
 						children();
 }
 
-module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ)
+module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ, fluteOffsetZ=0)
 {
+	echo(str("fluteOffsetZ = ", fluteOffsetZ));
 	difference()
 	{
 		union()
@@ -289,13 +290,13 @@ module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ)
 						tcy([0,0,-10], d=barrelOD, h=200);
 					}
 
-					// Flute:
+					// Flutes:
 					intersection() 
 					{
 						for (a = fluteAngles) 
 						{
 							echo(str("a = ", a));
-							rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, 0], d=fluteDia, h=z);
+							rotate([0,0,a]) tcy([(barrelOD+fluteDia)/2 - fluteDepth, 0, fluteOffsetZ], d=fluteDia, h=z-fluteOffsetZ);
 						}
 						
 						if($children > 1) barrelOutside(z, screwCtrsZ) { children(0); children(1); }
@@ -321,16 +322,6 @@ module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ)
 				else barrelOutside(z, screwCtrsZ) { }
 			}
 		}
-
-		// // Make recess slot for pin:
-		// rotate([0,0,-90+ringPinRecessAngle]) hull()
-		// {
-		// 	translate([0, 0, ringPinRecessZ]) rotate([-90,0,0]) hull()
-		// 	{
-		// 		cylinder(d=ringPinRecessDia, h=barrelOD/2);
-		// 		rotate([0,-30,0]) cylinder(d=ringPinRecessDia*2, h=ringOD/2);
-		// 	}
-		// }
 	}
 }
 
@@ -381,7 +372,7 @@ module makeBottom()
 
 module clip(d=0)
 {
-	// tc([-200, -400-d, -10], 400);
+	tc([-200, -400-d, -10], 400);
 	// tcu([-200, -200, ringCZ+1+screwBumpOD/2-400], 400);
 }
 
@@ -406,6 +397,11 @@ else
 	if(makeIntegralPicatinnyMountTop) integralPicatinnyMountTop();
 	if(makeAttachedPicatinnyMountTop) attachedPicatinnyMountTop();
 	if(makeMountBottom) mountBottom();
-	if(makeFrontSightCoverTop) frontSightCoverTop();
-	if(makeFrontSightCoverBottom) frontSightCoverBottom();
+	if(makeFrontSightCoverTop) frontSightCoverPrintXform() frontSightCoverTop();
+	if(makeFrontSightCoverBottom) frontSightCoverPrintXform() frontSightCoverBottom();
+}
+
+module frontSightCoverPrintXform()
+{
+	rotate([0,180,0]) children();
 }
