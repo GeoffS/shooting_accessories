@@ -50,6 +50,7 @@ echo(str("picTopRectX = ", picTopRectX));
 echo(str("picTopRectY = ", picTopRectY));
 
 picMountOffsetX = ringOD/2 - 1.42;
+
 module frontSightCover()
 {
 	frontSightCoverZ = 36;
@@ -96,7 +97,13 @@ module frontSightCoverTrim()
 
 module integralPicatinnyMount()
 {
-	barrelMount();
+	barrelMount()
+	{
+		// Dummy extra exterior:
+		union();
+
+		slotForPinAtRearOfTheBarrel();
+	};
 
 	translate([picMainRectY+picMountOffsetX, 0, 0]) rotate([0,0,-90]) picatinnyMount(mountZ);
 }
@@ -107,7 +114,13 @@ module attachedPicatinnyMount()
 	{
 		union()
 		{
-			barrelMount();
+			barrelMount()
+			{
+				// Dummy extra exterior:
+				union();
+
+				slotForPinAtRearOfTheBarrel();
+			};
 
 			// Flat top:
 			difference()
@@ -166,6 +179,19 @@ module picatinnyMount(z)
 	}
 }
 
+module slotForPinAtRearOfTheBarrel()
+{
+	// Make recess slot for pin:
+	rotate([0,0,-90+ringPinRecessAngle]) hull()
+	{
+		translate([0, 0, ringPinRecessZ]) rotate([-90,0,0]) hull()
+		{
+			cylinder(d=ringPinRecessDia, h=barrelOD/2);
+			rotate([0,-30,0]) cylinder(d=ringPinRecessDia*2, h=ringOD/2);
+		}
+	}
+}
+
 screwHeadRecessDia = 6.1;
 screwHeadRecessZ = 3.5;
 screwHoleDia = 3.55;
@@ -208,6 +234,7 @@ module barrelOutside(z, screwCtrsZ)
 				doubleY() tcu([-200, screwBumpOffsetY+screwBumpOD/2-1.8, -200], 400);
 			}
 
+			// Anything additional to add to the exterior:
 			if($children > 0) children(0);
 		}
 
@@ -295,15 +322,15 @@ module barrelMount(z=mountZ, screwCtrsZ=screwBumpCtrsZ)
 			}
 		}
 
-		// Make recess slot for pin:
-		rotate([0,0,-90+ringPinRecessAngle]) hull()
-		{
-			translate([0, 0, ringPinRecessZ]) rotate([-90,0,0]) hull()
-			{
-				cylinder(d=ringPinRecessDia, h=barrelOD/2);
-				rotate([0,-30,0]) cylinder(d=ringPinRecessDia*2, h=ringOD/2);
-			}
-		}
+		// // Make recess slot for pin:
+		// rotate([0,0,-90+ringPinRecessAngle]) hull()
+		// {
+		// 	translate([0, 0, ringPinRecessZ]) rotate([-90,0,0]) hull()
+		// 	{
+		// 		cylinder(d=ringPinRecessDia, h=barrelOD/2);
+		// 		rotate([0,-30,0]) cylinder(d=ringPinRecessDia*2, h=ringOD/2);
+		// 	}
+		// }
 	}
 }
 
