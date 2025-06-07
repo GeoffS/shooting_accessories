@@ -311,45 +311,43 @@ split = 0.1;
 
 module integralPicatinnyMountTop()
 {
-	difference()
-	{
-		integralPicatinnyMount();
-		tcu([-400+split/2, -200, -200], 400);
-	}
+	makeTop() integralPicatinnyMount();
 }
 
 module attachedPicatinnyMountTop()
 {
-	difference()
-	{
-		attachedPicatinnyMount();
-		tcu([-400+split/2, -200, -200], 400);
-	}
+	makeTop() attachedPicatinnyMount();
 }
 
 module mountBottom()
 {
-	difference()
-	{
-		integralPicatinnyMount();
-		tcu([-split/2, -200, -200], 400);
-	}
+	makeBottom() integralPicatinnyMount();
 }
 
 module frontSightCoverTop()
 {
-	difference()
-	{
-		frontSightCover();
-		tcu([-400+split/2, -200, -200], 400);
-	}
+	makeTop() frontSightCover();
 }
 
 module frontSightCoverBottom()
 {
+	makeBottom() frontSightCover();
+}
+
+module makeTop()
+{
 	difference()
 	{
-		frontSightCover();
+		children();
+		tcu([-400+split/2, -200, -200], 400);
+	}
+}
+
+module makeBottom()
+{
+	difference()
+	{
+		children();
 		tcu([-split/2, -200, -200], 400);
 	}
 }
