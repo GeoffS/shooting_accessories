@@ -4,7 +4,8 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 makeIntegralPicatinnyMountTop = false;
 makeAttachedPicatinnyMountTop = false;
 makeMountBottom = false;
-makeFrontSightCover = false;
+makeFrontSightCoverTop = false;
+makeFrontSightCoverBottom = false;
 
 attachedPicatinnyMountWidth = 16;
 attachedPicatinnyMountLength = 65.18;
@@ -335,6 +336,24 @@ module mountBottom()
 	}
 }
 
+module frontSightCoverTop()
+{
+	difference()
+	{
+		frontSightCover();
+		tcu([-400+split/2, -200, -200], 400);
+	}
+}
+
+module frontSightCoverBottom()
+{
+	difference()
+	{
+		frontSightCover();
+		tcu([-split/2, -200, -200], 400);
+	}
+}
+
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
@@ -347,7 +366,8 @@ if(developmentRender)
 	// display() attachedPicatinnyMountTop();
 	// display() integralPicatinnyMountTop();
 	// display() mountBottom();
-	display() frontSightCover();
+	display() frontSightCoverTop();
+	display() frontSightCoverBottom();
 
 	display() translate([-60,0,0])
 	{
@@ -361,5 +381,6 @@ else
 	if(makeIntegralPicatinnyMountTop) integralPicatinnyMountTop();
 	if(makeAttachedPicatinnyMountTop) attachedPicatinnyMountTop();
 	if(makeMountBottom) mountBottom();
-	if(makeFrontSightCover) frontSightCover();
+	if(makeFrontSightCoverTop) frontSightCoverTop();
+	if(makeFrontSightCoverBottom) frontSightCoverBottom();
 }
