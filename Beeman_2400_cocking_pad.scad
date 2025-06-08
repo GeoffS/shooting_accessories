@@ -11,7 +11,7 @@ gunTopToFlatY = 4.2;
 totalY = gunY + gunTopToFlatY;
 
 padTopDia = 35;
-padBottomDia = 10;
+padBottomDia = 12;
 padBottomX = gunBottomX + padBottomDia;
 padExtraY = gunTopToFlatY;
 padY = gunY + padExtraY;
@@ -38,6 +38,8 @@ module itemModule()
     }
 }
 
+padBottomCylOffsetCtr = padBottomX/2-padBottomDia/2+padCZ;
+
 module exterior()
 {
     hull()
@@ -45,7 +47,7 @@ module exterior()
         // Top of gun
         translate([0, padY, 0]) simpleChamferedCylinderDoubleEnded(d=padTopDia, h=padZ, cz=padCZ);
         // Bottom of gun:
-        doubleX() translate([padBottomX/2-padBottomDia/2+padCZ,0,0]) simpleChamferedCylinderDoubleEnded(d=padBottomDia, h=padZ, cz=padCZ);
+        doubleX() translate([padBottomCylOffsetCtr,0,0]) simpleChamferedCylinderDoubleEnded(d=padBottomDia, h=padZ, cz=padCZ);
         }
 }
 
@@ -59,6 +61,17 @@ module interior()
     }
 
     gunProfile();
+
+    // Chamfer the bottom opening:
+    // translate([padBottomX/2-padBottomDia/2+padCZ,0,0]) simpleChamferedCylinderDoubleEnded(d=padBottomDia, h=padZ, cz=padCZ);
+    //preRotationOffsetX = -padBottomDia/2 + padCZ - 0.22;
+    doubleX() translate([padBottomCylOffsetCtr,0,0]) 
+    {
+        xy = 10;
+        rotate([0,0,45]) tcu([-xy-padBottomDia/2+padCZ-0.23,-xy/2,0], [xy, xy, 200]);
+        //%cylinder(h = 200, d=0.4);
+    }
+
 }
 
 module clip(d=0)
