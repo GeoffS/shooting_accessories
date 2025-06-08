@@ -8,7 +8,13 @@ gunBottomX = 35.4;
 gunY = 12.7;
 gunTopToFlatY = 2.6; //3.0; //4.2;
 
+gunPortDia = 8.5;
+gunPortCtrY = gunY - 1.0 - gunPortDia/2;
+gunPortCtrZ = 8 - gunPortDia/2;
+
 totalY = gunY + gunTopToFlatY;
+
+echo(str("gunPortCtrY = ", gunPortCtrY));
 
 padTopDia = 35;
 padBottomDia = 12;
@@ -35,6 +41,27 @@ module itemModule()
         tcu([-gunTopFlatX/2, totalY, 0], [gunTopFlatX, 100, padZ]);
 
         exterior();
+    }
+
+    // Piece to push against the "ejection port":
+    difference()
+    {
+        translate([0, gunPortCtrY, gunPortCtrZ]) rotate([0,90,0])
+        {
+            hull()
+            {
+                h = 35;
+                tcy([0,0,-h/2], d=gunPortDia, h=h);
+                tcy([20,0,-h/2], d=gunPortDia, h=h);
+            }
+        }
+
+        // Trim below Z=0:
+        tcu([-200,-200,-400], 400);
+
+        // Trim center:
+        x = gunTopX + 2;
+        tcu([-x/2, 0, -10], [x, 200, 200]);
     }
 }
 
