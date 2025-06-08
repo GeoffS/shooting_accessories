@@ -24,6 +24,8 @@ padY = gunY + padExtraY;
 padZ = 15;
 padCZ = 2;
 
+// padZ = 40;
+
 echo(str("padBottomX = ", padBottomX));
 echo(str("padY = ", padY));
 
@@ -62,6 +64,9 @@ module itemModule()
         // Trim center:
         x = gunTopX + 2;
         tcu([-x/2, 0, -10], [x, 200, 200]);
+
+        // Chamfer the corner:
+        doubleX() translate([x/2, gunPortCtrY-gunPortDia/2, 0]) rotate([0,-45,45]) tcu([-10+1, -5, -5], 10);
     }
 }
 
