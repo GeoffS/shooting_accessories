@@ -1,12 +1,12 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
-gunTopX = 17.5;
+gunTopX = 17.0;
 gunTopFlatX = 6.5;
-gunBottomX = 35.2;
+gunBottomX = 35.4;
 
 gunY = 12.7;
-gunTopToFlatY = 3.0; //4.2;
+gunTopToFlatY = 2.6; //3.0; //4.2;
 
 totalY = gunY + gunTopToFlatY;
 
