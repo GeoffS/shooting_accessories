@@ -114,8 +114,8 @@ module interior()
     //preRotationOffsetX = -padBottomDia/2 + padCZ - 0.22;
     doubleX() translate([padBottomCylOffsetCtr,0,0]) 
     {
-        xy = 10;
-        rotate([0,0,45]) tcu([-xy-padBottomDia/2+padCZ-0.23,-xy/2,0], [xy, xy, 200]);
+        xy = 15;
+        rotate([0,0,45]) tcu([-xy-padBottomDia/2+padCZ-0.23, -xy/2-3, 0], [xy, xy, 200]);
         //%cylinder(h = 200, d=0.4);
     }
 
