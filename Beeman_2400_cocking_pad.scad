@@ -119,6 +119,8 @@ module interior()
         //%cylinder(h = 200, d=0.4);
     }
 
+    // Trim botttom (-Y) of the larger end bits:
+    tcu([-50, -100-6, -10], 100);
 }
 
 module clip(d=0)
