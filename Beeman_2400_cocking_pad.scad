@@ -21,10 +21,8 @@ padBottomDia = 12;
 padBottomX = gunBottomX + padBottomDia;
 padExtraY = gunTopToFlatY;
 padY = gunY + padExtraY;
-padZ = 15;
+padZ = 37;
 padCZ = 2;
-
-// padZ = 40;
 
 echo(str("padBottomX = ", padBottomX));
 echo(str("padY = ", padY));
@@ -80,7 +78,24 @@ module exterior()
         translate([0, padY, 0]) simpleChamferedCylinderDoubleEnded(d=padTopDia, h=padZ, cz=padCZ);
         // Bottom of gun:
         doubleX() translate([padBottomCylOffsetCtr,0,0]) simpleChamferedCylinderDoubleEnded(d=padBottomDia, h=padZ, cz=padCZ);
+    }
+
+    hull()
+    {
+        dd = 5;
+        Z = 25;
+        // Top of gun
+        translate([0, padY, Z]) cylinder(d=padTopDia, h=1);
+        dZ1 = 5;
+        Z1 = padCZ + dZ1;
+        translate([0, padY, padZ-Z1]) simpleChamferedCylinder(d=padTopDia+dd, h=Z1, cz=padCZ);
+        // Bottom of gun:
+        doubleX() 
+        {
+            translate([padBottomCylOffsetCtr,0,Z]) cylinder(d=padBottomDia, h=1);
+            translate([padBottomCylOffsetCtr, 0, padZ-Z1]) simpleChamferedCylinder(d=padBottomDia+dd, h=Z1, cz=padCZ);
         }
+    }
 }
 
 module interior()
