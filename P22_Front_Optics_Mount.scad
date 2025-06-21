@@ -41,29 +41,39 @@ module railClamp()
         p22RailInterior();
 
         // Split clamp in half:
-        tcu([-clampSplitX/2, 2, -10], [clampSplitX, 10, 100]);
+        tcu([-clampSplitX/2, -5, -10], [clampSplitX, 10, 100]);
     }
 }
 
 module p22RailInterior()
 {
     p22RailLength = 100;
+    p2RailOffsetZ = -10;
     p22MountWidthAtTipOfAngles = picatinnyMountFlatTopWidth + 2*picatinnyMountAngleWidth;
 
+    // Rail:
     difference()
     {
-        union()
+        // union()
+        hull()
         {
-            tcu([-picatinnyMountFlatTopWidth/2, 0, -10], [picatinnyMountFlatTopWidth, picatinnyMountFlatTopHeight, p22RailLength]);
-            doubleX() translate([p22MountWidthAtTipOfAngles/2+0.2, picatinnyMountFlatTopHeight/2, -10]) rotate([0,0,-45-90]) tcu([-0, -10, 0], [10, 10, p22RailLength]);
+            //tcu([-picatinnyMountFlatTopWidth/2, 0, -10], [picatinnyMountFlatTopWidth, picatinnyMountFlatTopHeight, p22RailLength]);
+            doubleX() translate([p22MountWidthAtTipOfAngles/2+0.2, picatinnyMountFlatTopHeight/2, p2RailOffsetZ]) rotate([0,0,-45-90]) tcu([-0, -10, 0], [10, 10, p22RailLength]);
         }
 
         tcu([-200, picatinnyMountFlatTopHeight, -200], 400);
         tcu([-200, -400, -200], 400);
-        doubleX() tcu([p22MountWidthAtTipOfAngles/2, -200, -200], 400);
+        //doubleX() tcu([p22MountWidthAtTipOfAngles/2, -200, -200], 400);
+        //doubleX() tcy([p22MountWidthAtTipOfAngles/2, picatinnyMountFlatTopHeight/2, -10], d=2, h=200);
     }
 
-    tcu([-picatinnyMountRiserWidth/2, 0, 0], [picatinnyMountRiserWidth, picatinnyMountFlatTopHeight+picatinnyMountRiserHeight, p22RailLength]);
+    // Extra space at the point of the rails:
+    extraTipClearanceDia = 1.5;
+    doubleX() tcy([p22MountWidthAtTipOfAngles/2-extraTipClearanceDia/5, picatinnyMountFlatTopHeight/2, -10], d=extraTipClearanceDia, h=200);
+
+    // Rail base:
+    baseX = picatinnyMountRiserWidth + 2;
+    tcu([-baseX/2, 1, 0], [baseX, picatinnyMountFlatTopHeight+picatinnyMountRiserHeight, p22RailLength]);
 }
 
 module clip(d=0)
