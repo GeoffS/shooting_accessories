@@ -63,9 +63,19 @@ module railClamp()
             }
 
             
-            clampMountScrewsXform() 
+            clampMountScrewsXform() hull()
+            {
                 translate([0,0,-clampScrewExteriorX/2]) 
+                {
                     simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=1);
+                    bigD = clampScrewExteriorDia * 2.2;
+                    translate([0,10,0]) difference()
+                    {
+                        simpleChamferedCylinderDoubleEnded(d=bigD, h=clampScrewExteriorX, cz=1);
+                        tcu([-200, -1, -200], 400);
+                    }
+                }
+            }
         }
 
         p22RailInterior();
