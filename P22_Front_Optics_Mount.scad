@@ -17,9 +17,16 @@ p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
 p22SlideWidth = 24.4;
 p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
+
+clampX = 16;
 clampOD = 10;
 clampCZ = 2;
 clampSplitX = 2;
+clampOffsetY = -1;
+clampCtrY = clampOD/2-clampCZ+clampOffsetY;
+clampTopY = clampCtrY + clampOD/2;
+
+echo(str("clampTopY = ", clampTopY));
 
 module itemModule()
 {
@@ -30,12 +37,11 @@ module railClamp()
 {
     difference()
     {
-        union()
+        hull()
         {
-            hull()
-            {
-                doubleX() translate([11,clampOD/2-clampCZ-1,0]) simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
-            }
+            doubleX() 
+                translate([clampX-clampOD/2, clampCtrY, 0]) 
+                    simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
         }
 
         p22RailInterior();
@@ -70,7 +76,11 @@ module p22RailInterior()
 
     // Rail base:
     baseX = picatinnyMountRiserWidth + 2;
-    tcu([-baseX/2, 1, 0], [baseX, picatinnyMountFlatTopHeight+picatinnyMountRiserHeight, p22RailLength]);
+    baseOffsetY = 1;
+    tcu([-baseX/2, baseOffsetY, 0], [baseX, picatinnyMountFlatTopHeight+picatinnyMountRiserHeight, p22RailLength]);
+    // Rail base chamfering:
+    doubleX() translate([baseX/2+1+1, clampTopY+1, p2RailOffsetZ]) rotate([0,0,-45-90]) tcu([-0, -10, p2RailOffsetZ], [10, 10, p22RailLength]);
+
 }
 
 module clip(d=0)
