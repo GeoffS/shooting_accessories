@@ -19,8 +19,8 @@ p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
 clampX = 16;
 clampOD = 10;
-clampCZ = 2;
-clampSplitX = 2;
+clampCZ = 1;
+clampSplitX = 0.5;
 clampOffsetY = -1;
 clampCtrY = clampOD/2-clampCZ+clampOffsetY;
 clampTopY = clampCtrY + clampOD/2;
@@ -120,12 +120,12 @@ module p22RailInterior()
 
     // Extra space at the point of the rails:
     extraTipClearanceDia = 1.5;
-    doubleX() tcy([p22MountWidthAtTipOfAngles/2-extraTipClearanceDia/5, picatinnyMountFlatTopHeight/2, -10], d=extraTipClearanceDia, h=200);
+    doubleX() tcy([p22MountWidthAtTipOfAngles/2-extraTipClearanceDia/5, picatinnyMountFlatTopHeight/2, p2RailOffsetZ], d=extraTipClearanceDia, h=p22RailLength);
 
     // Rail base:
     baseX = picatinnyMountRiserWidth + 2;
     baseOffsetY = 1;
-    tcu([-baseX/2, baseOffsetY, 0], [baseX, picatinnyMountFlatTopHeight+picatinnyMountRiserHeight, p22RailLength]);
+    tcu([-baseX/2, baseOffsetY, p2RailOffsetZ], [baseX, picatinnyMountFlatTopHeight+picatinnyMountRiserHeight, p22RailLength]);
     // Rail base chamfering:
     doubleX() translate([baseX/2+1+1, clampTopY+1, p2RailOffsetZ]) rotate([0,0,-45-90]) tcu([-0, -10, p2RailOffsetZ], [10, 10, p22RailLength]);
 
