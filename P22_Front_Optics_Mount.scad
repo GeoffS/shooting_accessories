@@ -26,11 +26,21 @@ clampCtrY = clampOD/2-clampCZ+clampOffsetY;
 clampTopY = clampCtrY + clampOD/2;
 clampBotY = clampCtrY - clampOD/2;
 
-clampScrewHoleDia = 3.3;
-clampScrewHeadDia = 6;
-clampScrewExteriorDia = clampScrewHeadDia + 3;
+// screwHeadRecessDia = 6.1;
+// screwHeadRecessZ = 3.5;
+// screwHoleDia = 3.55;
+// nutXY = 5.7;
+// nutZ = 2.5;
+// screwZ = 16;
+
+clampScrewHoleDia = 3.55;
+clampScrewHeadDia = 6.1;
 clampScrewHeadZ = 3;
-clampScrewExteriorX = 18;
+clampScrewNutXY = 5.7;
+clampScrewNutZ = 2.5;
+clampScrewZ = 16;
+clampScrewExteriorDia = clampScrewNutXY*1.4 + 3;
+clampScrewExteriorX = (clampScrewZ-0.5) + clampScrewHeadZ + clampScrewNutZ;
 
 echo(str("clampTopY = ", clampTopY));
 
@@ -61,7 +71,7 @@ module railClamp()
         p22RailInterior();
 
         // Split clamp in half:
-        tcu([-clampSplitX/2, -10, -10], [clampSplitX, 20, 100]);
+        tcu([-clampSplitX/2, -15, -10], [clampSplitX, 20, 100]);
 
         // Hole for screw:
         ClampMountScrewHoles(); 
@@ -77,8 +87,12 @@ module ClampMountScrewHoles()
 {
     clampMountScrewsXform() 
     {
+        // Hole:
         tcy([0,0,-100], d=clampScrewHoleDia, h=200);
+        // Head recess:
         tcy([0,0,clampScrewExteriorX/2-clampScrewHeadZ], d=clampScrewHeadDia, h=200);
+        // Nut recess:
+        translate([0,0,-clampScrewExteriorX/2+clampScrewNutZ]) rotate([0,0,45]) tcu([-clampScrewNutXY/2, -clampScrewNutXY/2, -100], [clampScrewNutXY, clampScrewNutXY, 100]);
     }
 }
 
