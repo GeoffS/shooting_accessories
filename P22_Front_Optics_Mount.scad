@@ -57,14 +57,11 @@ module p22RailInterior()
         // union()
         hull()
         {
-            //tcu([-picatinnyMountFlatTopWidth/2, 0, -10], [picatinnyMountFlatTopWidth, picatinnyMountFlatTopHeight, p22RailLength]);
             doubleX() translate([p22MountWidthAtTipOfAngles/2+0.2, picatinnyMountFlatTopHeight/2, p2RailOffsetZ]) rotate([0,0,-45-90]) tcu([-0, -10, 0], [10, 10, p22RailLength]);
         }
 
         tcu([-200, picatinnyMountFlatTopHeight, -200], 400);
         tcu([-200, -400, -200], 400);
-        //doubleX() tcu([p22MountWidthAtTipOfAngles/2, -200, -200], 400);
-        //doubleX() tcy([p22MountWidthAtTipOfAngles/2, picatinnyMountFlatTopHeight/2, -10], d=2, h=200);
     }
 
     // Extra space at the point of the rails:
