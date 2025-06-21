@@ -17,7 +17,6 @@ p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
 p22SlideWidth = 24.4;
 p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
-
 clampX = 16;
 clampOD = 10;
 clampCZ = 2;
@@ -25,6 +24,13 @@ clampSplitX = 2;
 clampOffsetY = -1;
 clampCtrY = clampOD/2-clampCZ+clampOffsetY;
 clampTopY = clampCtrY + clampOD/2;
+clampBotY = clampCtrY - clampOD/2;
+
+clampScrewHoleDia = 3.3;
+clampScrewHeadDia = 6;
+clampScrewExteriorDia = clampScrewHeadDia + 3;
+clampScrewHeadZ = 3;
+clampScrewExteriorX = 18;
 
 echo(str("clampTopY = ", clampTopY));
 
@@ -37,17 +43,42 @@ module railClamp()
 {
     difference()
     {
-        hull()
+        union()
         {
-            doubleX() 
-                translate([clampX-clampOD/2, clampCtrY, 0]) 
-                    simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
+            hull()
+            {
+                doubleX() 
+                    translate([clampX-clampOD/2, clampCtrY, 0]) 
+                        simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
+            }
+
+            
+            clampMountScrewsXform() 
+                translate([0,0,-clampScrewExteriorX/2]) 
+                    simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=1);
         }
 
         p22RailInterior();
 
         // Split clamp in half:
-        tcu([-clampSplitX/2, -5, -10], [clampSplitX, 10, 100]);
+        tcu([-clampSplitX/2, -10, -10], [clampSplitX, 20, 100]);
+
+        // Hole for screw:
+        ClampMountScrewHoles(); 
+    }
+}
+
+module clampMountScrewsXform()
+{
+    translate([0, clampBotY-clampScrewHoleDia/2, p22PicatinnyRailLength/2]) rotate([0, 90, 0]) children();
+}
+
+module ClampMountScrewHoles()
+{
+    clampMountScrewsXform() 
+    {
+        tcy([0,0,-100], d=clampScrewHoleDia, h=200);
+        tcy([0,0,clampScrewExteriorX/2-clampScrewHeadZ], d=clampScrewHeadDia, h=200);
     }
 }
 
