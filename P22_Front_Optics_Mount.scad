@@ -26,13 +26,6 @@ clampCtrY = clampOD/2-clampCZ+clampOffsetY;
 clampTopY = clampCtrY + clampOD/2;
 clampBotY = clampCtrY - clampOD/2;
 
-// screwHeadRecessDia = 6.1;
-// screwHeadRecessZ = 3.5;
-// screwHoleDia = 3.55;
-// nutXY = 5.7;
-// nutZ = 2.5;
-// screwZ = 16;
-
 clampScrewHoleDia = 3.55;
 clampScrewHeadDia = 6.1;
 clampScrewHeadZ = 3;
