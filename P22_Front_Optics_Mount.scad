@@ -84,6 +84,26 @@ module riserExterior()
         doubleX() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) 
             simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserForwardZ, cz=clampCZ);
     }
+
+    translate([0,0,riserForwardZ-2*clampCZ])
+    {
+        z = riserBackZ - riserForwardZ + 2*clampCZ;
+
+        // Back riser sides:
+        doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0])
+        {
+            translate([0, riserWallBottomCtrY+1.75, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=8.15, cz=clampCZ);
+            translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=z, cz=clampCZ);
+        }
+
+        // Back riser top:
+        hull() translate([0, riserWallTopCtrY, 0])
+        {
+            
+            doubleX() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) 
+                simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=z, cz=clampCZ);
+        }
+    }
 }
 
 module riserInterior()
@@ -214,8 +234,9 @@ module clip(d=0)
 if(developmentRender)
 {
 	display() itemModule();
+
     // displayGhost() p22RailGhost();
-    displayGhost() gunGhost();
+    // displayGhost() gunGhost();
 }
 else
 {
