@@ -84,8 +84,16 @@ module railClamp()
         // Split clamp in half:
         tcu([-clampSplitX/2, -15, -10], [clampSplitX, 20, 100]);
 
-        // Hole for screw:
+        // Hole for screws:
         ClampMountScrewHoles(); 
+
+        // Clearance for bump just forward of the trigger guard:
+        bumpDia = 37;
+        difference()
+        {
+            translate([0,-1.5,0]) rotate([-17,0,0]) tcy([0,bumpDia/2,-10], d=bumpDia, h=20);
+            doubleX() tcu([picatinnyMountFlatTopWidth/2, -200, -200], 400);
+        }
     }
 }
 
@@ -153,7 +161,7 @@ module clip(d=0)
 if(developmentRender)
 {
 	display() itemModule();
-    displayGhost() p22RailGhost();
+    // displayGhost() p22RailGhost();
 }
 else
 {
