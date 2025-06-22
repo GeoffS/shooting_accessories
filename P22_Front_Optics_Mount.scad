@@ -11,17 +11,17 @@ picatinnyMountRiserHeight = 2.47; //2.99 3.87
 echo(str("picatinnyMountAngleWidth = ", picatinnyMountAngleWidth));
 picatinnyMountRiserWidth = 15.4;
 
-p22PicatinnyRailLength = 25;
+p22PicatinnyRailLength = 28;
 
 p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
 p22SlideWidth = 24.4;
 p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
 clampX = 16;
-clampOD = 10;
+clampOD = 14;
 clampCZ = 1;
-clampSplitX = 0.5;
-clampOffsetY = -1;
+clampSplitX = 0.3;
+clampOffsetY = -5;
 clampCtrY = clampOD/2-clampCZ+clampOffsetY;
 clampTopY = clampCtrY + clampOD/2;
 clampBotY = clampCtrY - clampOD/2;
