@@ -42,58 +42,63 @@ echo(str("clampTopY = ", clampTopY));
 
 module itemModule()
 {
-	railClamp();
-}
-
-module railClamp()
-{
     difference()
     {
         union()
         {
+	        railClampExterior();
+        }
+
+        railClampInterior();
+    }
+}
+
+module railClampExterior()
+{
+    hull()
+    {
+        doubleX() 
+            translate([clampX-clampOD/2, clampCtrY, 0]) 
+                simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
+    }
+
+    
+    difference()
+    {
+        clampMountScrewsXform() 
+        {
             hull()
             {
-                doubleX() 
-                    translate([clampX-clampOD/2, clampCtrY, 0]) 
-                        simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
-            }
-
-            
-            difference()
-            {
-                clampMountScrewsXform() 
+                translate([0,0,-clampScrewExteriorX/2]) 
                 {
-                    hull()
-                    {
-                        translate([0,0,-clampScrewExteriorX/2]) 
-                        {
-                            simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=1);
-                            // bigD = clampScrewExteriorDia * 2.2;
-                            // translate([0,10,0]) simpleChamferedCylinderDoubleEnded(d=bigD, h=clampScrewExteriorX, cz=1);
-                        }
-                    }
+                    simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=1);
+                    // bigD = clampScrewExteriorDia * 2.2;
+                    // translate([0,10,0]) simpleChamferedCylinderDoubleEnded(d=bigD, h=clampScrewExteriorX, cz=1);
                 }
-
-                // Trim bottom of the screw exterior:
-                tcu([-200, 0, -200], 400);
             }
         }
 
-        p22RailInterior();
+        // Trim bottom of the screw exterior:
+        tcu([-200, 0, -200], 400);
+    }
+}
 
-        // Split clamp in half:
-        tcu([-clampSplitX/2, -15, -10], [clampSplitX, 20, 100]);
+module railClampInterior()
+{
+    p22RailInterior();
 
-        // Hole for screws:
-        ClampMountScrewHoles(); 
+    // Split clamp in half:
+    tcu([-clampSplitX/2, -15, -10], [clampSplitX, 20, 100]);
 
-        // Clearance for bump just forward of the trigger guard:
-        bumpDia = 37;
-        difference()
-        {
-            translate([0,-1.5,0]) rotate([-17,0,0]) tcy([0,bumpDia/2,-10], d=bumpDia, h=20);
-            doubleX() tcu([picatinnyMountFlatTopWidth/2, -200, -200], 400);
-        }
+    // Hole for screws:
+    ClampMountScrewHoles(); 
+
+    // Clearance for bump just forward of the trigger guard:
+    bumpDia = 37;
+    difference()
+    {
+        translate([0,-1.5,0]) rotate([-17,0,0]) tcy([0,bumpDia/2,-10], d=bumpDia, h=20);
+        doubleX() tcu([picatinnyMountFlatTopWidth/2, -200, -200], 400);
     }
 }
 
