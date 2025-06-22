@@ -97,7 +97,7 @@ module railClampInterior()
     bumpDia = 37;
     difference()
     {
-        translate([0,-1.5,0]) rotate([-17,0,0]) tcy([0,bumpDia/2,-10], d=bumpDia, h=20);
+        translate([0, -1.5, p22PicatinnyRailLength]) rotate([17,0,0]) tcy([0, bumpDia/2,-10], d=bumpDia, h=20);
         doubleX() tcu([picatinnyMountFlatTopWidth/2, -200, -200], 400);
     }
 }
