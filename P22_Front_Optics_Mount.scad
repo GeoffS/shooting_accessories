@@ -7,17 +7,19 @@ picatinnyMountFlatTopHeight = 5.45; // 6.50 55.1
 picatinnyMountAngleWidth = tan(45) * picatinnyMountFlatTopHeight/2;
 picatinnyMountFlatTopWidth = 16.0;
 picatinnyMountRiserHeight = 2.47; //2.99 3.87
+p22MountWidthAtTipOfAngles = picatinnyMountFlatTopWidth + 2*picatinnyMountAngleWidth;
+extraTipClearanceDia = 1.5;
 
 echo(str("picatinnyMountAngleWidth = ", picatinnyMountAngleWidth));
 picatinnyMountRiserWidth = 15.4;
 
 p22PicatinnyRailLength = 28.25;
+p22PicatinnyRailLengthExtension = 34.4;
 p22PicatinnyRailNotchDepth = 1.8;
 p22PicatinyRailFrontNotchZ = 6.0;
 p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
 
 p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
-// p22SlideWidth = 31.5; //24.4;
 p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
 clampScrewHoleDia = 4.4;
@@ -92,6 +94,12 @@ module railClampExterior()
         doubleX() 
             translate([riserX/2-clampOD/2, clampCtrY, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
+
+        extensionODAdj = 3.5;
+        extensionOD = clampOD - extensionODAdj;
+        doubleX() 
+            translate([riserX/2-clampOD/2, clampCtrY+extensionODAdj/2, 0]) 
+                simpleChamferedCylinderDoubleEnded(d=extensionOD, h=p22PicatinnyRailLengthExtension, cz=clampCZ);
     }
 
     
@@ -128,7 +136,8 @@ module railClampInterior()
     difference()
     {
         translate([0, -1.5, p22PicatinnyRailLength]) rotate([17,0,0]) tcy([0, bumpDia/2,-10], d=bumpDia, h=20);
-        doubleX() tcu([picatinnyMountFlatTopWidth/2, -200, -200], 400);
+        // MAGIC NUMBER: vvvvvvvvv
+        doubleX() tcu([15.5/2+0.45, -200, -200], 400);
     }
 }
 
@@ -157,7 +166,6 @@ module p22RailInterior()
 {
     p22RailLength = 100;
     p2RailOffsetZ = -10;
-    p22MountWidthAtTipOfAngles = picatinnyMountFlatTopWidth + 2*picatinnyMountAngleWidth;
 
     // Rail:
     difference()
@@ -165,7 +173,10 @@ module p22RailInterior()
         // union()
         hull()
         {
-            doubleX() translate([p22MountWidthAtTipOfAngles/2+0.2, picatinnyMountFlatTopHeight/2, p2RailOffsetZ]) rotate([0,0,-45-90]) tcu([-0, -10, 0], [10, 10, p22RailLength]);
+            doubleX() 
+                translate([p22MountWidthAtTipOfAngles/2+0.2, picatinnyMountFlatTopHeight/2, p2RailOffsetZ]) 
+                    rotate([0,0,-45-90]) 
+                        tcu([-0, -10, 0], [10, 10, p22RailLength]);
         }
 
         echo(str("picatinnyMountFlatTopHeight = ", picatinnyMountFlatTopHeight));
@@ -174,7 +185,6 @@ module p22RailInterior()
     }
 
     // Extra space at the point of the rails:
-    extraTipClearanceDia = 1.5;
     doubleX() tcy([p22MountWidthAtTipOfAngles/2-extraTipClearanceDia/5, picatinnyMountFlatTopHeight/2, p2RailOffsetZ], d=extraTipClearanceDia, h=p22RailLength);
 
     // Rail base:
@@ -189,6 +199,7 @@ module p22RailInterior()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
+    tcu([0, -200, -200], 400);
     // tcu([-200, -200, -400+p22PicatinyRailFrontNotchZ+d], 400);
 }
 
