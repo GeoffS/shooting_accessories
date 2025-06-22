@@ -11,29 +11,32 @@ picatinnyMountRiserHeight = 2.47; //2.99 3.87
 echo(str("picatinnyMountAngleWidth = ", picatinnyMountAngleWidth));
 picatinnyMountRiserWidth = 15.4;
 
-p22PicatinnyRailLength = 28;
+p22PicatinnyRailLength = 28.25;
+p22PicatinnyRailNotchDepth = 1.8;
+p22PicatinyRailFrontNotchZ = 6.0;
+p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
 
 p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
 p22SlideWidth = 24.4;
 p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
-clampX = 16;
-clampOD = 14;
+clampScrewHoleDia = 4.4;
+clampScrewHeadDia = 7.3;
+clampScrewHeadZ = 4;
+clampScrewNutDia = 8.0;
+clampScrewNutZ = 3.0;
+clampScrewZ = 30;
+clampScrewExteriorDia = clampScrewNutDia + 3.8; //clampScrewNutDia*1.4 + 3;
+clampScrewExteriorX = (clampScrewZ-0.0) + clampScrewNutZ;
+
 clampCZ = 1;
+clampX = clampScrewExteriorX/2 + 1*clampCZ;
+clampOD = 14;
 clampSplitX = 0.3;
 clampOffsetY = -5;
 clampCtrY = clampOD/2-clampCZ+clampOffsetY;
 clampTopY = clampCtrY + clampOD/2;
 clampBotY = clampCtrY - clampOD/2;
-
-clampScrewHoleDia = 3.55;
-clampScrewHeadDia = 6.1;
-clampScrewHeadZ = 3;
-clampScrewNutXY = 5.7;
-clampScrewNutZ = 2.5;
-clampScrewZ = 20;
-clampScrewExteriorDia = clampScrewNutXY*1.4 + 3;
-clampScrewExteriorX = (clampScrewZ-0.5) + clampScrewNutZ;
 
 echo(str("clampTopY = ", clampTopY));
 
@@ -56,18 +59,23 @@ module railClamp()
             }
 
             
-            clampMountScrewsXform() hull()
+            difference()
             {
-                translate([0,0,-clampScrewExteriorX/2]) 
+                clampMountScrewsXform() 
                 {
-                    simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=1);
-                    bigD = clampScrewExteriorDia * 2.2;
-                    translate([0,10,0]) difference()
+                    hull()
                     {
-                        simpleChamferedCylinderDoubleEnded(d=bigD, h=clampScrewExteriorX, cz=1);
-                        tcu([-200, -1, -200], 400);
+                        translate([0,0,-clampScrewExteriorX/2]) 
+                        {
+                            simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=1);
+                            // bigD = clampScrewExteriorDia * 2.2;
+                            // translate([0,10,0]) simpleChamferedCylinderDoubleEnded(d=bigD, h=clampScrewExteriorX, cz=1);
+                        }
                     }
                 }
+
+                // Trim bottom of the screw exterior:
+                tcu([-200, 0, -200], 400);
             }
         }
 
@@ -76,14 +84,23 @@ module railClamp()
         // Split clamp in half:
         tcu([-clampSplitX/2, -15, -10], [clampSplitX, 20, 100]);
 
-        // Hole for screw:
+        // Hole for screws:
         ClampMountScrewHoles(); 
+
+        // Clearance for bump just forward of the trigger guard:
+        bumpDia = 37;
+        difference()
+        {
+            translate([0,-1.5,0]) rotate([-17,0,0]) tcy([0,bumpDia/2,-10], d=bumpDia, h=20);
+            doubleX() tcu([picatinnyMountFlatTopWidth/2, -200, -200], 400);
+        }
     }
 }
 
 module clampMountScrewsXform()
 {
-    translate([0, clampBotY-clampScrewHoleDia/2+3, p22PicatinnyRailLength/2]) rotate([0, 90, 0]) children();
+    translate([0, -clampScrewHoleDia/2+p22PicatinnyRailNotchDepth-0.3, p22PicatinyRailFrontNotchZ]) rotate([0, 90, 0]) children();
+    translate([0, -clampScrewHoleDia/2+p22PicatinnyRailNotchDepth-0.3, p22PicatinyRailBackNotchZ]) rotate([0, 90, 0]) children();
 }
 
 module ClampMountScrewHoles()
@@ -95,7 +112,10 @@ module ClampMountScrewHoles()
         // Head recess:
         tcy([0,0,clampScrewExteriorX/2-clampScrewHeadZ], d=clampScrewHeadDia, h=200);
         // Nut recess:
-        translate([0,0,-clampScrewExteriorX/2+clampScrewNutZ]) rotate([0,0,45]) tcu([-clampScrewNutXY/2, -clampScrewNutXY/2, -100], [clampScrewNutXY, clampScrewNutXY, 100]);
+        translate([0,0,-clampScrewExteriorX/2+clampScrewNutZ]) 
+            rotate([0,0,0]) 
+                //tcu([-clampScrewNutDia/2, -clampScrewNutDia/2, -100], [clampScrewNutDia, clampScrewNutDia, 100]);
+                tcy([0, 0, -100], d=clampScrewNutDia, h=100, $fn=6);
     }
 }
 
@@ -114,6 +134,7 @@ module p22RailInterior()
             doubleX() translate([p22MountWidthAtTipOfAngles/2+0.2, picatinnyMountFlatTopHeight/2, p2RailOffsetZ]) rotate([0,0,-45-90]) tcu([-0, -10, 0], [10, 10, p22RailLength]);
         }
 
+        echo(str("picatinnyMountFlatTopHeight = ", picatinnyMountFlatTopHeight));
         tcu([-200, picatinnyMountFlatTopHeight, -200], 400);
         tcu([-200, -400, -200], 400);
     }
@@ -134,13 +155,13 @@ module p22RailInterior()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([-200, -200, -400+p22PicatinnyRailLength/2+d], 400);
+    // tcu([-200, -200, -400+p22PicatinyRailFrontNotchZ+d], 400);
 }
 
 if(developmentRender)
 {
 	display() itemModule();
-    displayGhost() p22RailGhost();
+    // displayGhost() p22RailGhost();
 }
 else
 {
