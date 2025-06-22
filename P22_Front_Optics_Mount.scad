@@ -17,13 +17,13 @@ p22PicatinyRailFrontNotchZ = 6.0;
 p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
 
 p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
-p22SlideWidth = 24.4;
+// p22SlideWidth = 31.5; //24.4;
 p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
 clampScrewHoleDia = 4.4;
 clampScrewHeadDia = 7.3;
 clampScrewHeadZ = 4;
-clampScrewNutDia = 8.0;
+clampScrewNutDia = 8.05;
 clampScrewNutZ = 3.0;
 clampScrewZ = 30;
 clampScrewExteriorDia = clampScrewNutDia + 3.8; //clampScrewNutDia*1.4 + 3;
@@ -55,7 +55,7 @@ module itemModule()
 }
 
 riserWallThickness = 6;
-riserWallInsideX = 27;
+riserWallInsideX = 31.5; //27;
 riserWallBottomY = 0;
 // MAGIC NUMBER!!! ----------------------vvvv
 riserWallBottomCtrY = riserWallBottomY + 0.53;
