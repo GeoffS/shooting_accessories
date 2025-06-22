@@ -31,9 +31,9 @@ clampScrewHeadDia = 6.1;
 clampScrewHeadZ = 3;
 clampScrewNutXY = 5.7;
 clampScrewNutZ = 2.5;
-clampScrewZ = 16;
+clampScrewZ = 20;
 clampScrewExteriorDia = clampScrewNutXY*1.4 + 3;
-clampScrewExteriorX = (clampScrewZ-0.5) + clampScrewHeadZ + clampScrewNutZ;
+clampScrewExteriorX = (clampScrewZ-0.5) + clampScrewNutZ;
 
 echo(str("clampTopY = ", clampTopY));
 
@@ -83,7 +83,7 @@ module railClamp()
 
 module clampMountScrewsXform()
 {
-    translate([0, clampBotY-clampScrewHoleDia/2, p22PicatinnyRailLength/2]) rotate([0, 90, 0]) children();
+    translate([0, clampBotY-clampScrewHoleDia/2+3, p22PicatinnyRailLength/2]) rotate([0, 90, 0]) children();
 }
 
 module ClampMountScrewHoles()
@@ -134,6 +134,7 @@ module p22RailInterior()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
+    tcu([-200, -200, -400+p22PicatinnyRailLength/2+d], 400);
 }
 
 if(developmentRender)
