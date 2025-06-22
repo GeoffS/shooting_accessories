@@ -167,10 +167,29 @@ if(developmentRender)
 {
 	display() itemModule();
     // displayGhost() p22RailGhost();
+    displayGhost() gunGhost();
 }
 else
 {
 	itemModule();
+}
+
+module gunGhost()
+{
+    x = 24.5;
+    y = 45.1;
+    z = 100;
+    difference()
+    {
+        union()
+        {
+            // Frame & slide:
+            tcu([-x/2, 0, 0], [x, y, z]);
+            tcu([-1.5, 0, 0], [3, 51.7, 15]);
+        }
+        // Trim off the rail part below the frame/slide:
+        tcu([-200, -400+11.2, -1], 400);
+    }
 }
 
 module p22RailGhost()
