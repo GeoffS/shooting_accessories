@@ -50,11 +50,27 @@ module itemModule()
         {
 	        railClampExterior();
             riserExterior();
+            mLokBase();
         }
 
         railClampInterior();
+
+        mLokRecessAndHoles();
     }
 }
+
+topRailLength = 61.5;
+topRailHolesCtrs = 40;
+topRailNutZ = 4;
+topRailNutDia = 9.2;
+topRailSlotWidth = 7;
+topRailSlotDepth = 1.5;
+topRailSlotEndDia = 12;
+topRailHoleDia = 5.4;
+// topRailHoleCtrFromEnd = 10.4;
+topRailBaseZ = 3;
+topRailBaseEndDia = 10.4*2;
+topRailBaseWidth = 15.4;
 
 riserWallThickness = 6;
 riserWallInsideX = 31.5; //27;
@@ -65,9 +81,46 @@ riserWallTopY = 52;
 riserWallTopCtrY = riserWallTopY+riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
 riserForwardZ = p22PicatinnyRailLength;
-riserBackZ = 55.5; // Back to the ejection port.
+riserBackZ = topRailLength; //55.5; // Back to the ejection port.
 
 echo(str("riserX = ", riserX));
+
+module mLokRecessAndHoles()
+{
+    // Holes:
+    translate([0, riserWallTopY, riserBackZ/2])
+    {
+        // Holes:
+        doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([90,0,0]) 
+        {
+            // Hole:
+            tcy([0, 0, -15], d=topRailHoleDia, h=20);
+            // Nut Recess:
+            tcy([0, 0, -(topRailNutZ+1)], d=topRailNutDia, h=20, $fn=6);
+        }
+
+        // Slot:
+        hull() doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([90,0,0]) 
+        {
+            difference()
+            {
+                tcy([0, 0, -20-riserWallThickness-topRailBaseZ+topRailSlotDepth], d=topRailSlotEndDia, h=20);
+            }
+        }
+    }
+}
+
+module mLokBase()
+{
+    translate([0, riserWallTopY, riserBackZ/2]) hull() doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([-90,0,0]) 
+    {
+        difference()
+        {
+            tcy([0, 0, 2], d=topRailBaseEndDia, h=topRailBaseZ+riserWallThickness-2);
+            doubleX() tcu([topRailBaseWidth/2, -200, -200], 400);
+        }
+    }
+}
 
 module riserExterior()
 {
