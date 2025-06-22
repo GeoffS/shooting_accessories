@@ -59,8 +59,8 @@ riserWallInsideX = 27;
 riserWallBottomY = 0;
 // MAGIC NUMBER!!! ----------------------vvvv
 riserWallBottomCtrY = riserWallBottomY + 0.53;
-riserWallTopY = 47;
-riserWallTopCtrY = riserWallTopY-riserWallThickness/2;
+riserWallTopY = 52;
+riserWallTopCtrY = riserWallTopY+riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
 riserZ = p22PicatinnyRailLength;
 
@@ -72,6 +72,11 @@ module riserExterior()
     {
         translate([0, riserWallBottomCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserZ, cz=clampCZ);
         translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserZ, cz=clampCZ);
+    }
+    hull() translate([0, riserWallTopCtrY, 0])
+    {
+        doubleX() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) 
+            simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserZ, cz=clampCZ);
     }
 }
 
