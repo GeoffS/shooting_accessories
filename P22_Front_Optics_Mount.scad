@@ -14,13 +14,13 @@ echo(str("picatinnyMountAngleWidth = ", picatinnyMountAngleWidth));
 picatinnyMountRiserWidth = 15.4;
 
 p22PicatinnyRailLength = 28.25;
-p22PicatinnyRailLengthExtension = 34.4;
+p22PicatinnyRailLengthExtension = 34.0;
 p22PicatinnyRailNotchDepth = 1.8;
 p22PicatinyRailFrontNotchZ = 6.0;
 p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
 
-p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
-p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
+// p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
+// p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
 clampScrewHoleDia = 4.4;
 clampScrewHeadDia = 7.3;
@@ -145,7 +145,8 @@ module riserExterior()
         // Back riser sides:
         doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0])
         {
-            translate([0, riserWallBottomCtrY+1.75, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=8.15, cz=clampCZ);
+            // MAGIC NUMBERS:  ----------------vvvv ----------------------------------------------------------------vvvv
+            translate([0, riserWallBottomCtrY+1.75, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=7.75, cz=clampCZ);
             translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=z, cz=clampCZ);
         }
 
