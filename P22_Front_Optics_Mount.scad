@@ -47,10 +47,37 @@ module itemModule()
         union()
         {
 	        railClampExterior();
+            riserExterior();
         }
 
         railClampInterior();
     }
+}
+
+riserWallThickness = 6;
+riserWallInsideX = 27;
+riserWallBottomY = 0;
+// MAGIC NUMBER!!! ----------------------vvvv
+riserWallBottomCtrY = riserWallBottomY + 0.53;
+riserWallTopY = 47;
+riserWallTopCtrY = riserWallTopY-riserWallThickness/2;
+riserX = riserWallInsideX + 2*riserWallThickness;
+riserZ = p22PicatinnyRailLength;
+
+echo(str("riserX = ", riserX));
+
+module riserExterior()
+{
+    doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0])
+    {
+        translate([0, riserWallBottomCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserZ, cz=clampCZ);
+        translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserZ, cz=clampCZ);
+    }
+}
+
+module riserInterior()
+{
+    
 }
 
 module railClampExterior()
@@ -58,7 +85,7 @@ module railClampExterior()
     hull()
     {
         doubleX() 
-            translate([clampX-clampOD/2, clampCtrY, 0]) 
+            translate([riserX/2-clampOD/2, clampCtrY, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
     }
 
