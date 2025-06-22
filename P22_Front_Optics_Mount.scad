@@ -64,21 +64,25 @@ riserWallBottomCtrY = riserWallBottomY + 1; //0.53;
 riserWallTopY = 52;
 riserWallTopCtrY = riserWallTopY+riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
-riserZ = p22PicatinnyRailLength;
+riserForwardZ = p22PicatinnyRailLength;
+riserBackZ = 55.5; // Back to the ejection port.
 
 echo(str("riserX = ", riserX));
 
 module riserExterior()
 {
+    // Forward riser sides:
     doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0])
     {
-        translate([0, riserWallBottomCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserZ, cz=clampCZ);
-        translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserZ, cz=clampCZ);
+        translate([0, riserWallBottomCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserForwardZ, cz=clampCZ);
+        translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserForwardZ, cz=clampCZ);
     }
+
+    // Forward riser top:
     hull() translate([0, riserWallTopCtrY, 0])
     {
         doubleX() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) 
-            simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserZ, cz=clampCZ);
+            simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=riserForwardZ, cz=clampCZ);
     }
 }
 
