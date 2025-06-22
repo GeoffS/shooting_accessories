@@ -23,11 +23,11 @@ p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 clampScrewHoleDia = 4.4;
 clampScrewHeadDia = 7.3;
 clampScrewHeadZ = 4;
-clampScrewNutDia = 7.9;
+clampScrewNutDia = 8.0;
 clampScrewNutZ = 3.0;
 clampScrewZ = 30;
-clampScrewExteriorDia = clampScrewNutDia + 3.9; //clampScrewNutDia*1.4 + 3;
-clampScrewExteriorX = (clampScrewZ-0.5) + clampScrewNutZ;
+clampScrewExteriorDia = clampScrewNutDia + 3.8; //clampScrewNutDia*1.4 + 3;
+clampScrewExteriorX = (clampScrewZ-0.0) + clampScrewNutZ;
 
 clampCZ = 1;
 clampX = clampScrewExteriorX/2 + 1*clampCZ;
