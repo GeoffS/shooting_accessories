@@ -72,8 +72,6 @@ module railClampExterior()
                 translate([0,0,-clampScrewExteriorX/2]) 
                 {
                     simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=1);
-                    // bigD = clampScrewExteriorDia * 2.2;
-                    // translate([0,10,0]) simpleChamferedCylinderDoubleEnded(d=bigD, h=clampScrewExteriorX, cz=1);
                 }
             }
         }
@@ -119,7 +117,6 @@ module ClampMountScrewHoles()
         // Nut recess:
         translate([0,0,-clampScrewExteriorX/2+clampScrewNutZ]) 
             rotate([0,0,0]) 
-                //tcu([-clampScrewNutDia/2, -clampScrewNutDia/2, -100], [clampScrewNutDia, clampScrewNutDia, 100]);
                 tcy([0, 0, -100], d=clampScrewNutDia, h=100, $fn=6);
     }
 }
