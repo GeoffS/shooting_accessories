@@ -60,7 +60,7 @@ riserWallThickness = 6;
 riserWallInsideX = 31.5; //27;
 riserWallBottomY = 0;
 // MAGIC NUMBER!!! ----------------------vvvv
-riserWallBottomCtrY = riserWallBottomY + 0.53;
+riserWallBottomCtrY = riserWallBottomY + 1; //0.53;
 riserWallTopY = 52;
 riserWallTopCtrY = riserWallTopY+riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
@@ -91,14 +91,16 @@ module railClampExterior()
 {
     hull()
     {
+        // Main clamp section:
         doubleX() 
             translate([riserX/2-clampOD/2, clampCtrY, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
 
+        // Clamp extension back to end of rail:
         extensionODAdj = 3.5;
         extensionOD = clampOD - extensionODAdj;
         doubleX() 
-            translate([riserX/2-clampOD/2, clampCtrY+extensionODAdj/2, 0]) 
+            translate([riserX/2-clampOD/2+extensionODAdj/2, clampCtrY+extensionODAdj/2, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=extensionOD, h=p22PicatinnyRailLengthExtension, cz=clampCZ);
     }
 
@@ -199,7 +201,7 @@ module p22RailInterior()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([0, -200, -200], 400);
+    // tcu([0, -200, -200], 400);
     // tcu([-200, -200, -400+p22PicatinyRailFrontNotchZ+d], 400);
 }
 
