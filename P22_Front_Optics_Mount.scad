@@ -97,8 +97,10 @@ module railClampExterior()
                 simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
 
         // Clamp extension back to end of rail:
-        extensionODAdj = 3.5;
+        extensionODAdj = 3.5; //clampOD - riserWallThickness; //3.5;
         extensionOD = clampOD - extensionODAdj;
+        echo(str("extensionODAdj = ", extensionODAdj));
+        echo(str("extensionOD = ", extensionOD));
         doubleX() 
             translate([riserX/2-clampOD/2+extensionODAdj/2, clampCtrY+extensionODAdj/2, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=extensionOD, h=p22PicatinnyRailLengthExtension, cz=clampCZ);
