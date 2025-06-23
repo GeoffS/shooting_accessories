@@ -65,7 +65,7 @@ topRailNutZ = 4;
 topRailNutDia = 9.2;
 topRailSlotWidth = 7;
 topRailSlotDepth = 1.5;
-topRailSlotEndDia = 12;
+topRailSlotEndDia = 12.4;
 topRailHoleDia = 5.4;
 // topRailHoleCtrFromEnd = 10.4;
 topRailBaseZ = 3;
@@ -106,6 +106,7 @@ module mLokRecessAndHoles()
             difference()
             {
                 tcy([0, 0, -20-riserWallThickness-topRailBaseZ+topRailSlotDepth], d=topRailSlotEndDia, h=20);
+                doubleX() tcu([topRailSlotWidth/2, -200, -200], 400);
             }
         }
     }
