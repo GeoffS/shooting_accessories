@@ -14,7 +14,7 @@ echo(str("picatinnyMountAngleWidth = ", picatinnyMountAngleWidth));
 picatinnyMountRiserWidth = 15.4;
 
 p22PicatinnyRailLength = 28.25;
-p22PicatinnyRailLengthExtension = 34.0;
+p22PicatinnyRailLengthExtension = 33.0;
 p22PicatinnyRailNotchDepth = 1.8;
 p22PicatinyRailFrontNotchZ = 6.0;
 p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
@@ -146,7 +146,7 @@ module riserExterior()
         doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0])
         {
             // MAGIC NUMBERS:  ----------------vvvv ----------------------------------------------------------------vvvv
-            translate([0, riserWallBottomCtrY+1.75, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=7.75, cz=clampCZ);
+            #translate([0, riserWallBottomCtrY+1.75, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=6.75, cz=clampCZ);
             translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=z, cz=clampCZ);
         }
 
