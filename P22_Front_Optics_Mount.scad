@@ -23,7 +23,7 @@ p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
 // p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
 clampScrewHoleDia = 4.4;
-clampScrewHeadDia = 7.3;
+clampScrewHeadDia = 7.4;
 clampScrewHeadZ = 4;
 clampScrewNutDia = 8.05;
 clampScrewNutZ = 3.0;
@@ -69,15 +69,16 @@ topRailSlotEndDia = 12;
 topRailHoleDia = 5.4;
 // topRailHoleCtrFromEnd = 10.4;
 topRailBaseZ = 3;
-topRailBaseEndDia = 10.4*2;
+topRailBaseEndDia = 24; //10.4*2;
+topRailBaseEndCtrOffset = 0.9;
 topRailBaseWidth = 15.4;
 
 riserWallThickness = 6;
-riserWallInsideX = 31.5; //27;
+riserWallInsideX = 27; //31.5; //27;
 riserWallBottomY = 0;
 // MAGIC NUMBER!!! ----------------------vvvv
 riserWallBottomCtrY = riserWallBottomY + 1; //0.53;
-riserWallTopY = 52;
+riserWallTopY = 43;
 riserWallTopCtrY = riserWallTopY+riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
 riserForwardZ = p22PicatinnyRailLength;
@@ -112,13 +113,20 @@ module mLokRecessAndHoles()
 
 module mLokBase()
 {
-    translate([0, riserWallTopY, riserBackZ/2]) hull() doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([-90,0,0]) 
+    difference()
     {
-        difference()
+        translate([0, riserWallTopY, riserBackZ/2]) hull() doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([-90,0,0]) 
         {
-            tcy([0, 0, 2], d=topRailBaseEndDia, h=topRailBaseZ+riserWallThickness-2);
-            doubleX() tcu([topRailBaseWidth/2, -200, -200], 400);
+            difference()
+            {
+                tcy([0, topRailBaseEndCtrOffset, 2], d=topRailBaseEndDia, h=topRailBaseZ+riserWallThickness-2);
+                // Trim the sides:
+                doubleX() tcu([topRailBaseWidth/2, -200, -200], 400);
+            }
         }
+        // Trim the ends:
+        tcu([-200, -200, -400], 400);
+        tcu([-200, -200, riserBackZ], 400);
     }
 }
 
@@ -290,7 +298,7 @@ if(developmentRender)
 	display() itemModule();
 
     // displayGhost() p22RailGhost();
-    // displayGhost() gunGhost();
+    displayGhost() gunGhost();
 }
 else
 {
@@ -300,15 +308,19 @@ else
 module gunGhost()
 {
     x = 24.5;
-    y = 45.1;
     z = 100;
     difference()
     {
         union()
         {
-            // Frame & slide:
-            tcu([-x/2, 0, 0], [x, y, z]);
-            tcu([-1.5, 0, 0], [3, 51.7, 15]);
+            // // Frame & slide with clearance to disassemble:
+            // 
+            // tcu([-x/2, 0, 0], [x, 45.1, z]);
+            // tcu([-1.5, 0, 0], [3, 51.7, 15]);
+
+            // Frame & slide without clearance to disassemble:
+            tcu([-x/2, 0, 0], [x, 36, z]);
+            tcu([-1.5, 0, 0], [3, 41.5, 15]);
         }
         // Trim off the rail part below the frame/slide:
         tcu([-200, -400+11.2, -1], 400);
