@@ -167,6 +167,22 @@ module riserExterior()
                 simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=z, cz=clampCZ);
         }
     }
+
+    // Frame supports:
+    difference()
+    {
+        topY = 13.8;
+        tcu([-riserWallInsideX/2, 0, clampCZ], [riserWallInsideX, topY, 32.0]);
+        // Trim inside:
+        insideX = 24.4;
+        tcu([-insideX/2, 0, -10], [insideX, 20, 200]);
+        // Chamfer top:
+        cz = 0.6;
+        doubleX() 
+            translate([insideX/2+1+cz, topY+1, 0]) 
+                rotate([0,0,-45-90]) 
+                    tcu([-3, -10, -10], [10, 10, 200]);
+    }
 }
 
 module riserInterior()
