@@ -57,6 +57,8 @@ module itemModule()
 
         mLokRecessAndHoles();
     }
+
+    //mLokInsert();
 }
 
 topRailLength = 61.5;
@@ -112,6 +114,22 @@ module mLokRecessAndHoles()
     }
 }
 
+module mLokInsert()
+{
+    // Holes:
+    translate([0, riserWallTopY, riserBackZ/2])
+    {
+        // Holes:
+        doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([-90,0,0]) difference()
+        {
+            // Insert:
+            tcy([0, 0, 0], d=9.8, h=20);
+            // Hole:
+            tcy([0, 0, -15], d=topRailHoleDia, h=20);
+        }
+    }
+}
+
 module mLokBase()
 {
     difference()
@@ -155,7 +173,7 @@ module riserExterior()
         doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0])
         {
             // MAGIC NUMBERS:  ----------------vvvv ----------------------------------------------------------------vvvv
-            #translate([0, riserWallBottomCtrY+1.75, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=6.75, cz=clampCZ);
+            translate([0, riserWallBottomCtrY+1.75, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=6.75, cz=clampCZ);
             translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=z, cz=clampCZ);
         }
 
@@ -172,7 +190,8 @@ module riserExterior()
     difference()
     {
         topY = 13.8;
-        tcu([-riserWallInsideX/2, 0, clampCZ], [riserWallInsideX, topY, 32.0]);
+        x = riserWallInsideX + 2*clampCZ;
+        tcu([-x/2, 0, 0], [x, topY, 32.0]);
         // Trim inside:
         insideX = 24.4;
         tcu([-insideX/2, 0, -10], [insideX, 20, 200]);
@@ -306,7 +325,7 @@ module p22RailInterior()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([0, -200, -200], 400);
+    tcu([0, -200, -200], 400);
     // tcu([-200, -200, -400+p22PicatinyRailFrontNotchZ+d], 400);
 }
 
