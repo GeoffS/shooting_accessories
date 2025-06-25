@@ -56,20 +56,6 @@ module itemModule()
     }
 }
 
-topRailLength = 61.5;
-topRailHolesCtrs = 40;
-topRailNutZ = 4;
-topRailNutDia = 9.2;
-topRailSlotWidth = 7;
-topRailSlotDepth = 1.5;
-topRailSlotEndDia = 12.4;
-topRailHoleDia = 5.4;
-// topRailHoleCtrFromEnd = 10.4;
-topRailBaseZ = 3;
-topRailBaseEndDia = 24; //10.4*2;
-topRailBaseEndCtrOffset = 0.9;
-topRailBaseWidth = 15.4;
-
 riserWallThickness = 6;
 riserWallInsideX = 27; //31.5; //27;
 riserWallBottomY = 0;
@@ -79,7 +65,7 @@ riserWallTopY = 43;
 riserWallTopCtrY = riserWallTopY+riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
 riserForwardZ = p22PicatinnyRailLength;
-riserBackZ = topRailLength; //55.5; // Back to the ejection port.
+riserBackZ = 55.5; // Back to the ejection port.
 
 echo(str("riserX = ", riserX));
 
