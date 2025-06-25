@@ -69,6 +69,9 @@ riserBackZ = 55.5; // Back to the ejection port.
 
 echo(str("riserX = ", riserX));
 
+backRiserSidesMagicNumber1 = 6.75;
+backRiserSidesMagicNumber2 = riserBackZ - riserForwardZ + 2*clampCZ;
+
 module riserExterior()
 {
     // Forward riser sides:
@@ -87,22 +90,20 @@ module riserExterior()
 
     translate([0,0,riserForwardZ-2*clampCZ])
     {
-        z = riserBackZ - riserForwardZ + 2*clampCZ;
-
         // Back riser sides:
-        doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0])
+        doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) backRiserXform()
         {
-            // MAGIC NUMBERS:  ----------------vvvv ----------------------------------------------------------------vvvv
-            translate([0, riserWallBottomCtrY+1.75, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=6.75, cz=clampCZ);
-            translate([0,    riserWallTopCtrY, 0]) simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=z, cz=clampCZ);
+            // MAGIC NUMBERS:  ----------------------------------------vvvv
+            simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber1, cz=clampCZ);
+            simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber2, cz=clampCZ);
         }
 
         // Back riser top:
         hull() translate([0, riserWallTopCtrY, 0])
         {
-            
-            doubleX() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) 
-                simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=z, cz=clampCZ);
+            doubleX() 
+                translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) 
+                    simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber2, cz=clampCZ);
         }
     }
 
@@ -110,11 +111,26 @@ module riserExterior()
     difference()
     {
         topY = 13.8;
-        x = riserWallInsideX + 2*clampCZ;
-        tcu([-x/2, 0, 0], [x, topY, 32.0]);
+        x = riserX - riserWallThickness; //riserWallInsideX + 2*clampCZ;
+
+        intersection() 
+        {
+            // Starting block:
+            tcu([-x/2, 0, 0], [x, topY, 50]);
+
+            // Trim rear angle:
+            z0 = riserForwardZ - 2*clampCZ; // + 1.04;
+            hull() backRiserXform()
+            {
+                tcu([-50,0,0], [100, 1, z0+backRiserSidesMagicNumber1]);
+                tcu([-50,0,0], [100, 1, z0+backRiserSidesMagicNumber2]);
+            }
+        }
+
         // Trim inside:
         insideX = 24.4;
         tcu([-insideX/2, 0, -10], [insideX, 20, 200]);
+
         // Chamfer top:
         cz = 0.6;
         doubleX() 
@@ -127,6 +143,13 @@ module riserExterior()
 module riserInterior()
 {
     
+}
+
+module backRiserXform()
+{
+    // MAGIC NUMBER:  ----------------vvvv
+    translate([0, riserWallBottomCtrY+1.75, 0]) children(0);
+    translate([0,    riserWallTopCtrY, 0]) children(1);
 }
 
 module railClampExterior()
@@ -254,7 +277,7 @@ if(developmentRender)
 	display() itemModule();
 
     // displayGhost() p22RailGhost();
-    displayGhost() gunGhost();
+    // displayGhost() gunGhost();
 }
 else
 {
