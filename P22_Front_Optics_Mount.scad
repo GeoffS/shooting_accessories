@@ -1,6 +1,12 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
+m4ClearanceDia = 4.4;
+m4HeadClearanceDia = 7.5;
+m4SocketHeadZ = 4;
+m4NutDia = 8.05;
+m4NutZ = 3.0;
+
 picatinnyMountWidth = 21.0;
 picatinnyMountFlatTopHeight = 5.45; // 6.50 55.1
 // picatinnyMountAngleWidth = 2.96; // 2.81 2.40
@@ -22,11 +28,11 @@ p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
 // p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
 // p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
-clampScrewHoleDia = 4.4;
-clampScrewHeadDia = 7.4;
-clampScrewHeadZ = 4;
-clampScrewNutDia = 8.05;
-clampScrewNutZ = 3.0;
+clampScrewHoleDia = m4ClearanceDia;
+clampScrewHeadDia = m4HeadClearanceDia;
+clampScrewHeadZ = m4SocketHeadZ;
+clampScrewNutDia = m4NutDia;
+clampScrewNutZ = m4NutZ;
 clampScrewZ = 30;
 clampScrewExteriorDia = clampScrewNutDia + 3.8; //clampScrewNutDia*1.4 + 3;
 clampScrewExteriorX = (clampScrewZ-0.0) + clampScrewNutZ;
@@ -53,6 +59,7 @@ module itemModule()
         }
 
         railClampInterior();
+        rmrMountHoles();
     }
 }
 
@@ -150,6 +157,24 @@ module backRiserXform()
     // MAGIC NUMBER:  ----------------vvvv
     translate([0, riserWallBottomCtrY+1.75, 0]) children(0);
     translate([0,    riserWallTopCtrY, 0]) children(1);
+}
+
+rmrHoleCtrsX = 18.8;
+rmrHoleCtrsZ = 19.0; // From rear edge
+rmrHolesDia = m4ClearanceDia;
+rmrNutDia = m4NutDia;
+rmrNutZ = m4NutZ;
+rmrZ = 45.3;
+
+rmrOffsetZ = riserBackZ - clampCZ - rmrHolesDia/2 - rmrHoleCtrsZ;
+
+module rmrMountHoles()
+{
+    doubleX() translate([rmrHoleCtrsX/2, riserWallTopY, rmrOffsetZ]) rotate([-90,0,0])
+    {
+        tcy([0,0,-7], d=rmrHolesDia, h=20);
+        rotate([0,0,30]) tcy([0,0,-10+rmrNutZ+0.8], d=rmrNutDia, h=10, $fn=6);
+    }
 }
 
 module railClampExterior()
@@ -268,8 +293,9 @@ module p22RailInterior()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([0, -200, -200], 400);
+    // tcu([0, -200, -200], 400);
     // tcu([-200, -200, -400+p22PicatinyRailFrontNotchZ+d], 400);
+    // tcu([rmrHoleCtrsX/2-d, -200, -200], 400);
 }
 
 if(developmentRender)
