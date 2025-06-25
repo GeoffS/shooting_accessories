@@ -50,15 +50,10 @@ module itemModule()
         {
 	        railClampExterior();
             riserExterior();
-            mLokBase();
         }
 
         railClampInterior();
-
-        mLokRecessAndHoles();
     }
-
-    //mLokInsert();
 }
 
 topRailLength = 61.5;
@@ -87,67 +82,6 @@ riserForwardZ = p22PicatinnyRailLength;
 riserBackZ = topRailLength; //55.5; // Back to the ejection port.
 
 echo(str("riserX = ", riserX));
-
-module mLokRecessAndHoles()
-{
-    // Holes:
-    translate([0, riserWallTopY, riserBackZ/2])
-    {
-        // Holes:
-        doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([90,0,0]) 
-        {
-            // Hole:
-            tcy([0, 0, -15], d=topRailHoleDia, h=20);
-            // Nut Recess:
-            tcy([0, 0, -(topRailNutZ+1)], d=topRailNutDia, h=20, $fn=6);
-        }
-
-        // Slot:
-        hull() doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([90,0,0]) 
-        {
-            difference()
-            {
-                tcy([0, 0, -20-riserWallThickness-topRailBaseZ+topRailSlotDepth], d=topRailSlotEndDia, h=20);
-                doubleX() tcu([topRailSlotWidth/2, -200, -200], 400);
-            }
-        }
-    }
-}
-
-module mLokInsert()
-{
-    // Holes:
-    translate([0, riserWallTopY, riserBackZ/2])
-    {
-        // Holes:
-        doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([-90,0,0]) difference()
-        {
-            // Insert:
-            tcy([0, 0, 0], d=9.8, h=20);
-            // Hole:
-            tcy([0, 0, -15], d=topRailHoleDia, h=20);
-        }
-    }
-}
-
-module mLokBase()
-{
-    difference()
-    {
-        translate([0, riserWallTopY, riserBackZ/2]) hull() doubleZ() translate([0, 0, topRailHolesCtrs/2]) rotate([-90,0,0]) 
-        {
-            difference()
-            {
-                tcy([0, topRailBaseEndCtrOffset, 2], d=topRailBaseEndDia, h=topRailBaseZ+riserWallThickness-2);
-                // Trim the sides:
-                doubleX() tcu([topRailBaseWidth/2, -200, -200], 400);
-            }
-        }
-        // Trim the ends:
-        tcu([-200, -200, -400], 400);
-        tcu([-200, -200, riserBackZ], 400);
-    }
-}
 
 module riserExterior()
 {
