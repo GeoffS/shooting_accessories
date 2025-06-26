@@ -123,7 +123,7 @@ module riserExterior()
     // Frame supports:
     difference()
     {
-        topY = 13.8;
+        topY = 13.8 + 0.8;
         x = riserX - riserWallThickness; //riserWallInsideX + 2*clampCZ;
 
         intersection() 
@@ -323,7 +323,7 @@ module clip(d=0)
 	//tc([-200, -400-d, -10], 400);
     // tcu([0, -200, -200], 400);
     // tcu([-200, -200, -400+p22PicatinyRailFrontNotchZ+d], 400);
-    tcu([rmrHoleCtrsX/2-d, -200, -200], 400);
+    // tcu([rmrHoleCtrsX/2-d, -200, -200], 400);
 }
 
 if(developmentRender)
