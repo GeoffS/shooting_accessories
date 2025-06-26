@@ -65,6 +65,7 @@ module itemModule()
         }
 
         railClampInterior();
+        riserInterior();
         rmrMountHoles();
     }
 }
@@ -74,7 +75,7 @@ riserWallInsideX = 27; //31.5; //27;
 riserWallBottomY = 0;
 // MAGIC NUMBER!!! ----------------------vvvv
 riserWallBottomCtrY = riserWallBottomY + 1; //0.53;
-riserWallTopY = 42;
+riserWallTopY = 40;
 riserWallTopCtrY = riserWallTopY + riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
 riserForwardZ = p22PicatinnyRailLength;
@@ -155,7 +156,22 @@ module riserExterior()
 
 module riserInterior()
 {
-    
+    translate([0, riserWallTopY, 0]) 
+    {
+        d1 = 12;
+        d2 = 1;
+        
+        translate([0, -d1/2+riserWallThickness*0.4, 0])
+        {
+            // Center cylinder:
+            tcy([0, 0, -10], d=d1, h=100);
+
+            // End chamfers:
+            translate([0,0,riserBackZ/2]) doubleZ() translate([0,0,riserBackZ/2-d1/2-1]) cylinder(d2=20, d1=0, h=10);
+        }
+
+        
+    }
 }
 
 module backRiserXform()
