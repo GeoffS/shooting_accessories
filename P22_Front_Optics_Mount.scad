@@ -74,8 +74,8 @@ riserWallInsideX = 27; //31.5; //27;
 riserWallBottomY = 0;
 // MAGIC NUMBER!!! ----------------------vvvv
 riserWallBottomCtrY = riserWallBottomY + 1; //0.53;
-riserWallTopY = 43;
-riserWallTopCtrY = riserWallTopY+riserWallThickness/2;
+riserWallTopY = 42;
+riserWallTopCtrY = riserWallTopY + riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
 riserForwardZ = p22PicatinnyRailLength;
 riserBackZ = 55.5; // Back to the ejection port.
