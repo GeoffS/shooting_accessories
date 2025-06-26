@@ -4,8 +4,14 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 m4ClearanceDia = 4.4;
 m4HeadClearanceDia = 7.5;
 m4SocketHeadZ = 4;
-m4NutDia = 8.05;
+m4NutDia = 8.05; // Hex, $fn=6
 m4NutZ = 3.0;
+
+m3ClearanceDia = 3.3;
+m3HeadClearanceDia = 6;
+m3SocketHeadZ = 3;
+m3NutDia = 7.4; // Square, $fn=4
+m3NutZ = 2.4;
 
 picatinnyMountWidth = 21.0;
 picatinnyMountFlatTopHeight = 5.45; // 6.50 55.1
@@ -161,19 +167,41 @@ module backRiserXform()
 
 rmrHoleCtrsX = 18.8;
 rmrHoleCtrsZ = 19.0; // From rear edge
-rmrHolesDia = m4ClearanceDia;
-rmrNutDia = m4NutDia;
-rmrNutZ = m4NutZ;
 rmrZ = 45.3;
+rmrHolesDia = m3ClearanceDia;
+rmrNutDia = m3NutDia;
+rmrNutfn = 4;
+rmrNutAngle = 0;
+rmrNutZ = m3NutZ;
+rmrNutExtraZ = 2.0;
+
+echo(str("rmrNutZ = ", rmrNutZ));
 
 rmrOffsetZ = riserBackZ - clampCZ - rmrHolesDia/2 - rmrHoleCtrsZ;
 
 module rmrMountHoles()
 {
-    doubleX() translate([rmrHoleCtrsX/2, riserWallTopY, rmrOffsetZ]) rotate([-90,0,0])
+    difference()
     {
-        tcy([0,0,-7], d=rmrHolesDia, h=20);
-        rotate([0,0,30]) tcy([0,0,-10+rmrNutZ+0.8], d=rmrNutDia, h=10, $fn=6);
+        doubleX() translate([rmrHoleCtrsX/2, riserWallTopY, rmrOffsetZ]) rotate([-90,0,0])
+        {
+            // Through hole:
+            tcy([0,0,-7], d=rmrHolesDia, h=20);
+
+            // Nut recess:
+            rotate([0,0,rmrNutAngle]) 
+            {
+                tcy([0,0,-10+rmrNutZ+rmrNutExtraZ], d=rmrNutDia, h=10, $fn=rmrNutfn);
+                roundOpeningDia = rmrNutDia + 3;
+                hull()
+                {
+                    tcy([0,0,-10+rmrNutExtraZ], d=rmrNutDia, h=10, $fn=rmrNutfn);
+                    tcy([0,0,-10], d=roundOpeningDia, h=10);
+                }
+            }
+        }
+        // Trim anything that cuts into the riser side:
+        doubleX() tcu([riserWallInsideX/2, -10, 0], 100);
     }
 }
 
@@ -295,7 +323,7 @@ module clip(d=0)
 	//tc([-200, -400-d, -10], 400);
     // tcu([0, -200, -200], 400);
     // tcu([-200, -200, -400+p22PicatinyRailFrontNotchZ+d], 400);
-    // tcu([rmrHoleCtrsX/2-d, -200, -200], 400);
+    tcu([rmrHoleCtrsX/2-d, -200, -200], 400);
 }
 
 if(developmentRender)
