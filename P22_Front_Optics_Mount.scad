@@ -139,9 +139,9 @@ module riserExterior()
         cz = 0.6;
         // Chamfer top:
         doubleX() 
-            translate([insideX/2+1+cz, topY+1, 0]) 
+            translate([insideX/2, topY, 0]) 
                 rotate([0,0,-45-90]) 
-                    tcu([-3, -10, -10], [10, 10, 200]);
+                    tcu([-5, -10+cz, -10], [10, 10, 200]);
 
         // Chamfer back:
         doubleX() 
