@@ -79,12 +79,14 @@ riserWallTopY = 40;
 riserWallTopCtrY = riserWallTopY + riserWallThickness/2;
 riserX = riserWallInsideX + 2*riserWallThickness;
 riserForwardZ = p22PicatinnyRailLength;
-riserBackZ = 55.5; // Back to the ejection port.
+riserBackZ = 91; //55.5; // Back to the ejection port, max. = 91mm
 
 echo(str("riserX = ", riserX));
 
-backRiserSidesMagicNumber1 = 6.75;
+backRiserSidesMagicNumber1 = 15; //6.75;
 backRiserSidesMagicNumber2 = riserBackZ - riserForwardZ + 2*clampCZ;
+backRiserSidesMagicNumber3 = -0.02; //0.03; //1.75;
+backRiserSidesMagicNumber4 = -15;  // Height of back end of the riser.
 
 module riserExterior()
 {
@@ -105,20 +107,18 @@ module riserExterior()
     translate([0,0,riserForwardZ-2*clampCZ])
     {
         // Back riser sides:
-        doubleX() hull() translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) backRiserXform()
+        doubleX() hull() 
         {
-            // MAGIC NUMBERS:  ----------------------------------------vvvv
-            simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber1, cz=clampCZ);
-            simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber2, cz=clampCZ);
+            backRiserTopCylinder();
+            translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) backRiserXform()
+            {
+                simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber1, cz=clampCZ);
+                simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber2, cz=clampCZ);
+            }
         }
 
         // Back riser top:
-        hull() translate([0, riserWallTopCtrY, 0])
-        {
-            doubleX() 
-                translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) 
-                    simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber2, cz=clampCZ);
-        }
+        hull() doubleX() backRiserTopCylinder();
     }
 
     // Frame supports:
@@ -154,6 +154,15 @@ module riserExterior()
     }
 }
 
+module backRiserTopCylinder()
+{
+    translate([0, riserWallTopCtrY, 0])
+    {
+        translate([riserWallThickness/2+riserWallInsideX/2, 0, 0]) 
+            simpleChamferedCylinderDoubleEnded(d=riserWallThickness, h=backRiserSidesMagicNumber2, cz=clampCZ);
+    }
+}
+
 module riserInterior()
 {
     translate([0, riserWallTopY, 0]) 
@@ -169,16 +178,14 @@ module riserInterior()
             // End chamfers:
             translate([0,0,riserBackZ/2]) doubleZ() translate([0,0,riserBackZ/2-d1/2-1]) cylinder(d2=20, d1=0, h=10);
         }
-
-        
     }
 }
 
 module backRiserXform()
 {
-    // MAGIC NUMBER:  ----------------vvvv
-    translate([0, riserWallBottomCtrY+1.75, 0]) children(0);
-    translate([0,    riserWallTopCtrY, 0]) children(1);
+    // MAGIC NUMBERS:  -----------------vvvvv
+    translate([0, riserWallBottomCtrY + backRiserSidesMagicNumber3, 0]) children(0);
+    translate([0,    riserWallTopCtrY + backRiserSidesMagicNumber4, 0]) children(1);
 }
 
 rmrHoleCtrsX = 18.8;
@@ -340,6 +347,8 @@ module clip(d=0)
     // tcu([0, -200, -200], 400);
     // tcu([-200, -200, -400+p22PicatinyRailFrontNotchZ+d], 400);
     // tcu([rmrHoleCtrsX/2-d, -200, -200], 400);
+    // tcu([-200,-200,50], 400);
+    // tcu([riserWallThickness/2+riserWallInsideX/2,-200, -200], 400);
 }
 
 if(developmentRender)
