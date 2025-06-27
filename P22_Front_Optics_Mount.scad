@@ -315,7 +315,7 @@ module p22RailInterior()
     // Rail:
     difference()
     {
-        #hull()
+        hull()
         {
             doubleX() 
                 translate([p22MountWidthAtTipOfAngles/2+0.2, picatinnyMountFlatTopHeight/2, p2RailOffsetZ]) 
