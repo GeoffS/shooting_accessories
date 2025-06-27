@@ -19,7 +19,7 @@ picatinnyMountFlatTopHeight = 5.45; // 6.50 55.1
 picatinnyMountAngleWidth = tan(45) * picatinnyMountFlatTopHeight/2;
 picatinnyMountFlatTopWidth = 16.0;
 picatinnyMountRiserHeight = 2.47; //2.99 3.87
-p22MountWidthAtTipOfAngles = picatinnyMountFlatTopWidth + 2*picatinnyMountAngleWidth;
+p22MountWidthAtTipOfAngles = picatinnyMountFlatTopWidth + 2*picatinnyMountAngleWidth + 0.4;
 extraTipClearanceDia = 1.5;
 
 echo(str("picatinnyMountAngleWidth = ", picatinnyMountAngleWidth));
@@ -315,8 +315,7 @@ module p22RailInterior()
     // Rail:
     difference()
     {
-        // union()
-        hull()
+        #hull()
         {
             doubleX() 
                 translate([p22MountWidthAtTipOfAngles/2+0.2, picatinnyMountFlatTopHeight/2, p2RailOffsetZ]) 
