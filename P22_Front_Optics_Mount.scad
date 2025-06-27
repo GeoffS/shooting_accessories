@@ -130,20 +130,22 @@ module riserExterior()
         intersection() 
         {
             // Starting block:
-            tcu([-x/2, 0, 0], [x, topY, 80]);
+            dy = 1.3;
+            tcu([-x/2, -dy, 0], [x, topY+dy, 100]);
 
             // Trim rear angle:
             z0 = riserForwardZ - 2*clampCZ; // + 1.04;
             hull() backRiserXform()
             {
-                tcu([-50,0,0], [100, 1, z0+backRiserSidesMagicNumber1]);
-                tcu([-50,0,0], [100, 1, z0+backRiserSidesMagicNumber2]);
+                // MAGIC NUMBER!!! --------------------------------------vvvvv
+                tcu([-50, -3, 0], [100, 1, z0+backRiserSidesMagicNumber1-5.59]);
+                tcu([-50,  0, 0], [100, 1, z0+backRiserSidesMagicNumber2]);
             }
         }
 
         // Trim inside:
         insideX = 24.4;
-        tcu([-insideX/2, 0, -10], [insideX, 20, 200]);
+        tcu([-insideX/2, -1, -10], [insideX, 20, 200]);
 
         cz = 0.6;
         // Chamfer top:
@@ -156,7 +158,7 @@ module riserExterior()
         bottomCZ = 0.953; // <-- MAGIC NUMBER!!!
         echo(str("bottomCZ = ", bottomCZ));
         doubleX() 
-            translate([insideX/2, backRiserXformBottomY, 0]) 
+            translate([insideX/2, backRiserXformBottomY-1.275, 0]) 
                 rotate([0,0,-45]) 
                     tcu([-5, -10+bottomCZ, -10], [10, 10, 200]);
     }
