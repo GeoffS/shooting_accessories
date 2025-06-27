@@ -10,7 +10,7 @@ m4NutZ = 3.0;
 m3ClearanceDia = 3.4;
 m3HeadClearanceDia = 6;
 m3SocketHeadZ = 3;
-m3NutDia = 7.55; // Square, $fn=4
+m3NutDia = 7.8; // Square, $fn=4
 m3NutZ = 2.4;
 
 picatinnyMountWidth = 21.0;
