@@ -130,7 +130,7 @@ module riserExterior()
         intersection() 
         {
             // Starting block:
-            tcu([-x/2, 0, 0], [x, topY, 50]);
+            tcu([-x/2, 0, 0], [x, topY, 80]);
 
             // Trim rear angle:
             z0 = riserForwardZ - 2*clampCZ; // + 1.04;
@@ -145,12 +145,17 @@ module riserExterior()
         insideX = 24.4;
         tcu([-insideX/2, 0, -10], [insideX, 20, 200]);
 
-        // Chamfer top:
         cz = 0.6;
+        // Chamfer top:
         doubleX() 
             translate([insideX/2+1+cz, topY+1, 0]) 
                 rotate([0,0,-45-90]) 
                     tcu([-3, -10, -10], [10, 10, 200]);
+        // Chamfer bottom:
+        doubleX() 
+            translate([insideX/2, backRiserXformBottomY, 0]) 
+                rotate([0,0,-45]) 
+                    tcu([-5, -10+cz, -10], [10, 10, 200]);
     }
 }
 
@@ -181,11 +186,14 @@ module riserInterior()
     }
 }
 
+backRiserXformBottomY = riserWallBottomCtrY + backRiserSidesMagicNumber3;
+echo(str("backRiserXformBottomY = ", backRiserXformBottomY));
+
 module backRiserXform()
 {
-    // MAGIC NUMBERS:  -----------------vvvvv
-    translate([0, riserWallBottomCtrY + backRiserSidesMagicNumber3, 0]) children(0);
-    translate([0,    riserWallTopCtrY + backRiserSidesMagicNumber4, 0]) children(1);
+    topY = riserWallTopCtrY + backRiserSidesMagicNumber4;
+    translate([0, backRiserXformBottomY, 0]) children(0);
+    translate([0, topY, 0]) children(1);
 }
 
 rmrHoleCtrsX = 18.8;
