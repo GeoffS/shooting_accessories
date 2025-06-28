@@ -35,11 +35,10 @@ p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
 // p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
 riserWallThickness = 6;
-riserWallInsideX = 27; //31.5; //27;
+riserWallInsideX = 27;
 riserX = riserWallInsideX + 2*riserWallThickness;
 
 clampCZ = 1;
-// clampX = clampScrewExteriorX/2 + 1*clampCZ;
 clampOD = 14;
 clampSplitX = 0.6;
 clampOffsetY = -5;
@@ -54,8 +53,8 @@ clampScrewNutDia = m4NutDia;
 clampScrewNutZ = m4NutZ;
 clampScrewZ = 30;
 clampScrewCZ = clampCZ;
-clampScrewExteriorDia = 2*p22PicatinyRailFrontNotchZ; //clampScrewNutDia + 2*clampScrewCZ + 1.2; // 3.1; //clampScrewNutDia*1.4 + 3;
-clampScrewExteriorX = riserX; //(clampScrewZ-0.0) + clampScrewNutZ;
+clampScrewExteriorDia = 2*p22PicatinyRailFrontNotchZ;
+clampScrewExteriorX = riserX;
 
 echo(str("clampTopY = ", clampTopY));
 
@@ -82,7 +81,7 @@ riserWallTopY = 40;
 riserWallTopCtrY = riserWallTopY + riserWallThickness/2;
 
 riserForwardZ = p22PicatinnyRailLength;
-riserBackZ = 91; //55.5; // Back to the ejection port, max. = 91mm
+riserBackZ = 91; // Back to the ejection port, max. = 91mm
 
 echo(str("riserX = ", riserX));
 
@@ -128,7 +127,7 @@ module riserExterior()
     difference()
     {
         topY = 13.8 + 0.8;
-        x = riserX - riserWallThickness - 3.7; //riserWallInsideX + 2*clampCZ;
+        x = riserX - riserWallThickness - 3.7;
         z = 37;
 
         // Starting block:
@@ -255,7 +254,7 @@ module railClampExterior()
                 simpleChamferedCylinderDoubleEnded(d=clampOD, h=p22PicatinnyRailLength, cz=clampCZ);
 
         // Clamp extension back to end of rail:
-        extensionODAdj = 3.5; //clampOD - riserWallThickness; //3.5;
+        extensionODAdj = 3.5;
         extensionOD = clampOD - extensionODAdj;
         echo(str("extensionODAdj = ", extensionODAdj));
         echo(str("extensionOD = ", extensionOD));
