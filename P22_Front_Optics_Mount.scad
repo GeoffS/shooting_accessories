@@ -239,6 +239,10 @@ module rmrMountHoles()
                     tcy([0,0,-10], d=roundOpeningDia, h=10);
                 }
             }
+
+            // Forward locator pins:
+            // (m4 "self tapping" screws)
+            tcy([0, 22.2,-1], d=3.8, h=20);
         }
         // Trim anything that cuts into the riser side:
         doubleX() tcu([riserWallInsideX/2, -10, 0], 100);
