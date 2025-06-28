@@ -34,23 +34,28 @@ p22PicatinyRailBackNotchZ = p22PicatinyRailFrontNotchZ + 16.25;
 // p22ClearanceFromRailBottomToHighestPointOnSlideDuringInstallation = 51.6;
 // p22DistFromFrontOfRailToCtrOfFirstSlot = 7.5;
 
-clampScrewHoleDia = m4ClearanceDia;
-clampScrewHeadDia = m4HeadClearanceDia;
-clampScrewHeadZ = m4SocketHeadZ;
-clampScrewNutDia = m4NutDia;
-clampScrewNutZ = m4NutZ;
-clampScrewZ = 30;
-clampScrewExteriorDia = clampScrewNutDia + 3.8; //clampScrewNutDia*1.4 + 3;
-clampScrewExteriorX = (clampScrewZ-0.0) + clampScrewNutZ;
+riserWallThickness = 6;
+riserWallInsideX = 27; //31.5; //27;
+riserX = riserWallInsideX + 2*riserWallThickness;
 
 clampCZ = 1;
-clampX = clampScrewExteriorX/2 + 1*clampCZ;
+// clampX = clampScrewExteriorX/2 + 1*clampCZ;
 clampOD = 14;
 clampSplitX = 0.3;
 clampOffsetY = -5;
 clampCtrY = clampOD/2-clampCZ+clampOffsetY;
 clampTopY = clampCtrY + clampOD/2;
 clampBotY = clampCtrY - clampOD/2;
+
+clampScrewHoleDia = m4ClearanceDia;
+clampScrewHeadDia = m4HeadClearanceDia;
+clampScrewHeadZ = m4SocketHeadZ;
+clampScrewNutDia = m4NutDia;
+clampScrewNutZ = m4NutZ;
+clampScrewZ = 30;
+clampScrewCZ = clampCZ;
+clampScrewExteriorDia = 2*p22PicatinyRailFrontNotchZ; //clampScrewNutDia + 2*clampScrewCZ + 1.2; // 3.1; //clampScrewNutDia*1.4 + 3;
+clampScrewExteriorX = riserX; //(clampScrewZ-0.0) + clampScrewNutZ;
 
 echo(str("clampTopY = ", clampTopY));
 
@@ -70,14 +75,12 @@ module itemModule()
     }
 }
 
-riserWallThickness = 6;
-riserWallInsideX = 27; //31.5; //27;
 riserWallBottomY = 0;
 // MAGIC NUMBER!!! ----------------------vvvv
 riserWallBottomCtrY = riserWallBottomY + 1; //0.53;
 riserWallTopY = 40;
 riserWallTopCtrY = riserWallTopY + riserWallThickness/2;
-riserX = riserWallInsideX + 2*riserWallThickness;
+
 riserForwardZ = p22PicatinnyRailLength;
 riserBackZ = 91; //55.5; // Back to the ejection port, max. = 91mm
 
@@ -259,24 +262,21 @@ module railClampExterior()
         doubleX() 
             translate([riserX/2-clampOD/2+extensionODAdj/2, clampCtrY+extensionODAdj/2, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=extensionOD, h=p22PicatinnyRailLengthExtension, cz=clampCZ);
-    }
-
     
-    difference()
-    {
-        clampMountScrewsXform() 
+        difference()
         {
-            hull()
+            clampMountScrewsXform() 
             {
-                translate([0,0,-clampScrewExteriorX/2]) 
+                hull()
                 {
-                    simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=1);
+                    translate([0,0,-clampScrewExteriorX/2]) hull()
+                    {
+                        simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=clampScrewCZ);
+                        translate([0, 2, 0]) simpleChamferedCylinderDoubleEnded(d=clampScrewExteriorDia, h=clampScrewExteriorX, cz=clampScrewCZ);
+                    }
                 }
             }
         }
-
-        // Trim bottom of the screw exterior:
-        tcu([-200, 0, -200], 400);
     }
 }
 
@@ -363,7 +363,7 @@ module clip(d=0)
     // tcu([rmrHoleCtrsX/2-d, -200, -200], 400);
     // tcu([-200,-200,50], 400);
     // tcu([riserWallThickness/2+riserWallInsideX/2,-200, -200], 400);
-    tcu([-200, 20, -200], 400);
+    // tcu([-200, 20, -200], 400);
 }
 
 if(developmentRender)
