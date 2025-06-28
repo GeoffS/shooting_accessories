@@ -302,8 +302,9 @@ module railClampInterior()
 
 module clampMountScrewsXform()
 {
-    translate([0, -clampScrewHoleDia/2+p22PicatinnyRailNotchDepth-0.3, p22PicatinyRailFrontNotchZ]) rotate([0, 90, 0]) children();
-    translate([0, -clampScrewHoleDia/2+p22PicatinnyRailNotchDepth-0.3, p22PicatinyRailBackNotchZ]) rotate([0, 90, 0]) children();
+    dy = 0.1;
+    translate([0, -clampScrewHoleDia/2+p22PicatinnyRailNotchDepth-dy, p22PicatinyRailFrontNotchZ]) rotate([0, 90, 0]) children();
+    translate([0, -clampScrewHoleDia/2+p22PicatinnyRailNotchDepth-dy, p22PicatinyRailBackNotchZ]) rotate([0, 90, 0]) children();
 }
 
 module ClampMountScrewHoles()
