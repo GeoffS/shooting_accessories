@@ -125,12 +125,12 @@ module riserExterior()
     difference()
     {
         topY = 13.8 + 0.8;
-        x = riserX - riserWallThickness; //riserWallInsideX + 2*clampCZ;
+        x = riserX - riserWallThickness - 3.7; //riserWallInsideX + 2*clampCZ;
         z = 37;
 
         // Starting block:
         dy = 1.3;
-        tcu([-x/2, -dy, 0], [x, topY+dy, z]);
+        tcu([-x/2, -dy, clampCZ], [x, topY+dy, z-clampCZ]);
 
         // Trim inside:
         insideX = 24.4;
@@ -142,6 +142,12 @@ module riserExterior()
             translate([insideX/2, topY, 0]) 
                 rotate([0,0,-45-90]) 
                     tcu([-5, -10+cz, -10], [10, 10, 200]);
+
+        // Chamfer front:
+        doubleX() 
+            translate([insideX/2, -10, 0]) 
+                rotate([0, 45, 0]) 
+                    tcu([-5, -10, -10+cz+clampCZ+0.03], [10, 100, 10]);
 
         // Chamfer back:
         doubleX() 
@@ -356,6 +362,7 @@ module clip(d=0)
     // tcu([rmrHoleCtrsX/2-d, -200, -200], 400);
     // tcu([-200,-200,50], 400);
     // tcu([riserWallThickness/2+riserWallInsideX/2,-200, -200], 400);
+    tcu([-200, 20, -200], 400);
 }
 
 if(developmentRender)
