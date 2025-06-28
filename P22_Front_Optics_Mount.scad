@@ -81,13 +81,15 @@ riserWallTopY = 40;
 riserWallTopCtrY = riserWallTopY + riserWallThickness/2;
 
 riserForwardZ = p22PicatinnyRailLength;
-riserBackZ = 91; // Back to the ejection port, max. = 91mm
+riserBackZ = 80; // Back to the ejection port, max. = 91mm
 
 echo(str("riserX = ", riserX));
 
-backRiserSidesMagicNumber1 = 15; //6.75;
+frameSupportsZ = 37;
+
+backRiserSidesMagicNumber1 =11.745;
 backRiserSidesMagicNumber2 = riserBackZ - riserForwardZ + 2*clampCZ;
-backRiserSidesMagicNumber3 = -0.02; //0.03; //1.75;
+backRiserSidesMagicNumber3 = -0.02;
 backRiserSidesMagicNumber4 = -15;  // Height of back end of the riser.
 
 module riserExterior()
@@ -128,11 +130,10 @@ module riserExterior()
     {
         topY = 13.8 + 0.8;
         x = riserX - riserWallThickness - 3.7;
-        z = 37;
 
         // Starting block:
         dy = 1.3;
-        tcu([-x/2, -dy, clampCZ], [x, topY+dy, z-clampCZ]);
+        tcu([-x/2, -dy, clampCZ], [x, topY+dy, frameSupportsZ-clampCZ]);
 
         // Trim inside:
         insideX = 24.4;
