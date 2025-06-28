@@ -2,7 +2,7 @@ include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 m4ClearanceDia = 4.4;
-m4HeadClearanceDia = 7.5;
+m4HeadClearanceDia = 7.7;
 m4SocketHeadZ = 4;
 m4NutDia = 8.05; // Hex, $fn=6
 m4NutZ = 3.0;
