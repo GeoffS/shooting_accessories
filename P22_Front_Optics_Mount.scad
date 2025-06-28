@@ -4,13 +4,13 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 m4ClearanceDia = 4.4;
 m4HeadClearanceDia = 7.7;
 m4SocketHeadZ = 4;
-m4NutDia = 8.05; // Hex, $fn=6
+m4NutDia = 8.15; // Hex, $fn=6
 m4NutZ = 3.0;
 
 m3ClearanceDia = 3.4;
 m3HeadClearanceDia = 6;
 m3SocketHeadZ = 3;
-m3NutDia = 7.8; // Square, $fn=4
+m3NutDia = 7.9; // Square, $fn=4
 m3NutZ = 2.4;
 
 picatinnyMountWidth = 21.0;
