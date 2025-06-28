@@ -309,14 +309,19 @@ module clampMountScrewsXform()
 
 module ClampMountScrewHoles()
 {
+    // 0.6mm of screw past the nut:
+    clampScrewHeadToNutDistance = clampScrewZ - clampScrewNutZ - 0.6;
+
     clampMountScrewsXform() 
     {
         // Hole:
         tcy([0,0,-100], d=clampScrewHoleDia, h=200);
+
         // Head recess:
-        tcy([0,0,clampScrewExteriorX/2-clampScrewHeadZ], d=clampScrewHeadDia, h=200);
+        tcy([0,0,clampScrewHeadToNutDistance/2], d=clampScrewHeadDia, h=200);
+
         // Nut recess:
-        translate([0,0,-clampScrewExteriorX/2+clampScrewNutZ]) 
+        translate([0,0,-clampScrewHeadToNutDistance/2]) 
             rotate([0,0,0]) 
                 tcy([0, 0, -100], d=clampScrewNutDia, h=100, $fn=6);
     }
