@@ -207,6 +207,8 @@ module backRiserXform()
 
 rmrHoleCtrsX = 18.8;
 rmrHoleCtrsZ = 19.0; // From rear edge
+rmrPinCtrsX = 22.5;
+rmrPinCtrsZ = 22.2; // From hole centers.
 rmrZ = 45.3;
 rmrHolesDia = m3ClearanceDia;
 rmrNutDia = m3NutDia;
@@ -223,26 +225,29 @@ module rmrMountHoles()
 {
     difference()
     {
-        doubleX() translate([rmrHoleCtrsX/2, riserWallTopY, rmrOffsetZ]) rotate([-90,0,0])
+        doubleX() translate([0, riserWallTopY, rmrOffsetZ]) rotate([-90,0,0])
         {
-            // Through hole:
-            tcy([0,0,-7], d=rmrHolesDia, h=20);
-
-            // Nut recess:
-            rotate([0,0,rmrNutAngle]) 
+            translate([rmrHoleCtrsX/2,0,0])
             {
-                tcy([0,0,-10+rmrNutZ+rmrNutExtraZ], d=rmrNutDia, h=10, $fn=rmrNutfn);
-                roundOpeningDia = rmrNutDia + 3;
-                hull()
+                // Through hole:
+                tcy([0,0,-7], d=rmrHolesDia, h=20);
+
+                // Nut recess:
+                rotate([0,0,rmrNutAngle]) 
                 {
-                    tcy([0,0,-10+rmrNutExtraZ], d=rmrNutDia, h=10, $fn=rmrNutfn);
-                    tcy([0,0,-10], d=roundOpeningDia, h=10);
+                    tcy([0,0,-10+rmrNutZ+rmrNutExtraZ], d=rmrNutDia, h=10, $fn=rmrNutfn);
+                    roundOpeningDia = rmrNutDia + 3;
+                    hull()
+                    {
+                        tcy([0,0,-10+rmrNutExtraZ], d=rmrNutDia, h=10, $fn=rmrNutfn);
+                        tcy([0,0,-10], d=roundOpeningDia, h=10);
+                    }
                 }
             }
 
             // Forward locator pins:
-            // (m4 "self tapping" screws)
-            tcy([0, 22.2,-1], d=3.8, h=20);
+            // (m4 "self tapping" machine screws)
+            tcy([rmrPinCtrsX/2, rmrPinCtrsZ, -1], d=3.65, h=20);
         }
         // Trim anything that cuts into the riser side:
         doubleX() tcu([riserWallInsideX/2, -10, 0], 100);
