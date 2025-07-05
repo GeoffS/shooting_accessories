@@ -18,18 +18,27 @@ baseCornerDia = 10;
 
 totalZ = baseZ + troughZ;
 
+frontZ = 4;
+
 module itemModule()
 {
 	difference()
     {
         union()
         {
-        // Trough exterior:
-            translate([0, troughY/2, 0]) 
-                hull() 
-                    doubleX() doubleY() 
-                        translate([troughX/2-troughCornerDia/2, troughY/2-troughCornerDia/2, 0]) 
-                            cylinder(d=troughCornerDia, h=totalZ);
+            // // Trough exterior:
+            // translate([0, troughY/2, 0]) 
+            //     hull() 
+            //         doubleX() doubleY() 
+            //             translate([troughX/2-troughCornerDia/2, troughY/2-troughCornerDia/2, 0]) 
+            //                 cylinder(d=troughCornerDia, h=totalZ);
+            hull()
+            {
+                dy = troughZ - frontZ + 6;
+                doubleX() tcy([troughX/2-troughCornerDia/2, troughCornerDia/2, totalZ-frontZ], d=troughCornerDia, h=frontZ);
+                doubleX() tcy([troughX/2-troughCornerDia/2, dy-troughCornerDia/2, 0], d=troughCornerDia, h=totalZ);
+                doubleX() tcy([troughX/2-troughCornerDia/2, troughY-troughCornerDia/2, 0], d=troughCornerDia, h=totalZ);
+            }
         
             // Base:
             translate([0, troughY/2, 0]) 
@@ -40,7 +49,7 @@ module itemModule()
         }
 
         // Cartridge slot:
-        translate([0,0,-10]) hull()
+        translate([0,0,baseZ]) hull()
         {
             tcy([0, -10, 0], d=brassOD, h=100);
             tcy([0, 100, 0], d=brassOD, h=100);
@@ -49,7 +58,7 @@ module itemModule()
         // Rim recess:
         translate([0,0,totalZ-2]) hull() 
         {
-            #tcy([0,brassRimOD/2+1,0], d=brassRimOD, h=10);
+            tcy([0,brassRimOD/2+1,0], d=brassRimOD, h=10);
             tcy([0,troughY,0], d=brassRimOD, h=10);
         }
     }
