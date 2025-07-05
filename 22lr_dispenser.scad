@@ -1,7 +1,7 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 
-brassOD = 5.75;
-brassRimOD = 6.9;
+brassOD = 5.75 + 0.3;
+brassRimOD = 6.9 + 0.25 ;
 cartridgeLen = 26;
 
 troughWallX = 3;
