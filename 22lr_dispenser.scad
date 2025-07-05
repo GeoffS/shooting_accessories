@@ -10,16 +10,34 @@ troughX = brassRimOD + 2*troughWallX + 2;
 troughY = 40;
 troughZ = cartridgeLen + 2;
 
+baseX = troughX + 3;
+baseY = troughY;
+baseOffsetY = 10;
+baseZ = 2;
+baseCornerDia = 10;
+
+totalZ = baseZ + troughZ;
+
 module itemModule()
 {
 	difference()
     {
+        union()
+        {
         // Trough exterior:
-        translate([0, troughY/2, 0]) 
-            hull() 
-                doubleX() doubleY() 
-                    translate([troughX/2-troughCornerDia/2, troughY/2-troughCornerDia/2, 0]) 
-                        cylinder(d=troughCornerDia, h=troughZ);
+            translate([0, troughY/2, 0]) 
+                hull() 
+                    doubleX() doubleY() 
+                        translate([troughX/2-troughCornerDia/2, troughY/2-troughCornerDia/2, 0]) 
+                            cylinder(d=troughCornerDia, h=totalZ);
+        
+            // Base:
+            translate([0, troughY/2, 0]) 
+                hull() 
+                    doubleX() doubleY() 
+                        translate([baseX/2-baseCornerDia/2, baseY/2-baseCornerDia/2, 0]) 
+                            cylinder(d=baseCornerDia, h=baseZ);
+        }
 
         // Cartridge slot:
         translate([0,0,-10]) hull()
@@ -29,7 +47,7 @@ module itemModule()
         }
 
         // Rim recess:
-        translate([0,0,troughZ-2]) hull() 
+        translate([0,0,totalZ-2]) hull() 
         {
             #tcy([0,brassRimOD/2+1,0], d=brassRimOD, h=10);
             tcy([0,troughY,0], d=brassRimOD, h=10);
