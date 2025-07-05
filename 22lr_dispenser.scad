@@ -28,12 +28,12 @@ module itemModule()
             tcy([0, 100, 0], d=brassOD, h=100);
         }
 
-        // // Rim recess:
-        // translate([0, troughY/2, 0]) 
-        //     hull() 
-        //         doubleX() doubleY() 
-        //             translate([troughX/2-troughCornerDia/2, troughY/2-troughCornerDia/2, 0]) 
-        //                 cylinder(d=troughCornerDia, h=troughZ);
+        // Rim recess:
+        translate([0,0,troughZ-2]) hull() 
+        {
+            #tcy([0,brassRimOD/2+1,0], d=brassRimOD, h=10);
+            tcy([0,troughY,0], d=brassRimOD, h=10);
+        }
     }
 }
 
