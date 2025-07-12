@@ -23,9 +23,53 @@ dispenserTotalZ = dispenserBaseZ + dispenserTroughZ;
 
 dispenserFrontZ = 4;
 
+funnelBaseX = 40;
+funnelBaseY = 60;
+funnelBaseZ = 20;
+
+funnelVRimXY = 4;
+funnelVDia = 1;
+
+funnelRimX = funnelBaseX - 2*funnelVRimXY;
+funnelRimY = funnelBaseY - 2*funnelVRimXY;
+funnelRimZ = funnelVRimXY;
+
+funnelVTopX = funnelRimX/2;
+funnelVTopY = funnelBaseY - funnelVRimXY;
+
+funnelVBottomFrontY = funnelBaseY - funnelVRimXY;
+funnelVBottomBackY = funnelVRimXY;
+
+funnelVBottomFrontZ = 4;
+funnelVBottomBackZ = funnelBaseZ - funnelVRimXY;
+
 module funnel()
 {
+    difference()
+    {
+        // Base:
+        tcu([-funnelBaseX/2, 0, 0], [funnelBaseX, funnelBaseY, funnelBaseZ]);
 
+        // Top rim:
+        tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-funnelRimZ], [funnelRimX, funnelRimY, 20]);
+
+        // Basic V:
+        hull()
+        {
+            // #tcy([funnelVBottomBackX, funnelVBottomBackY, funnelVBottomBackZ], d=funnelVDia, h=1);
+            doubleX() funnelVCylinder(funnelVTopX, funnelVBottomBackY, funnelVBottomBackZ, isFront=false);
+            doubleX() funnelVCylinder(funnelVTopX, funnelVBottomFrontY, funnelVBottomBackZ, isFront=true);
+
+            funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true);
+        }
+    }
+}
+
+module funnelVCylinder(x, y, z, isFront)
+{
+    fvd2 = funnelVDia/2;
+    dy = isFront? 0: 1;
+    translate([x-fvd2, y+dy, z]) rotate([90,0,0]) cylinder(d=funnelVDia, h=1);
 }
 
 module dispenser()
