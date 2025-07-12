@@ -60,8 +60,11 @@ module funnel()
             doubleX() funnelVCylinder(funnelVTopX, funnelVBottomBackY, funnelVBottomBackZ, isFront=false);
             doubleX() funnelVCylinder(funnelVTopX, funnelVBottomFrontY, funnelVBottomBackZ, isFront=true);
 
-            funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true);
+            doubleX() funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true);
         }
+
+        // Front opening:
+
     }
 }
 
@@ -69,7 +72,7 @@ module funnelVCylinder(x, y, z, isFront)
 {
     fvd2 = funnelVDia/2;
     dy = isFront? 0: 1;
-    dx = isFront? 0: -fvd2;
+    dx = -fvd2; //isFront? 0: -fvd2;
     translate([x-dx, y+dy, z]) rotate([90,0,0]) cylinder(d=funnelVDia, h=1);
 }
 
