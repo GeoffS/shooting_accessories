@@ -4,63 +4,71 @@ brassOD = 5.75 + 0.3;
 brassRimOD = 6.9 + 0.25 ;
 cartridgeLen = 26;
 
-troughWallX = 3;
-troughCornerDia = 2*troughWallX;
-troughX = brassRimOD + 2*troughWallX + 2;
-troughY = 40;
-troughZ = cartridgeLen + 2;
+makeDispenser = false;
+makeFunnel = false;
 
-baseX = troughX + 6;
-baseY = troughY;
-baseOffsetY = 10;
-baseZ = 2;
-baseCornerDia = 10;
+dispenserTroughWall = 3;
+dispenserTroughCornerDia = 2*dispenserTroughWall;
+dispenserTroughX = brassRimOD + 2*dispenserTroughWall + 2;
+dispenserTroughY = 40;
+dispenserTroughZ = cartridgeLen + 2;
 
-totalZ = baseZ + troughZ;
+dispenserBaseX = dispenserTroughX + 6;
+dispenserBaseY = dispenserTroughY;
+dispenserBaseOffsetY = 10;
+dispenserBaseZ = 2;
+dispenserBaseCornerDia = 10;
 
-frontZ = 4;
+dispenserTotalZ = dispenserBaseZ + dispenserTroughZ;
 
-module itemModule()
+dispenserFrontZ = 4;
+
+module funnel()
+{
+
+}
+
+module dispenser()
 {
 	difference()
     {
         union()
         {
             // // Trough exterior:
-            // translate([0, troughY/2, 0]) 
+            // translate([0, dispenserTroughY/2, 0]) 
             //     hull() 
             //         doubleX() doubleY() 
-            //             translate([troughX/2-troughCornerDia/2, troughY/2-troughCornerDia/2, 0]) 
-            //                 cylinder(d=troughCornerDia, h=totalZ);
+            //             translate([dispenserTroughX/2-dispenserTroughCornerDia/2, dispenserTroughY/2-dispenserTroughCornerDia/2, 0]) 
+            //                 cylinder(d=dispenserTroughCornerDia, h=dispenserTotalZ);
             hull()
             {
-                dy = troughZ - frontZ + 6;
-                doubleX() tcy([troughX/2-troughCornerDia/2, troughCornerDia/2, totalZ-frontZ], d=troughCornerDia, h=frontZ);
-                doubleX() tcy([troughX/2-troughCornerDia/2, dy-troughCornerDia/2, 0], d=troughCornerDia, h=totalZ);
-                doubleX() tcy([troughX/2-troughCornerDia/2, troughY-troughCornerDia/2, 0], d=troughCornerDia, h=totalZ);
+                dy = dispenserTroughZ - dispenserFrontZ + 6;
+                doubleX() tcy([dispenserTroughX/2-dispenserTroughCornerDia/2, dispenserTroughCornerDia/2, dispenserTotalZ-dispenserFrontZ], d=dispenserTroughCornerDia, h=dispenserFrontZ);
+                doubleX() tcy([dispenserTroughX/2-dispenserTroughCornerDia/2, dy-dispenserTroughCornerDia/2, 0], d=dispenserTroughCornerDia, h=dispenserTotalZ);
+                doubleX() tcy([dispenserTroughX/2-dispenserTroughCornerDia/2, dispenserTroughY-dispenserTroughCornerDia/2, 0], d=dispenserTroughCornerDia, h=dispenserTotalZ);
             }
         
             // Base:
-            translate([0, troughY/2, 0]) 
+            translate([0, dispenserTroughY/2, 0]) 
                 hull() 
                     doubleX() doubleY() 
-                        translate([baseX/2-baseCornerDia/2, baseY/2-baseCornerDia/2, 0]) 
-                            cylinder(d=baseCornerDia, h=baseZ);
+                        translate([dispenserBaseX/2-dispenserBaseCornerDia/2, dispenserBaseY/2-dispenserBaseCornerDia/2, 0]) 
+                            cylinder(d=dispenserBaseCornerDia, h=dispenserBaseZ);
         }
 
         recessBackDY = 5;
         // Cartridge slot:
-        translate([0,0,baseZ]) hull()
+        translate([0,0,dispenserBaseZ]) hull()
         {
             tcy([0, -10, 0], d=brassOD, h=100);
-            tcy([0, troughY-recessBackDY, 0], d=brassOD, h=100);
+            tcy([0, dispenserTroughY-recessBackDY, 0], d=brassOD, h=100);
         }
 
         // Rim recess:
-        translate([0,0,totalZ-2]) hull() 
+        translate([0,0,dispenserTotalZ-2]) hull() 
         {
             tcy([0,3,0], d=brassRimOD, h=10);
-            tcy([0,troughY-recessBackDY,0], d=brassRimOD, h=10);
+            tcy([0,dispenserTroughY-recessBackDY,0], d=brassRimOD, h=10);
         }
     }
 }
@@ -72,9 +80,12 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() itemModule();
+	// display() dispenser();
+    display() funnel();
+    display() translate([-50,0,0]) dispenser();
 }
 else
 {
-	itemModule();
+	if(makeDispenser) dispenser();
+    if(makeFunnel) funnel();
 }
