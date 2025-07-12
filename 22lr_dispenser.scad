@@ -61,7 +61,6 @@ module funnel()
         // Basic V:
         hull()
         {
-            // #tcy([funnelVBottomBackX, funnelVBottomBackY, funnelVBottomBackZ], d=funnelVDia, h=1);
             doubleX() funnelVCylinder(funnelVTopX, funnelVBottomBackY, funnelVBottomBackZ, isFront=false, isTop=true);
             doubleX() funnelVCylinder(funnelVTopX, funnelVBottomFrontY, funnelVBottomBackZ, isFront=true, isTop=true);
 
@@ -86,9 +85,10 @@ module funnel()
         // Rim opening through front:
         hull()
         {
-            z = brassRimThickness;
-            tcy([0, funnelBackWallY-brassRimOD/2, funnelVBottomFrontZ], d=brassRimOD, h=z);
-            tcy([0, funnelBackWallY+10, funnelVBottomFrontZ], d=brassRimOD, h=z);
+            z = brassRimThickness + 0.3;
+            d = brassRimOD + 0.3;
+            tcy([0, funnelBackWallY-brassRimOD/2, funnelVBottomFrontZ], d=d, h=z);
+            tcy([0, funnelBackWallY+10, funnelVBottomFrontZ], d=d, h=z);
         }
     }
 }
