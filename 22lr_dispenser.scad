@@ -154,5 +154,5 @@ if(developmentRender)
 else
 {
 	if(makeDispenser) dispenser();
-    if(makeFunnel) funnel();
+    if(makeFunnel) rotate([90,0,0]) funnel();
 }
