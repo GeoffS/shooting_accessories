@@ -24,18 +24,18 @@ dispenserTotalZ = dispenserBaseZ + dispenserTroughZ;
 
 dispenserFrontZ = 4;
 
-funnelBaseX = 40;
-funnelBaseY = 60;
-funnelBaseZ = 12;
+funnelBaseX = 60;
+funnelBaseY = 70;
+funnelBaseZ = 16;
 
 funnelVRimXY = 3;
 funnelVDia = 3;
 
 funnelRimX = funnelBaseX - 2*funnelVRimXY;
 funnelRimY = funnelBaseY - 2*funnelVRimXY;
-funnelRimZ = 2;
+funnelRimZ = 4;
 
-funnelBackWallY = funnelBaseY-funnelVRimXY;
+funnelBackWallY = funnelBaseY - funnelVRimXY;
 
 funnelVTopX = funnelRimX/2;
 funnelVTopY = funnelBaseY - funnelVRimXY;
@@ -80,7 +80,7 @@ module funnel()
         hull()
         {
             tcy([0, funnelBackWallY-brassOD/2, funnelVBottomFrontZ-100+nothing], d=brassOD, h=100);
-            tcy([0, funnelBackWallY+10, funnelVBottomFrontZ-100+nothing], d=brassOD, h=100);
+            tcy([0, funnelBackWallY+15, funnelVBottomFrontZ-100+nothing], d=brassOD, h=100);
         }
         // Rim opening through front:
         hull()
@@ -88,7 +88,7 @@ module funnel()
             z = brassRimThickness + 0.3;
             d = brassRimOD + 0.3;
             tcy([0, funnelBackWallY-brassRimOD/2, funnelVBottomFrontZ], d=d, h=z);
-            tcy([0, funnelBackWallY+10, funnelVBottomFrontZ], d=d, h=z);
+            tcy([0, funnelBackWallY+15, funnelVBottomFrontZ], d=d, h=z);
         }
     }
 }
