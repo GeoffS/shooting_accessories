@@ -46,12 +46,14 @@ funnelVBottomBackY = funnelVRimXY;
 funnelVBottomFrontZ = 4;
 funnelVBottomBackZ = funnelBaseZ - funnelRimZ;
 
+funnelFrontExtraY = funnelBaseZ - funnelVBottomFrontZ;
+
 module funnel()
 {
     difference()
     {
         // Base:
-        tcu([-funnelBaseX/2, 0, 0], [funnelBaseX, funnelBaseY, funnelBaseZ]);
+        tcu([-funnelBaseX/2, 0, 0], [funnelBaseX, funnelBaseY+funnelFrontExtraY, funnelBaseZ]);
 
         // Top rim:
         tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-funnelRimZ], [funnelRimX, funnelRimY, 20]);
@@ -64,6 +66,8 @@ module funnel()
             doubleX() funnelVCylinder(funnelVTopX, funnelVBottomFrontY, funnelVBottomBackZ, isFront=true, isTop=true);
 
             doubleX() funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true, isTop=false);
+
+            tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-nothing], [funnelRimX, funnelRimY+funnelFrontExtraY, 20]);
         }
 
         // Front opening:
