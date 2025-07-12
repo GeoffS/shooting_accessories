@@ -69,7 +69,8 @@ module funnelVCylinder(x, y, z, isFront)
 {
     fvd2 = funnelVDia/2;
     dy = isFront? 0: 1;
-    translate([x-fvd2, y+dy, z]) rotate([90,0,0]) cylinder(d=funnelVDia, h=1);
+    dx = isFront? 0: -fvd2;
+    translate([x-dx, y+dy, z]) rotate([90,0,0]) cylinder(d=funnelVDia, h=1);
 }
 
 module dispenser()
@@ -115,7 +116,8 @@ module dispenser()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([-200, dispenserBaseY/2-400+d, -200], 400);
+    // tcu([-200, dispenserBaseY/2-400+d, -200], 400);
+    tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
