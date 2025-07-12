@@ -25,14 +25,14 @@ dispenserFrontZ = 4;
 
 funnelBaseX = 40;
 funnelBaseY = 60;
-funnelBaseZ = 20;
+funnelBaseZ = 12;
 
-funnelVRimXY = 4;
-funnelVDia = 1;
+funnelVRimXY = 3;
+funnelVDia = 3;
 
 funnelRimX = funnelBaseX - 2*funnelVRimXY;
 funnelRimY = funnelBaseY - 2*funnelVRimXY;
-funnelRimZ = funnelVRimXY;
+funnelRimZ = 2;
 
 funnelVTopX = funnelRimX/2;
 funnelVTopY = funnelBaseY - funnelVRimXY;
@@ -41,7 +41,7 @@ funnelVBottomFrontY = funnelBaseY - funnelVRimXY;
 funnelVBottomBackY = funnelVRimXY;
 
 funnelVBottomFrontZ = 4;
-funnelVBottomBackZ = funnelBaseZ - funnelVRimXY;
+funnelVBottomBackZ = funnelBaseZ - funnelRimZ;
 
 module funnel()
 {
@@ -78,12 +78,7 @@ module dispenser()
     {
         union()
         {
-            // // Trough exterior:
-            // translate([0, dispenserTroughY/2, 0]) 
-            //     hull() 
-            //         doubleX() doubleY() 
-            //             translate([dispenserTroughX/2-dispenserTroughCornerDia/2, dispenserTroughY/2-dispenserTroughCornerDia/2, 0]) 
-            //                 cylinder(d=dispenserTroughCornerDia, h=dispenserTotalZ);
+            // Trough exterior:
             hull()
             {
                 dy = dispenserTroughZ - dispenserFrontZ + 6;
@@ -120,6 +115,7 @@ module dispenser()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
+    tcu([-200, dispenserBaseY/2-400+d, -200], 400);
 }
 
 if(developmentRender)
