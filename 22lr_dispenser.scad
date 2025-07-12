@@ -2,6 +2,7 @@ include <../OpenSCAD_Lib/MakeInclude.scad>
 
 brassOD = 5.75 + 0.3;
 brassRimOD = 6.9 + 0.25 ;
+brassRimThickness = 1.1;
 cartridgeLen = 26;
 
 makeDispenser = false;
@@ -34,6 +35,8 @@ funnelRimX = funnelBaseX - 2*funnelVRimXY;
 funnelRimY = funnelBaseY - 2*funnelVRimXY;
 funnelRimZ = 2;
 
+funnelBackWallY = funnelBaseY-funnelVRimXY;
+
 funnelVTopX = funnelRimX/2;
 funnelVTopY = funnelBaseY - funnelVRimXY;
 
@@ -57,23 +60,33 @@ module funnel()
         hull()
         {
             // #tcy([funnelVBottomBackX, funnelVBottomBackY, funnelVBottomBackZ], d=funnelVDia, h=1);
-            doubleX() funnelVCylinder(funnelVTopX, funnelVBottomBackY, funnelVBottomBackZ, isFront=false);
-            doubleX() funnelVCylinder(funnelVTopX, funnelVBottomFrontY, funnelVBottomBackZ, isFront=true);
+            doubleX() funnelVCylinder(funnelVTopX, funnelVBottomBackY, funnelVBottomBackZ, isFront=false, isTop=true);
+            doubleX() funnelVCylinder(funnelVTopX, funnelVBottomFrontY, funnelVBottomBackZ, isFront=true, isTop=true);
 
-            doubleX() funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true);
+            doubleX() funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true, isTop=false);
         }
 
         // Front opening:
-
+        hull()
+        {
+            tcy([0, funnelBackWallY-brassOD/2, -10], d=brassOD, h=100);
+            tcy([0, funnelBackWallY-cartridgeLen, -10], d=brassOD, h=100);
+        }
+        hull()
+        {
+            tcy([0, funnelBackWallY-brassOD/2+2, -100+funnelVBottomFrontZ+brassRimThickness], d=brassRimOD, h=100);
+            tcy([0, funnelBackWallY+10, -100+funnelVBottomFrontZ+brassRimThickness], d=brassRimOD, h=100);
+        }
     }
 }
 
-module funnelVCylinder(x, y, z, isFront)
+module funnelVCylinder(x, y, z, isFront, isTop)
 {
     fvd2 = funnelVDia/2;
     dy = isFront? 0: 1;
     dx = -fvd2; //isFront? 0: -fvd2;
-    translate([x-dx, y+dy, z]) rotate([90,0,0]) cylinder(d=funnelVDia, h=1);
+    dz = isTop? 0: fvd2;
+    translate([x+dx, y+dy, z+dz]) rotate([90,0,0]) cylinder(d=funnelVDia, h=1);
 }
 
 module dispenser()
@@ -120,7 +133,7 @@ module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
     // tcu([-200, dispenserBaseY/2-400+d, -200], 400);
-    tcu([-d, -200, -200], 400);
+    // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
