@@ -24,9 +24,9 @@ dispenserTotalZ = dispenserBaseZ + dispenserTroughZ;
 
 dispenserFrontZ = 4;
 
-funnelBaseX = 60;
-funnelBaseY = 70;
-funnelBaseZ = 16;
+funnelBaseX = 70;
+funnelBaseY = 80;
+funnelBaseZ = 25;
 
 funnelVRimXY = 3;
 funnelVDia = 3;
@@ -46,7 +46,7 @@ funnelVBottomBackY = funnelVRimXY;
 funnelVBottomFrontZ = 4;
 funnelVBottomBackZ = funnelBaseZ - funnelRimZ;
 
-funnelFrontExtraY = funnelBaseZ - funnelVBottomFrontZ;
+funnelFrontExtraY = 6; //funnelBaseZ - funnelVBottomFrontZ;
 
 module funnel()
 {
