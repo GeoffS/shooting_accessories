@@ -82,9 +82,6 @@ module funnel()
                     simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=funnelBaseZ+underFunnelBaseZ, cz=funnelBaseCZ);
         }
 
-        // Top rim:
-        // #tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-funnelRimZ], [funnelRimX, funnelRimY, 20]);
-
         // Basic V:
         hull()
         {
