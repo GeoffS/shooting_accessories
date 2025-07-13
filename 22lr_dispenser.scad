@@ -127,12 +127,14 @@ module funnel()
             tcy([0, funnelDispenserStartY, -slotZ], d=brassOD, h=100);
             tcy([0, funnelBackWallY-cartridgeLen-1, -slotZ], d=brassOD+0.2, h=100);
         }
+
         // Brass opening through front:
         hull()
         {
             tcy([0, funnelBackWallY-brassOD/2, funnelVBottomFrontZ-100+nothing], d=brassOD, h=100);
             tcy([0, funnelBackWallY+70, funnelVBottomFrontZ-100-funnelDispenserDropZ+1.5], d=brassOD, h=100);
         }
+
         // Rim opening through front:
         z = brassRimThickness + 0.6;
         d = brassRimOD + 0.3;
@@ -147,6 +149,13 @@ module funnel()
             
             translate([0, magicDY, magicDZ])
                 tcy([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ], d=d, h=z);
+        }
+
+        // Peak the roof of the rim opening for printability:
+        translate([0,0,1.73]) hull()
+        {
+            rotate([0,0,0]) translate([0, funnelDispenserStartY, funnelVBottomFrontZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
+            rotate([0,0,0]) translate([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
         }
     }
 }
