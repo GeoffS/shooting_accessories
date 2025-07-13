@@ -6,24 +6,8 @@ brassRimOD = 6.9 + 0.25 ;
 brassRimThickness = 1.1;
 cartridgeLen = 26;
 
-makeDispenser = false;
 makeFunnel = false;
 
-dispenserTroughWall = 3;
-dispenserTroughCornerDia = 2*dispenserTroughWall;
-dispenserTroughX = brassRimOD + 2*dispenserTroughWall + 2;
-dispenserTroughY = 40;
-dispenserTroughZ = cartridgeLen + 2;
-
-dispenserBaseX = dispenserTroughX + 6;
-dispenserBaseY = dispenserTroughY;
-dispenserBaseOffsetY = 10;
-dispenserBaseZ = 2;
-dispenserBaseCornerDia = 10;
-
-dispenserTotalZ = dispenserBaseZ + dispenserTroughZ;
-
-dispenserFrontZ = 4;
 
 funnelVRimXY = 7;
 funnelVDia = 3;
@@ -172,61 +156,17 @@ module funnelVCylinder(x, y, z, isFront, isTop)
     translate([x+dx, y+dy, z+dz]) rotate([90,0,0]) cylinder(d=funnelVDia, h=1);
 }
 
-module dispenser()
-{
-	difference()
-    {
-        union()
-        {
-            // Trough exterior:
-            hull()
-            {
-                dy = dispenserTroughZ - dispenserFrontZ + 6;
-                doubleX() tcy([dispenserTroughX/2-dispenserTroughCornerDia/2, dispenserTroughCornerDia/2, dispenserTotalZ-dispenserFrontZ], d=dispenserTroughCornerDia, h=dispenserFrontZ);
-                doubleX() tcy([dispenserTroughX/2-dispenserTroughCornerDia/2, dy-dispenserTroughCornerDia/2, 0], d=dispenserTroughCornerDia, h=dispenserTotalZ);
-                doubleX() tcy([dispenserTroughX/2-dispenserTroughCornerDia/2, dispenserTroughY-dispenserTroughCornerDia/2, 0], d=dispenserTroughCornerDia, h=dispenserTotalZ);
-            }
-        
-            // Base:
-            translate([0, dispenserTroughY/2, 0]) 
-                hull() 
-                    doubleX() doubleY() 
-                        translate([dispenserBaseX/2-dispenserBaseCornerDia/2, dispenserBaseY/2-dispenserBaseCornerDia/2, 0]) 
-                            cylinder(d=dispenserBaseCornerDia, h=dispenserBaseZ);
-        }
-
-        recessBackDY = 5;
-        // Cartridge slot:
-        translate([0,0,dispenserBaseZ]) hull()
-        {
-            tcy([0, -10, 0], d=brassOD, h=100);
-            tcy([0, dispenserTroughY-recessBackDY, 0], d=brassOD, h=100);
-        }
-
-        // Rim recess:
-        translate([0,0,dispenserTotalZ-2]) hull() 
-        {
-            tcy([0,3,0], d=brassRimOD, h=10);
-            tcy([0,dispenserTroughY-recessBackDY,0], d=brassRimOD, h=10);
-        }
-    }
-}
-
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([-200, dispenserBaseY/2-400+d, -200], 400);
     // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
-	// display() dispenser();
-    display() funnel();
-    display() translate([-70,0,0]) dispenser();
+	display() funnel();
 }
 else
 {
-	if(makeDispenser) dispenser();
-    if(makeFunnel) rotate([90,0,0]) funnel();
+	if(makeFunnel) funnel();
 }
