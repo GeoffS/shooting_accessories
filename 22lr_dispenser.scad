@@ -92,7 +92,7 @@ module funnel()
             translate([0, funnelDispenserStartY, -underFunnelBaseZ]) hull()
             {
                 z = underFunnelBaseZ + funnelVBottomFrontZ + 0.83;
-                startDZ = 9.36;
+                startDZ = 7.0; //9.36;
                 translate([0,0,-startDZ])
                     simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=z+startDZ, cz=funnelBaseCZ);
                 endDZ = 25;
