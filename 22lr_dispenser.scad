@@ -92,11 +92,17 @@ module funnel()
             translate([0, funnelDispenserStartY, -underFunnelBaseZ]) hull()
             {
                 z = underFunnelBaseZ + funnelVBottomFrontZ + 0.83;
-                simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=z, cz=funnelBaseCZ);
-                translate([0, funnelDispenserY, 0])
-                    simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=z-funnelDispenserDropZ, cz=funnelBaseCZ);
+                startDZ = 9.36;
+                translate([0,0,-startDZ])
+                    simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=z+startDZ, cz=funnelBaseCZ);
+                endDZ = 25;
+                translate([0, funnelDispenserY, endDZ])
+                    simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=z-funnelDispenserDropZ-endDZ, cz=funnelBaseCZ);
             }
         }
+
+        // Trim below -underFunnelBaseZ:
+        tcu([-200, -200, -400-underFunnelBaseZ], 400);
 
         // Basic V:
         hull()
