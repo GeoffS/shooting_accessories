@@ -121,18 +121,20 @@ module funnel()
 
         // Front opening:
         slotZ = cartridgeLen + 3;
+        brassSlotY = brassOD+0.2;
         // Slot in funnel:
         hull()
         {
-            tcy([0, funnelDispenserStartY, -slotZ], d=brassOD, h=100);
-            tcy([0, funnelBackWallY-cartridgeLen-1, -slotZ], d=brassOD+0.2, h=100);
+            tcy([0, funnelDispenserStartY, -slotZ], d=brassSlotY, h=100);
+            tcy([0, funnelBackWallY-cartridgeLen-1, -slotZ], d=brassSlotY, h=100);
         }
 
         // Brass opening through front:
-        hull()
+        translate([0,0, -underFunnelBaseZ+2]) hull()
         {
-            tcy([0, funnelBackWallY-brassOD/2, funnelVBottomFrontZ-100+nothing], d=brassOD, h=100);
-            tcy([0, funnelBackWallY+70, funnelVBottomFrontZ-100-funnelDispenserDropZ+1.5], d=brassOD, h=100);
+            z = slotZ + 3.8;
+            tcy([0, funnelBackWallY-brassSlotY/2, 0], d=brassSlotY, h=z);
+            tcy([0, funnelBackWallY+70, 0], d=brassSlotY, h=z);
         }
 
         // Rim opening through front:
