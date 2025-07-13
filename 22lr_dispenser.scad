@@ -80,13 +80,15 @@ module funnel()
     {
         union()
         {
-        // Base:
+            // Funnel exterior:
             hull()
             {
                 funnelCornersXform() 
                     translate([0,0,-underFunnelBaseZ])
                         simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=funnelBaseZ+underFunnelBaseZ, cz=funnelBaseCZ);
             }
+
+            // Dispenser exterior:
             translate([0, funnelDispenserStartY, -underFunnelBaseZ]) hull()
             {
                 z = underFunnelBaseZ + funnelVBottomFrontZ + 0.83;
