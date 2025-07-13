@@ -21,6 +21,8 @@ underFunnelBaseZ = cartridgeLen + 5;
 funnelBaseOD = 2 * funnelVRimXY;
 funnelBaseCZ = 1;
 
+echo(str("funnelBaseOD = ", funnelBaseOD));
+
 funnelRimX = funnelBaseX - 2*funnelVRimXY;
 funnelRimY = funnelBaseY - 2*funnelVRimXY;
 funnelRimZ = 4;
@@ -50,6 +52,8 @@ funnelDispenserDropZ = 5;
 funnelDispenserStartY = funnelBackWallY-brassOD/2;
 funnelDispenserY = 5 * brassRimOD;
 
+funnelDispenserOD = funnelBaseOD;
+
 module funnelCornersXform()
 {
     translate([0, funnelBaseTotalY/2, 0])
@@ -78,10 +82,10 @@ module funnel()
                 z = underFunnelBaseZ + funnelVBottomFrontZ + 0.83;
                 startDZ = 7.0; //9.36;
                 translate([0,0,-startDZ])
-                    simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=z+startDZ, cz=funnelBaseCZ);
+                    simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=z+startDZ, cz=funnelBaseCZ);
                 endDZ = 25;
                 translate([0, funnelDispenserY, endDZ])
-                    simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=z-funnelDispenserDropZ-endDZ, cz=funnelBaseCZ);
+                    simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=z-funnelDispenserDropZ-endDZ, cz=funnelBaseCZ);
             }
         }
 
