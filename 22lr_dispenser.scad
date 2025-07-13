@@ -25,7 +25,7 @@ dispenserTotalZ = dispenserBaseZ + dispenserTroughZ;
 
 dispenserFrontZ = 4;
 
-funnelVRimXY = 3;
+funnelVRimXY = 7;
 funnelVDia = 3;
 
 funnelBaseX = 70;
@@ -33,6 +33,7 @@ funnelBaseY = 80;
 funnelBaseZ = 25;
 
 funnelBaseOD = 2 * funnelVRimXY;
+funnelBaseCZ = 1;
 
 funnelRimX = funnelBaseX - 2*funnelVRimXY;
 funnelRimY = funnelBaseY - 2*funnelVRimXY;
@@ -50,6 +51,8 @@ funnelVBottomFrontZ = 4;
 funnelVBottomBackZ = funnelBaseZ - funnelRimZ;
 
 funnelFrontExtraY = 6; //funnelBaseZ - funnelVBottomFrontZ;
+
+funnelVRimDia = funnelBaseOD - 4*funnelBaseCZ - 2;
 
 funnelBaseTotalY = funnelBaseY + funnelFrontExtraY;
 
@@ -71,11 +74,11 @@ module funnel()
         // Base:
         hull()
         {
-            funnelCornersXform() simpleChamferedCylinder(d=funnelBaseOD, h=funnelBaseZ, cz=1);
+            funnelCornersXform() simpleChamferedCylinder(d=funnelBaseOD, h=funnelBaseZ, cz=funnelBaseCZ);
         }
 
         // Top rim:
-        tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-funnelRimZ], [funnelRimX, funnelRimY, 20]);
+        // #tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-funnelRimZ], [funnelRimX, funnelRimY, 20]);
 
         // Basic V:
         hull()
@@ -85,7 +88,8 @@ module funnel()
 
             doubleX() funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true, isTop=false);
 
-            tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-nothing], [funnelRimX, funnelRimY+funnelFrontExtraY, 20]);
+            // #tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-nothing], [funnelRimX, funnelRimY+funnelFrontExtraY, 20]);
+            #translate([0,0,funnelBaseZ-nothing]) funnelCornersXform() cylinder(d=funnelVRimDia, h=20);
         }
 
         // Front opening:
@@ -172,7 +176,7 @@ if(developmentRender)
 {
 	// display() dispenser();
     display() funnel();
-    display() translate([-50,0,0]) dispenser();
+    display() translate([-70,0,0]) dispenser();
 }
 else
 {
