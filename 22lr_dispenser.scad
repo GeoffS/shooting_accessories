@@ -32,6 +32,8 @@ funnelBaseX = 70;
 funnelBaseY = 80;
 funnelBaseZ = 25;
 
+underFunnelBaseZ = cartridgeLen + 5;
+
 funnelBaseOD = 2 * funnelVRimXY;
 funnelBaseCZ = 1;
 
@@ -75,7 +77,9 @@ module funnel()
         // Base:
         hull()
         {
-            funnelCornersXform() simpleChamferedCylinder(d=funnelBaseOD, h=funnelBaseZ, cz=funnelBaseCZ);
+            funnelCornersXform() 
+                translate([0,0,-underFunnelBaseZ])
+                    simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=funnelBaseZ+underFunnelBaseZ, cz=funnelBaseCZ);
         }
 
         // Top rim:
@@ -97,11 +101,12 @@ module funnel()
         hull() funnelCornersXform() translate([0,0,funnelBaseZ-funnelVRimDia/2-funnelBaseCZ]) cylinder(d1=0, d2=12, h=6);
 
         // Front opening:
+        slotZ = cartridgeLen + 3;
         // Slot in funnel:
         hull()
         {
-            tcy([0, funnelBackWallY-brassOD/2, -10], d=brassOD, h=100);
-            tcy([0, funnelBackWallY-cartridgeLen-1, -10], d=brassOD+0.2, h=100);
+            tcy([0, funnelBackWallY-brassOD/2, -slotZ], d=brassOD, h=100);
+            tcy([0, funnelBackWallY-cartridgeLen-1, -slotZ], d=brassOD+0.2, h=100);
         }
         // Brass opening through front:
         hull()
