@@ -53,6 +53,7 @@ funnelVBottomBackZ = funnelBaseZ - funnelRimZ;
 funnelFrontExtraY = 6; //funnelBaseZ - funnelVBottomFrontZ;
 
 funnelVRimDia = funnelBaseOD - 4*funnelBaseCZ - 2;
+echo(str("funnelVRimDia = ", funnelVRimDia));
 
 funnelBaseTotalY = funnelBaseY + funnelFrontExtraY;
 
@@ -88,9 +89,12 @@ module funnel()
 
             doubleX() funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true, isTop=false);
 
-            // #tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-nothing], [funnelRimX, funnelRimY+funnelFrontExtraY, 20]);
-            #translate([0,0,funnelBaseZ-nothing]) funnelCornersXform() cylinder(d=funnelVRimDia, h=20);
+            // Rim recess:
+            funnelCornersXform() translate([0, 0, funnelBaseZ-funnelRimZ]) cylinder(d=funnelVRimDia, h=20);
         }
+
+        // Inside chamfer:
+        hull() funnelCornersXform() translate([0,0,funnelBaseZ-funnelVRimDia/2-funnelBaseCZ]) cylinder(d1=0, d2=12, h=6);
 
         // Front opening:
         // Slot in funnel:
