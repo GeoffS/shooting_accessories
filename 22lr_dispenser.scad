@@ -1,4 +1,5 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
+include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 brassOD = 5.75 + 0.3;
 brassRimOD = 6.9 + 0.25 ;
@@ -24,12 +25,14 @@ dispenserTotalZ = dispenserBaseZ + dispenserTroughZ;
 
 dispenserFrontZ = 4;
 
+funnelVRimXY = 3;
+funnelVDia = 3;
+
 funnelBaseX = 70;
 funnelBaseY = 80;
 funnelBaseZ = 25;
 
-funnelVRimXY = 3;
-funnelVDia = 3;
+funnelBaseOD = 2 * funnelVRimXY;
 
 funnelRimX = funnelBaseX - 2*funnelVRimXY;
 funnelRimY = funnelBaseY - 2*funnelVRimXY;
@@ -48,12 +51,28 @@ funnelVBottomBackZ = funnelBaseZ - funnelRimZ;
 
 funnelFrontExtraY = 6; //funnelBaseZ - funnelVBottomFrontZ;
 
+funnelBaseTotalY = funnelBaseY + funnelFrontExtraY;
+
+funnelCornerCtrX = funnelBaseX/2-funnelBaseOD/2;
+funnelCornerCtrY = funnelBaseY/2-funnelBaseOD/2;
+
+module funnelCornersXform()
+{
+    translate([0, funnelBaseTotalY/2, 0])
+        doubleX() doubleY() 
+            translate([funnelCornerCtrX, funnelBaseTotalY/2-funnelBaseOD/2, 0]) 
+                children();
+}
+
 module funnel()
 {
     difference()
     {
         // Base:
-        tcu([-funnelBaseX/2, 0, 0], [funnelBaseX, funnelBaseY+funnelFrontExtraY, funnelBaseZ]);
+        hull()
+        {
+            funnelCornersXform() simpleChamferedCylinder(d=funnelBaseOD, h=funnelBaseZ, cz=1);
+        }
 
         // Top rim:
         tcu([-funnelRimX/2, funnelVRimXY, funnelBaseZ-funnelRimZ], [funnelRimX, funnelRimY, 20]);
