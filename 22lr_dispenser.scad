@@ -142,10 +142,17 @@ module funnel()
         }
 
         // Peak the roof of the rim opening for printability:
-        translate([0,0,1.73]) hull()
+        translate([0,0,1.73]) 
         {
-            rotate([0,0,0]) translate([0, funnelDispenserStartY, funnelVBottomFrontZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
-            rotate([0,0,0]) translate([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
+            difference()
+            {
+                hull()
+                {
+                    rotate([0,0,0]) translate([0, funnelDispenserStartY, funnelVBottomFrontZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
+                    rotate([0,0,0]) translate([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
+                }
+                translate([-50, funnelDispenserStartY+3.8, funnelVBottomFrontZ + 0.4]) rotate([28,0,0]) cube(100);
+            }
         }
     }
 }
