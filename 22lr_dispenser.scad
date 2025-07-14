@@ -8,7 +8,6 @@ cartridgeLen = 26;
 
 makeFunnel = false;
 
-
 funnelVRimXY = 7;
 funnelVDia = 3;
 
@@ -54,12 +53,28 @@ funnelDispenserY = 6 * brassRimOD;
 
 funnelDispenserOD = funnelBaseOD;
 
-module funnelCornersXform()
+funnelBackOffsetZ = 10;
+
+module funnelCornersXform(backOffsetZ)
 {
     translate([0, funnelBaseTotalY/2, 0])
-        doubleX() doubleY() 
+        doubleX()
+        {
+            // Back:
+            translate([funnelCornerCtrX, -funnelBaseTotalY/2+funnelBaseOD/2, 0]) 
+                children(0);
+            // Front
             translate([funnelCornerCtrX, funnelBaseTotalY/2-funnelBaseOD/2, 0]) 
-                children();
+                children(1);
+        }
+}
+
+module insideChamfer()
+{
+    d = funnelVRimDia + 2*funnelBaseCZ;
+    h = d/2;
+    // cylinder(d1=0, d2=d, h=h);
+    // tcy([0,0,h-nothing], d=d, h=10);
 }
 
 module funnel()
@@ -71,9 +86,11 @@ module funnel()
             // Funnel exterior:
             hull()
             {
-                funnelCornersXform() 
-                    translate([0,0,-underFunnelBaseZ])
-                        simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=funnelBaseZ+underFunnelBaseZ, cz=funnelBaseCZ);
+                translate([0,0,-underFunnelBaseZ]) funnelCornersXform(funnelBackOffsetZ) 
+                {
+                    simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=funnelBaseZ+underFunnelBaseZ+funnelBackOffsetZ, cz=funnelBaseCZ);
+                    simpleChamferedCylinderDoubleEnded(d=funnelBaseOD, h=funnelBaseZ+underFunnelBaseZ, cz=funnelBaseCZ);
+                }
             }
 
             // Dispenser exterior:
@@ -101,11 +118,20 @@ module funnel()
             doubleX() funnelVCylinder(0, funnelVBottomFrontY, funnelVBottomFrontZ, isFront=true, isTop=false);
 
             // Rim recess:
-            funnelCornersXform() translate([0, 0, funnelBaseZ-funnelRimZ]) cylinder(d=funnelVRimDia, h=20);
+            translate([0, 0, funnelBaseZ-funnelRimZ]) funnelCornersXform(funnelBackOffsetZ) 
+            {
+                cylinder(d=funnelVRimDia, h=30);
+                cylinder(d=funnelVRimDia, h=20);
+            }
         }
 
         // Inside chamfer:
-        hull() funnelCornersXform() translate([0,0,funnelBaseZ-funnelVRimDia/2-funnelBaseCZ]) cylinder(d1=0, d2=12, h=6);
+        translate([0,0,funnelBaseZ-funnelVRimDia/2-funnelBaseCZ]) hull() funnelCornersXform(funnelBackOffsetZ) 
+        {
+           
+            #translate([0,0,funnelBackOffsetZ+nothing]) insideChamfer();
+            #insideChamfer();
+        }
 
         // Front opening:
         slotZ = cartridgeLen + 3;
