@@ -50,7 +50,7 @@ funnelCornerCtrY = funnelBaseY/2-funnelBaseOD/2;
 
 funnelDispenserDropZ = 0;
 funnelDispenserStartY = funnelBackWallY-brassOD/2;
-funnelDispenserY = 6 * brassRimOD;
+funnelDispenserY = 5 * brassRimOD;
 
 funnelDispenserOD = funnelBaseOD;
 
@@ -170,7 +170,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
