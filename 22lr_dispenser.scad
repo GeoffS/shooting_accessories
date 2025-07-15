@@ -129,8 +129,8 @@ module funnel()
         z = brassRimThickness + 0.6;
         d = brassRimOD + 0.3;
         endY = funnelDispenserStartY + funnelDispenserY;
-        magicDY = 1.6; //1.8;
-        magicDZ = 0; //-0.5;
+        magicDY = 1.8;
+        magicDZ = -0.5;
         hull()
         {
             
@@ -170,7 +170,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([-d, -200, -200], 400);
+    // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
