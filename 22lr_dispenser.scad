@@ -48,7 +48,7 @@ funnelBaseTotalY = funnelBaseY + funnelFrontExtraY;
 funnelCornerCtrX = funnelBaseX/2-funnelBaseOD/2;
 funnelCornerCtrY = funnelBaseY/2-funnelBaseOD/2;
 
-funnelDispenserDropZ = 0;
+funnelDispenserDropZ = 5;
 funnelDispenserStartY = funnelBackWallY-brassOD/2;
 funnelDispenserY = 5 * brassRimOD;
 
@@ -83,7 +83,7 @@ module funnel()
                 startDZ = 7.0; //9.36;
                 translate([0,0,-startDZ])
                     simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=z+startDZ, cz=funnelBaseCZ);
-                endDZ = 30;
+                endDZ = 25;
                 translate([0, funnelDispenserY, endDZ])
                     simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=z-funnelDispenserDropZ-endDZ, cz=funnelBaseCZ);
             }
@@ -120,7 +120,7 @@ module funnel()
         // Brass opening through front:
         translate([0,0, -underFunnelBaseZ+2]) hull()
         {
-            z = slotZ + 5; //3.8;
+            z = slotZ + 3.8;
             tcy([0, funnelBackWallY-brassSlotY/2, 0], d=brassSlotY, h=z);
             tcy([0, funnelBackWallY+70, 0], d=brassSlotY, h=z);
         }
