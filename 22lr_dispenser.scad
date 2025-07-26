@@ -82,7 +82,7 @@ module funnel()
             {
                 // MAGIC NUMBER!!! depends on funnelDispenserAngle
                 // ------vvvv
-                startH = 57.6;
+                startH = 53.6; //57.6;
                 translate([0,0,-startH])
                     simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=startH, cz=funnelBaseCZ);
                 endH = 5;
@@ -182,7 +182,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([-d, -200, -200], 400);
+    // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
