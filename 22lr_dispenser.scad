@@ -115,8 +115,11 @@ module funnel()
         // Slot in funnel:
         hull()
         {
-            tcy([0, funnelDispenserStartY, -slotZ], d=brassSlotY, h=100);
-            tcy([0, funnelBackWallY-cartridgeLen-1, -slotZ], d=brassSlotY, h=100);
+            // MAGIC NUMBER!!! Depends on funnelDispenserAngle:
+            // ------v
+            extraZ = 3;
+            tcy([0, funnelDispenserStartY, -slotZ+extraZ], d=brassSlotY, h=100);
+            tcy([0, funnelBackWallY-cartridgeLen-1, -slotZ+extraZ], d=brassSlotY, h=100);
         }
 
         // Brass opening through front:
@@ -179,7 +182,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
