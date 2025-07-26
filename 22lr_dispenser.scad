@@ -48,7 +48,7 @@ funnelBaseTotalY = funnelBaseY + funnelFrontExtraY;
 funnelCornerCtrX = funnelBaseX/2-funnelBaseOD/2;
 funnelCornerCtrY = funnelBaseY/2-funnelBaseOD/2;
 
-funnelDispenserDropZ = 5;
+funnelDispenserDropZ = 10;
 funnelDispenserStartY = funnelBackWallY-brassOD/2;
 funnelDispenserY = 5 * brassRimOD;
 
@@ -130,7 +130,7 @@ module funnel()
         d = brassRimOD + 0.3;
         endY = funnelDispenserStartY + funnelDispenserY;
         magicDY = 1.8;
-        magicDZ = -0.5;
+        magicDZ = 0.1; //-0.5;
         hull()
         {
             
