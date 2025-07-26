@@ -17,6 +17,7 @@ funnelBaseY = 80;
 funnelBaseZ = 25;
 
 underFunnelBaseZ = cartridgeLen + 5;
+echo(str("underFunnelBaseZ = ", underFunnelBaseZ));
 
 funnelBaseOD = 2 * funnelVRimXY;
 funnelBaseCZ = 1;
@@ -48,7 +49,8 @@ funnelBaseTotalY = funnelBaseY + funnelFrontExtraY;
 funnelCornerCtrX = funnelBaseX/2-funnelBaseOD/2;
 funnelCornerCtrY = funnelBaseY/2-funnelBaseOD/2;
 
-funnelDispenserDropZ = 10;
+funnelDispenserDropZ = 0;
+funnelDispenserAngle = 15;
 funnelDispenserStartY = funnelBackWallY-brassOD/2;
 funnelDispenserY = 5 * brassRimOD;
 
@@ -77,15 +79,19 @@ module funnel()
             }
 
             // Dispenser exterior:
-            translate([0, funnelDispenserStartY, -underFunnelBaseZ]) hull()
+            funnelDispenserXform() hull()
             {
-                z = underFunnelBaseZ + funnelVBottomFrontZ + 0.83;
-                startDZ = 7.0; //9.36;
-                translate([0,0,-startDZ])
-                    simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=z+startDZ, cz=funnelBaseCZ);
-                endDZ = 25;
-                translate([0, funnelDispenserY, endDZ])
-                    simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=z-funnelDispenserDropZ-endDZ, cz=funnelBaseCZ);
+                // z = underFunnelBaseZ + funnelVBottomFrontZ + 0.83;
+                // echo(str("z = ", z));
+                // startDZ = 0; //7.0; //9.36;
+                // MAGIC NUMBER!!! depends on funnelDispenserAngle
+                // ------vvvv
+                startH = 57.6;
+                translate([0,0,-startH])
+                    simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=startH, cz=funnelBaseCZ);
+                endH = 5;
+                translate([0, funnelDispenserY, -endH])
+                    simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=endH, cz=funnelBaseCZ);
             }
         }
 
@@ -142,12 +148,22 @@ module funnel()
         }
 
         // Peak the roof of the rim opening for printability:
-        translate([0,0,1.73]) hull()
+        // translate([0,0,1.73]) hull()
+        // {
+        //     rotate([0,0,0]) translate([0, funnelDispenserStartY, funnelVBottomFrontZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
+        //     rotate([0,0,0]) translate([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
+        // }
+        funnelDispenserXform() hull()
         {
-            rotate([0,0,0]) translate([0, funnelDispenserStartY, funnelVBottomFrontZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
-            rotate([0,0,0]) translate([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ]) rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
+            rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
         }
     }
+}
+
+module funnelDispenserXform()
+{
+    z = funnelVBottomFrontZ + 0.83;
+    translate([0, funnelDispenserStartY, z]) rotate([-funnelDispenserAngle,0,0]) children();
 }
 
 
@@ -163,7 +179,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
