@@ -124,28 +124,58 @@ module funnel()
         }
 
         // Brass opening through front:
-        translate([0,0, -underFunnelBaseZ+2]) hull()
+        // translate([0,0, -underFunnelBaseZ+2]) hull()
+        // {
+        //     z = slotZ + 3.8;
+        //     tcy([0, funnelBackWallY-brassSlotY/2, 0], d=brassSlotY, h=z);
+        //     tcy([0, funnelBackWallY+70, 0], d=brassSlotY, h=z);
+        // }
+        funnelDispenserXform() hull()
         {
-            z = slotZ + 3.8;
-            tcy([0, funnelBackWallY-brassSlotY/2, 0], d=brassSlotY, h=z);
-            tcy([0, funnelBackWallY+70, 0], d=brassSlotY, h=z);
+            // z = slotZ + 3.8;
+            // z = brassRimThickness + 1 + brassRimSlotExtraZ;
+            tcy([0, 0, -slotZ], d=brassSlotY, h=slotZ);
+            tcy([0, funnelBackWallY+70, -slotZ], d=brassSlotY, h=slotZ);
         }
 
         // Rim opening through front:
-        z = brassRimThickness + 0.6;
-        d = brassRimOD + 0.3;
-        endY = funnelDispenserStartY + funnelDispenserY;
-        magicDY = 1.8;
-        magicDZ = 0.1; //-0.5;
-        hull()
+        brassRimSlotExtraZ = nothing;
+        brassRimSlotDia = brassRimOD + 0.3;
+        brassRimSlotZ = brassRimThickness + 0.5;
+        funnelDispenserXform() 
         {
-            
-            tcy([0, funnelDispenserStartY, funnelVBottomFrontZ], d=d, h=z);
-            tcy([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ], d=d, h=z);
-            
-            translate([0, magicDY, magicDZ])
-                tcy([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ], d=d, h=z);
+            translate([0, 0, -brassRimSlotZ]) hull()
+            {
+                tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
+                translate([0,brassRimSlotDia/2,0]) difference()
+                {
+                    tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+5);
+                    tcu([-10, 0 ,-1], 20);
+                }
+            }
+
+            hull()
+            {
+                // z = slotZ + 3.8;
+                // z = 
+                tcy([0, 0, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
+                tcy([0, funnelBackWallY+70, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
+            }
         }
+        // z = brassRimThickness + 0.6;
+        // d = brassRimOD + 0.3;
+        // endY = funnelDispenserStartY + funnelDispenserY;
+        // magicDY = 1.8;
+        // magicDZ = 0.1; //-0.5;
+        // #hull()
+        // {
+            
+        //     tcy([0, funnelDispenserStartY, funnelVBottomFrontZ], d=d, h=z);
+        //     tcy([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ], d=d, h=z);
+            
+        //     translate([0, magicDY, magicDZ])
+        //         tcy([0, endY, funnelVBottomFrontZ-funnelDispenserDropZ], d=d, h=z);
+        // }
 
         // Peak the roof of the rim opening for printability:
         // translate([0,0,1.73]) hull()
@@ -155,7 +185,8 @@ module funnel()
         // }
         funnelDispenserXform() hull()
         {
-            rotate([90,0,0]) cylinder(d=d, h=0.1, $fn=4);
+            h = 20;
+            rotate([90,0,0]) tcy([0, brassRimSlotExtraZ, -h], d=brassRimSlotDia, h=h, $fn=4);
         }
     }
 }
@@ -179,7 +210,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([-d, -200, -200], 400);
+    // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
