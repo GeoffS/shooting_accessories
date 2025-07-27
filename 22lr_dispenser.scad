@@ -170,7 +170,7 @@ module funnel()
             extraZ = 3;
             funnelBrassSlotXform()
             {
-                tcy([0, 0, -brassSlotZ+extraZ], d=brassSlotY, h=100);
+                tcy([0, 0, -brassSlotZ+extraZ-2.37], d=brassSlotY, h=100);
                 tcy([0, 0, -brassSlotZ+extraZ], d=brassSlotY, h=100);
             }
         }
@@ -282,7 +282,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([-d, -200, -200], 400);
+    // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
