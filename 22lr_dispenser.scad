@@ -61,7 +61,7 @@ funnelCornerOffsetY = funnelBaseTotalY/2-funnelBaseOD/2;
 
 brassSlotZ = cartridgeLen + 3;
 brassSlotY = brassOD+0.2;
-brassSlotTopDia = brassSlotY + 8;
+brassSlotTopDia = brassSlotY + 10;
 
 brassRimSlotZ = brassRimThickness + 0.5;
 
@@ -85,7 +85,7 @@ module funnelBrassSlotXform()
 
 module funnelBrassSlotTaper()
 {
-    h = 5; //brassRimSlotZ;
+    h = 7.9; //5; //brassRimSlotZ;
     cylinder(d2=brassSlotTopDia, d1=brassSlotY, h=h);
     tcy([0,0,h-nothing], d=brassSlotTopDia, h=100);
 }
@@ -175,9 +175,10 @@ module funnel()
             {
                 funnelBrassSlotXform()
                 {
-                    f = 0.252;
+                    dzfm = 0.252;
                     dyf = 3;
-                    dzf =0.95 - f*dyf;
+                    dzfb = -0.17; //0.95;
+                    dzf = dzfb - dzfm*dyf;
                     translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) funnelBrassSlotTaper();
 
                     dyb = 0; //-0.6;
@@ -187,6 +188,7 @@ module funnel()
 
                 trimFrontFunnelWall(stopAtRim=false);
                 trimAboveRim();
+                trimBelowDispenserRimRecess();
             }
 
             // rimOpeningThroughFront();
@@ -225,6 +227,11 @@ module funnel()
 module rimOpeningThroughFront()
 {
     funnelDispenserXform() tcy([0,brassRimSlotDY, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
+}
+
+module trimBelowDispenserRimRecess()
+{
+    funnelDispenserXform() tcu([-200, -10, -400-brassRimSlotZ], 400);
 }
 
 module funnelDispenserXform()
