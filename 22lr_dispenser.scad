@@ -188,8 +188,8 @@ module funnel()
                     translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) funnelBrassSlotTaper(topDZ=0.9);
 
                     dyb = 0; //-0.6;
-                    dzb = 9; //11; //-0.25;
-                    translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper(topDZ=0.6, topDdia=1.5);
+                    dzb = 12; //9; //11; //-0.25;
+                    translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper(topDZ=3.57, topDdia=1.5);
                 }
 
                 trimFrontFunnelWall(stopAtRim=false);
