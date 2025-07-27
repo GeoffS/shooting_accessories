@@ -65,7 +65,7 @@ brassRimSlotZ = brassRimThickness + 0.5;
 
 brassRimSlotExtraZ = nothing;
 brassRimSlotDia = brassRimOD + 0.3;
-brassRimSlotDY = 2.5;
+brassRimSlotDY = 3.5; //2.5;
 
 module funnelCornersXform()
 {
@@ -173,7 +173,7 @@ module funnel()
                 trimFrontFunnelWall();
             }
 
-            rimOpeningThroughFront();
+            // rimOpeningThroughFront();
         }
 
         // Brass opening through front:
@@ -230,7 +230,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
