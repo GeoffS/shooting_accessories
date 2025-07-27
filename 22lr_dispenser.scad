@@ -13,7 +13,7 @@ funnelVRimXY = 7;
 funnelVDia = 3;
 
 funnelBaseX = 70;
-funnelBaseY = 80;
+funnelBaseY = 50;
 funnelBaseZ = 35;
 
 underFunnelBaseZ = cartridgeLen + 18;
@@ -81,7 +81,7 @@ module funnelCornersXform()
 module funnelBrassSlotXform()
 {
     translate([0, funnelDispenserStartY, 0]) children(0);
-    translate([0, 45, 0]) children(1);
+    translate([0, 20, 0]) children(1);
 }
 
 module funnelBrassSlotTaper()
@@ -100,7 +100,9 @@ module trimFrontFunnelWall(stopAtRim=true, behind=false)
     echo(str("trimFrontFunnelWall() trimOffsetY = ", trimOffsetY));
     difference()
     {
-        translate([0, 72.4, 0]) rotate([-8.440,0,0]) tcu([-200, trimOffsetY, 0], 400);
+        y = 42.406; //72.4;
+        a = 8.433;
+        translate([0, y, 0]) rotate([-a,0,0]) tcu([-200, trimOffsetY, 0], 400);
         if(stopAtRim) trimAboveRim();
     }
 }
@@ -184,7 +186,7 @@ module funnel()
                     translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) funnelBrassSlotTaper();
 
                     dyb = 0; //-0.6;
-                    dzb = 11; //-0.25;
+                    dzb = 9; //11; //-0.25;
                     translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper();
                 }
 
@@ -224,24 +226,25 @@ module funnel()
                 tcy([0,0,-h], d=brassRimSlotDia, h=h, $fn=4);
             }
         }
+
         // Taper the entrance of the peak:
-        difference() 
-        {
-            funnelDispenserXform()
-            {
-                rotate([90,0,0]) translate([0, brassRimSlotExtraZ, 0])
-                {
-                    ddia = 3;
-                    #translate([0,0,-4.05]) difference()
-                    {
-                        cylinder(d1=brassRimSlotDia, d2=brassRimSlotDia+ddia, h=ddia/2, $fn=4);
-                        tcu([-10, -20-1.6, -1], 20);
-                    }
-                }
-            }
+        // difference() 
+        // {
+        //     funnelDispenserXform()
+        //     {
+        //         rotate([90,0,0]) translate([0, brassRimSlotExtraZ, 0])
+        //         {
+        //             ddia = 3;
+        //             translate([0,0,-4.05]) difference()
+        //             {
+        //                 cylinder(d1=brassRimSlotDia, d2=brassRimSlotDia+ddia, h=ddia/2, $fn=4);
+        //                 tcu([-10, -20-1.6, -1], 20);
+        //             }
+        //         }
+        //     }
         
-            trimFrontFunnelWall(behind=true);
-        }
+        //     trimFrontFunnelWall(behind=true);
+        // }
     }
 }
 
