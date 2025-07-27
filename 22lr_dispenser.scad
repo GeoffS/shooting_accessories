@@ -63,6 +63,10 @@ brassSlotTopDia = brassSlotY + 8;
 
 brassRimSlotZ = brassRimThickness + 0.5;
 
+brassRimSlotExtraZ = nothing;
+brassRimSlotDia = brassRimOD + 0.3;
+brassRimSlotDY = 2.5;
+
 module funnelCornersXform()
 {
     translate([0, funnelBaseTotalY/2, 0])
@@ -166,9 +170,10 @@ module funnel()
                     translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper();
                 }
 
-                // translate([0, 70.65, 0]) rotate([-30.3,0,0]) tcu([-200, 0, 0], 400);
                 trimFrontFunnelWall();
             }
+
+            rimOpeningThroughFront();
         }
 
         // Brass opening through front:
@@ -179,20 +184,9 @@ module funnel()
         }
 
         // Rim opening through front:
-        brassRimSlotExtraZ = nothing;
-        brassRimSlotDia = brassRimOD + 0.3;
-        brassRimSlotDY = 3.0;
         difference()
         {
-            funnelDispenserXform() 
-            {
-                // A bit of extra height inside the funnel:
-                translate([0, brassRimSlotDY, -brassRimSlotZ]) hull()
-                {
-                    tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
-                    // #tcy([0, brassRimSlotDia/2, 0], d=brassRimSlotDia, h=brassRimSlotZ+5);
-                }
-            }
+            rimOpeningThroughFront();
             trimFrontFunnelWall();
         }
 
@@ -210,6 +204,11 @@ module funnel()
             rotate([90,0,0]) tcy([0, brassRimSlotExtraZ, -h], d=brassRimSlotDia, h=h, $fn=4);
         }
     }
+}
+
+module rimOpeningThroughFront()
+{
+    funnelDispenserXform() tcy([0,brassRimSlotDY, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
 }
 
 module funnelDispenserXform()
