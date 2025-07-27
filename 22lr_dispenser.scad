@@ -125,9 +125,9 @@ module funnel()
             // Dispenser exterior:
             funnelDispenserXform() hull()
             {
-                // MAGIC NUMBER!!! depends on funnelDispenserAngle
+                // MAGIC NUMBER!!! depends on funnelDispenserAngle and underFunnelBaseZ
                 // ------vvvv
-                startH = 53.6; //57.6;
+                startH = 73.5; //53.6; //57.6;
                 translate([0,0,-startH])
                     simpleChamferedCylinderDoubleEnded(d=funnelDispenserOD, h=startH, cz=funnelBaseCZ);
                 endH = 5;
