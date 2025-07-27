@@ -14,7 +14,7 @@ funnelVDia = 3;
 
 funnelBaseX = 70;
 funnelBaseY = 80;
-funnelBaseZ = 25;
+funnelBaseZ = 35;
 
 underFunnelBaseZ = cartridgeLen + 5;
 echo(str("underFunnelBaseZ = ", underFunnelBaseZ));
@@ -36,10 +36,12 @@ funnelVTopY = funnelBaseY - funnelVRimXY;
 funnelVBottomFrontY = funnelBaseY - funnelVRimXY;
 funnelVBottomBackY = funnelVRimXY;
 
-funnelVBottomFrontZ = 4;
+funnelVBottomFrontZ = 4; // ?? should be funnelRimZ?
 funnelVBottomBackZ = funnelBaseZ - funnelRimZ;
 
-funnelFrontExtraY = 6; //funnelBaseZ - funnelVBottomFrontZ;
+echo(str("funnelVBottomBackZ = ", funnelVBottomBackZ));
+
+funnelFrontExtraY = 0; //6; //funnelBaseZ - funnelVBottomFrontZ;
 
 funnelVRimDia = funnelBaseOD - 4*funnelBaseCZ - 2;
 echo(str("funnelVRimDia = ", funnelVRimDia));
@@ -88,9 +90,22 @@ module funnelBrassSlotTaper()
     tcy([0,0,h-nothing], d=brassSlotTopDia, h=100);
 }
 
-module trimFrontFunnelWall()
+module trimFrontFunnelWall(stopAtRim=true)
 {
-    translate([0, 70.65, 0]) rotate([-30.3,0,0]) tcu([-200, 0, 0], 400);
+    // For: funnelFrontExtraY = 6;
+    // translate([0, 70.65, 0]) rotate([-30.3,0,0]) tcu([-200, 0, 0], 400);
+
+    // For: funnelFrontExtraY = 0;
+    difference()
+    {
+        translate([0, 72.4, 0]) rotate([-8.440,0,0]) tcu([-200, 0, 0], 400);
+        if(stopAtRim) trimAboveRim();
+    }
+}
+
+module trimAboveRim()
+{
+    tcu([-200, 0, funnelVBottomBackZ], 400);
 }
 
 module funnel()
@@ -170,7 +185,8 @@ module funnel()
                     translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper();
                 }
 
-                trimFrontFunnelWall();
+                trimFrontFunnelWall(stopAtRim=false);
+                trimAboveRim();
             }
 
             // rimOpeningThroughFront();
