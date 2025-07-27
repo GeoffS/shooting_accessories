@@ -68,7 +68,7 @@ brassRimSlotZ = brassRimThickness + 0.5;
 
 brassRimSlotExtraZ = nothing;
 brassRimSlotDia = brassRimOD + 0.3;
-brassRimSlotDY = 3.5; //2.5;
+brassRimSlotDY = 6.0; //3.5; //2.5;
 
 module funnelCornersXform()
 {
@@ -84,12 +84,13 @@ module funnelBrassSlotXform()
     translate([0, 20, 0]) children(1);
 }
 
-module funnelBrassSlotTaper(topDZ=0, topDdia=0)
+module funnelBrassSlotTaper(topDZ=0, topDdia=0, botDdia=0)
 {
     z = brassSlotTopZ + topDZ;
-    d = brassSlotTopDia + topDdia;
-    cylinder(d2=d, d1=brassSlotY, h=z);
-    tcy([0,0,z-nothing], d=d, h=100);
+    topDia = brassSlotTopDia + topDdia;
+    botDia = brassSlotY + botDdia;
+    cylinder(d2=topDia, d1=botDia, h=z);
+    tcy([0,0,z-nothing], d=topDia, h=100);
 }
 
 module trimFrontFunnelWall(stopAtRim=true, behind=false)
@@ -185,11 +186,13 @@ module funnel()
                     dyf = 3;
                     dzfb = 0.44; //0.55; //-0.17; //0.95;
                     dzf = dzfb - dzfm*dyf;
-                    translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) funnelBrassSlotTaper(topDZ=0.9);
+                    translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) 
+                        funnelBrassSlotTaper(topDZ=0.9, botDdia=-0.55);
 
                     dyb = 0; //-0.6;
                     dzb = 12; //9; //11; //-0.25;
-                    translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper(topDZ=3.57, topDdia=1.5);
+                    translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) 
+                        funnelBrassSlotTaper(topDZ=3.657, topDdia=1.74);
                 }
 
                 trimFrontFunnelWall(stopAtRim=false);
@@ -252,7 +255,7 @@ module funnel()
 
 module rimOpeningThroughFront()
 {
-    funnelDispenserXform() tcy([0,brassRimSlotDY, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
+    funnelDispenserXform() tcy([0, brassRimSlotDY, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
 }
 
 module trimBelowDispenserRimRecess()
