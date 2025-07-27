@@ -156,8 +156,9 @@ module funnel()
             {
                 funnelBrassSlotXform()
                 {
-                    dyf = 0;
-                    dzf =0.95;
+                    f = 0.252;
+                    dyf = 3;
+                    dzf =0.95 - f*dyf;
                     translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) funnelBrassSlotTaper();
 
                     dyb = 0; //-0.6;
@@ -180,15 +181,16 @@ module funnel()
         // Rim opening through front:
         brassRimSlotExtraZ = nothing;
         brassRimSlotDia = brassRimOD + 0.3;
+        brassRimSlotDY = 3.0;
         difference()
         {
             funnelDispenserXform() 
             {
                 // A bit of extra height inside the funnel:
-                translate([0, 0, -brassRimSlotZ]) hull()
+                translate([0, brassRimSlotDY, -brassRimSlotZ]) hull()
                 {
                     tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
-                    tcy([0, brassRimSlotDia/2, 0], d=brassRimSlotDia, h=brassRimSlotZ+5);
+                    // #tcy([0, brassRimSlotDia/2, 0], d=brassRimSlotDia, h=brassRimSlotZ+5);
                 }
             }
             trimFrontFunnelWall();
@@ -197,7 +199,7 @@ module funnel()
         // The main slot:
         funnelDispenserXform() hull()
         {
-            tcy([0, 0, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
+            tcy([0, brassRimSlotDY, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
             tcy([0, funnelDispenserY+1.8, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
         }
 
@@ -229,7 +231,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([-d, -200, -200], 400);
+    // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
