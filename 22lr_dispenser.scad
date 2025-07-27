@@ -226,9 +226,10 @@ module funnel()
         funnelDispenserXform() hull()
         {
             h = 20;
-            rotate([90,0,0]) translate([0, brassRimSlotExtraZ, 0])
+            rotate([90,0,0]) translate([0, brassRimSlotExtraZ, 0]) difference()
             {
                 tcy([0,0,-h], d=brassRimSlotDia, h=h, $fn=4);
+                tcu([-200, brassRimSlotDia*0.2, -200], 400);
             }
         }
 
