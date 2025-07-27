@@ -16,7 +16,7 @@ funnelBaseX = 70;
 funnelBaseY = 80;
 funnelBaseZ = 35;
 
-underFunnelBaseZ = cartridgeLen + 5;
+underFunnelBaseZ = cartridgeLen + 18;
 echo(str("underFunnelBaseZ = ", underFunnelBaseZ));
 
 funnelBaseOD = 2 * funnelVRimXY;
