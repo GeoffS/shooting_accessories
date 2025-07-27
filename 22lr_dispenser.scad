@@ -90,15 +90,17 @@ module funnelBrassSlotTaper()
     tcy([0,0,brassSlotTopZ-nothing], d=brassSlotTopDia, h=100);
 }
 
-module trimFrontFunnelWall(stopAtRim=true)
+module trimFrontFunnelWall(stopAtRim=true, behind=false)
 {
     // For: funnelFrontExtraY = 6;
     // translate([0, 70.65, 0]) rotate([-30.3,0,0]) tcu([-200, 0, 0], 400);
 
     // For: funnelFrontExtraY = 0;
+    trimOffsetY = behind? -400: 0;
+    echo(str("trimFrontFunnelWall() trimOffsetY = ", trimOffsetY));
     difference()
     {
-        translate([0, 72.4, 0]) rotate([-8.440,0,0]) tcu([-200, 0, 0], 400);
+        translate([0, 72.4, 0]) rotate([-8.440,0,0]) tcu([-200, trimOffsetY, 0], 400);
         if(stopAtRim) trimAboveRim();
     }
 }
@@ -190,8 +192,6 @@ module funnel()
                 trimAboveRim();
                 trimBelowDispenserRimRecess();
             }
-
-            // rimOpeningThroughFront();
         }
 
         // Brass opening through front:
@@ -219,7 +219,28 @@ module funnel()
         funnelDispenserXform() hull()
         {
             h = 20;
-            rotate([90,0,0]) tcy([0, brassRimSlotExtraZ, -h], d=brassRimSlotDia, h=h, $fn=4);
+            rotate([90,0,0]) translate([0, brassRimSlotExtraZ, 0])
+            {
+                tcy([0,0,-h], d=brassRimSlotDia, h=h, $fn=4);
+            }
+        }
+        // Taper the entrance of the peak:
+        difference() 
+        {
+            funnelDispenserXform()
+            {
+                rotate([90,0,0]) translate([0, brassRimSlotExtraZ, 0])
+                {
+                    ddia = 3;
+                    #translate([0,0,-4.05]) difference()
+                    {
+                        cylinder(d1=brassRimSlotDia, d2=brassRimSlotDia+ddia, h=ddia/2, $fn=4);
+                        tcu([-10, -20-1.6, -1], 20);
+                    }
+                }
+            }
+        
+            trimFrontFunnelWall(behind=true);
         }
     }
 }
