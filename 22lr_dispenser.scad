@@ -61,7 +61,8 @@ funnelCornerOffsetY = funnelBaseTotalY/2-funnelBaseOD/2;
 
 brassSlotZ = cartridgeLen + 3;
 brassSlotY = brassOD+0.2;
-brassSlotTopDia = brassSlotY + 10;
+brassSlotTopDia = brassSlotY + 14;
+brassSlotTopZ = 10; //7.9; //5; //brassRimSlotZ;
 
 brassRimSlotZ = brassRimThickness + 0.5;
 
@@ -80,14 +81,13 @@ module funnelCornersXform()
 module funnelBrassSlotXform()
 {
     translate([0, funnelDispenserStartY, 0]) children(0);
-    translate([0, funnelBaseOD/2+brassSlotTopDia/2, 0]) children(1);
+    translate([0, 45, 0]) children(1);
 }
 
 module funnelBrassSlotTaper()
 {
-    h = 8.8; //7.9; //5; //brassRimSlotZ;
-    cylinder(d2=brassSlotTopDia, d1=brassSlotY, h=h);
-    tcy([0,0,h-nothing], d=brassSlotTopDia, h=100);
+    cylinder(d2=brassSlotTopDia, d1=brassSlotY, h=brassSlotTopZ);
+    tcy([0,0,brassSlotTopZ-nothing], d=brassSlotTopDia, h=100);
 }
 
 module trimFrontFunnelWall(stopAtRim=true)
@@ -177,12 +177,12 @@ module funnel()
                 {
                     dzfm = 0.252;
                     dyf = 3;
-                    dzfb = -0.17; //0.95;
+                    dzfb = 0.55; //-0.17; //0.95;
                     dzf = dzfb - dzfm*dyf;
                     translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) funnelBrassSlotTaper();
 
                     dyb = 0; //-0.6;
-                    dzb = -0.25;
+                    dzb = 11; //-0.25;
                     translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper();
                 }
 
