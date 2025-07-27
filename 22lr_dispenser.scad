@@ -55,12 +55,38 @@ funnelDispenserY = 5 * brassRimOD;
 
 funnelDispenserOD = funnelBaseOD;
 
+funnelCornerOffsetY = funnelBaseTotalY/2-funnelBaseOD/2;
+
+brassSlotZ = cartridgeLen + 3;
+brassSlotY = brassOD+0.2;
+brassSlotTopDia = brassSlotY + 8;
+
+brassRimSlotZ = brassRimThickness + 0.5;
+
 module funnelCornersXform()
 {
     translate([0, funnelBaseTotalY/2, 0])
         doubleX() doubleY() 
-            translate([funnelCornerCtrX, funnelBaseTotalY/2-funnelBaseOD/2, 0]) 
+            translate([funnelCornerCtrX, funnelCornerOffsetY, 0]) 
                 children();
+}
+
+module funnelBrassSlotXform()
+{
+    translate([0, funnelDispenserStartY, 0]) children(0);
+    translate([0, funnelBaseOD/2+brassSlotTopDia/2, 0]) children(1);
+}
+
+module funnelBrassSlotTaper()
+{
+    h = 5; //brassRimSlotZ;
+    cylinder(d2=brassSlotTopDia, d1=brassSlotY, h=h);
+    tcy([0,0,h-nothing], d=brassSlotTopDia, h=100);
+}
+
+module trimFrontFunnelWall()
+{
+    translate([0, 70.65, 0]) rotate([-30.3,0,0]) tcu([-200, 0, 0], 400);
 }
 
 module funnel()
@@ -110,48 +136,73 @@ module funnel()
         hull() funnelCornersXform() translate([0,0,funnelBaseZ-funnelVRimDia/2-funnelBaseCZ]) cylinder(d1=0, d2=12, h=6);
 
         // Front opening:
-        slotZ = cartridgeLen + 3;
-        brassSlotY = brassOD+0.2;
         // Slot in funnel:
         hull()
         {
             // MAGIC NUMBER!!! Depends on funnelDispenserAngle:
             // ------v
             extraZ = 3;
-            tcy([0, funnelDispenserStartY, -slotZ+extraZ], d=brassSlotY, h=100);
-            tcy([0, funnelBackWallY-cartridgeLen-1, -slotZ+extraZ], d=brassSlotY, h=100);
+            funnelBrassSlotXform()
+            {
+                tcy([0, 0, -brassSlotZ+extraZ], d=brassSlotY, h=100);
+                tcy([0, 0, -brassSlotZ+extraZ], d=brassSlotY, h=100);
+            }
+        }
+
+        // Brass slot in funnel top chamfer:
+        hull()
+        {
+            difference()
+            {
+                funnelBrassSlotXform()
+                {
+                    dyf = 0;
+                    dzf =0.95;
+                    translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) funnelBrassSlotTaper();
+
+                    dyb = 0; //-0.6;
+                    dzb = 0.0;
+                    translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper();
+                }
+
+                // translate([0, 70.65, 0]) rotate([-30.3,0,0]) tcu([-200, 0, 0], 400);
+                trimFrontFunnelWall();
+            }
         }
 
         // Brass opening through front:
         funnelDispenserXform() hull()
         {
-            tcy([0, 0, -slotZ], d=brassSlotY, h=slotZ+nothing);
-            tcy([0, funnelBackWallY+70, -slotZ], d=brassSlotY, h=slotZ+nothing);
+            tcy([0, 0, -brassSlotZ], d=brassSlotY, h=brassSlotZ+nothing);
+            tcy([0, funnelBackWallY+70, -brassSlotZ], d=brassSlotY, h=brassSlotZ+nothing);
         }
 
         // Rim opening through front:
         brassRimSlotExtraZ = nothing;
         brassRimSlotDia = brassRimOD + 0.3;
-        brassRimSlotZ = brassRimThickness + 0.5;
-        funnelDispenserXform() 
+        difference()
         {
-            // A bit of extra height inside the funnel:
-            translate([0, 0, -brassRimSlotZ]) hull()
+            funnelDispenserXform() 
             {
-                tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
-                translate([0,brassRimSlotDia/2,0]) difference()
+                // A bit of extra height inside the funnel:
+                translate([0, 0, -brassRimSlotZ]) hull()
                 {
-                    tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+5);
-                    tcu([-10, 0 ,-1], 20);
+                    tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
+                    translate([0,brassRimSlotDia/2,0]) difference()
+                    {
+                        tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+5);
+                        // #tcu([-10, -0.48, -1], 20);
+                    }
                 }
             }
+            trimFrontFunnelWall();
+        }
 
-            // The main slot:
-            hull()
-            {
-                tcy([0, 0, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
-                tcy([0, funnelDispenserY+1.8, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
-            }
+        // The main slot:
+        funnelDispenserXform() hull()
+        {
+            tcy([0, 0, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
+            tcy([0, funnelDispenserY+1.8, -brassRimSlotZ], d=brassRimSlotDia, h=brassRimSlotZ+brassRimSlotExtraZ);
         }
 
         // Peak the roof of the rim opening for printability:
@@ -182,7 +233,7 @@ module funnelVCylinder(x, y, z, isFront, isTop)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
