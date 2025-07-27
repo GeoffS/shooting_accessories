@@ -85,7 +85,7 @@ module funnelBrassSlotXform()
 
 module funnelBrassSlotTaper()
 {
-    h = 7.9; //5; //brassRimSlotZ;
+    h = 8.8; //7.9; //5; //brassRimSlotZ;
     cylinder(d2=brassSlotTopDia, d1=brassSlotY, h=h);
     tcy([0,0,h-nothing], d=brassSlotTopDia, h=100);
 }
@@ -182,7 +182,7 @@ module funnel()
                     translate([0, dyf, -brassRimSlotZ+funnelVBottomFrontZ+dzf]) funnelBrassSlotTaper();
 
                     dyb = 0; //-0.6;
-                    dzb = 0.0;
+                    dzb = -0.25;
                     translate([0, dyb, -brassRimSlotZ+funnelVBottomBackZ-2*brassRimSlotZ-dzb]) funnelBrassSlotTaper();
                 }
 
