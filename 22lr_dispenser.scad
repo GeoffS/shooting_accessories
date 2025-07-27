@@ -188,11 +188,7 @@ module funnel()
                 translate([0, 0, -brassRimSlotZ]) hull()
                 {
                     tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+nothing);
-                    translate([0,brassRimSlotDia/2,0]) difference()
-                    {
-                        tcy([0, 0, 0], d=brassRimSlotDia, h=brassRimSlotZ+5);
-                        // #tcu([-10, -0.48, -1], 20);
-                    }
+                    tcy([0, brassRimSlotDia/2, 0], d=brassRimSlotDia, h=brassRimSlotZ+5);
                 }
             }
             trimFrontFunnelWall();
