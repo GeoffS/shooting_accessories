@@ -34,7 +34,23 @@ module orienter()
         tcy([0,0,-100], d=centerHoleDia, h=200);
 
         // Funnel:
-        translate([0,0,orienterZ-orienterFunnelZ]) cylinder(d2=orienterFunnelDia, d1=0, h=orienterFunnelZ+nothing);
+        hull()
+        {
+            translate([0,0,orienterZ-orienterFunnelZ]) cylinder(d2=orienterFunnelDia, d1=0, h=orienterFunnelZ+nothing);
+        }
+
+        // Slot:
+        hull()
+        {
+            slotZ = 200;
+            slotBottomZ = -slotZ/2;
+            slotY = cartridgeLen;
+            ctrY = slotY-brassOD/2;
+            tsp([0,    0, slotBottomZ], d=brassOD);
+            tsp([0, ctrY, slotBottomZ], d=brassOD);
+            tsp([0,    0,       slotZ], d=brassOD);
+            tsp([0, ctrY,       slotZ], d=brassOD);
+        }
     }
 }
 
