@@ -66,6 +66,7 @@ module orienter()
         hull()
         {
             dia = brassRimOD + 0.6;
+            echo(str("dia =",dia));
             slotZ = 200;
             slotBottomZ = -slotZ/2;
             ctrY = orienterSlotY - brassOD/2;
@@ -84,7 +85,7 @@ module orienter()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
