@@ -3,6 +3,8 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 brassOD = 5.75 + 0.3;
 brassRimOD = 6.9 + 0.25 ;
+brassRimDiaDifference = brassRimOD - brassOD;
+echo(str("brassRimDiaDifference = ", brassRimDiaDifference));
 brassRimThickness = 1.1;
 cartridgeLen = 26;
 
@@ -25,6 +27,8 @@ orienterZ = orienterBaseZ + cartridgeLen + orienterFunnelZ;
 
 orienterLipZ = 1;
 
+orienterSlotY = cartridgeLen + 2;
+
 module orienter()
 {
     difference() 
@@ -39,16 +43,30 @@ module orienter()
         // Funnel:
         hull()
         {
+            // Basic funnel shape:
             translate([0,0,orienterZ-orienterFunnelZ]) cylinder(d2=orienterFunnelDia, d1=0, h=orienterFunnelZ+nothing);
+
+            // Slot funnel modifier:
+            dia = brassOD + 12;
+            offsetZctr = orienterZ - orienterFunnelZ;
+            offsetZedge = offsetZctr + 8;
+            offsetY = orienterSlotY + 1.5;
+            ctrY = offsetY - dia/2;
+
+            echo(str("offsetZedge = ", offsetZedge));
+
+            tsp([0,    0,  offsetZctr], d=dia);
+            tsp([0, ctrY, offsetZedge], d=dia);
         }
 
         // Slot:
         hull()
         {
+            dia = brassRimOD + 0.2;
             slotZ = 200;
             slotBottomZ = -slotZ/2;
-            slotY = cartridgeLen;
-            ctrY = slotY-brassOD/2;
+            ctrY = orienterSlotY - brassOD/2;
+
             tsp([0,    0, slotBottomZ], d=brassOD);
             tsp([0, ctrY, slotBottomZ], d=brassOD);
             tsp([0,    0,       slotZ], d=brassOD);
@@ -63,7 +81,7 @@ module orienter()
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    tcu([-d, -200, -200], 400);
+    // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
