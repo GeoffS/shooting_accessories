@@ -12,8 +12,10 @@ makeOrienter = false;
 centerHoleDia = brassRimOD + 1;
 
 orienterBaseCZ = 2;
-orienterExteriorWallThickness = 2*orienterBaseCZ + 2;
+orienterTopFlatWidth = 2;
+orienterExteriorWallThickness = 2*orienterBaseCZ + orienterTopFlatWidth;
 orienterBaseDia = centerHoleDia + 2*cartridgeLen + 2*orienterExteriorWallThickness;
+orienterFunnelDia = orienterBaseDia - 2*orienterBaseCZ - 2*orienterTopFlatWidth;
 
 orienterFunnelZ = 20;
 
@@ -27,13 +29,19 @@ module orienter()
     {
         // Exterior:
         simpleChamferedCylinderDoubleEnded(d=orienterBaseDia, h=orienterZ, cz=orienterBaseCZ);
+
+        // Center Hole:
+        tcy([0,0,-100], d=centerHoleDia, h=200);
+
+        // Funnel:
+        translate([0,0,orienterZ-orienterFunnelZ]) cylinder(d2=orienterFunnelDia, d1=0, h=orienterFunnelZ+nothing);
     }
 }
 
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
