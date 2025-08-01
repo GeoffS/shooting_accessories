@@ -9,7 +9,7 @@ cartridgeLen = 26;
 makeOrienter = false;
 
 
-centerHoleDia = brassRimOD + 1;
+centerHoleDia = brassRimOD + 2;
 
 orienterBaseCZ = 2;
 orienterTopFlatWidth = 2;
@@ -34,7 +34,7 @@ module orienter()
 
         // Center Hole:
         tcy([0,0,-100], d=centerHoleDia, h=200);
-        translate([0,0,-10+centerHoleDia/2+orienterLipZ]) cylinder(d2=0, d1=20, h=10);
+        rotate([5,0,0]) translate([0,0,-10+centerHoleDia/2+orienterLipZ]) cylinder(d2=0, d1=20, h=10);
 
         // Funnel:
         hull()
@@ -55,6 +55,9 @@ module orienter()
             tsp([0, ctrY,       slotZ], d=brassOD);
         }
     }
+
+    // Lip:
+    tcu([-5, -10-brassRimOD/2, 0], [10, 10, orienterLipZ]);
 }
 
 module clip(d=0)
