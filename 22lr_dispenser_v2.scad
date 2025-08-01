@@ -3,10 +3,13 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 brassOD = 5.75 + 0.3;
 brassRimOD = 6.9 + 0.25 ;
-brassRimDiaDifference = brassRimOD - brassOD;
-echo(str("brassRimDiaDifference = ", brassRimDiaDifference));
 brassRimThickness = 1.1;
 cartridgeLen = 26;
+
+echo(str("brassRimOD = ", brassRimOD));
+
+brassRimDiaDifference = brassRimOD - brassOD;
+echo(str("brassRimDiaDifference = ", brassRimDiaDifference));
 
 makeOrienter = false;
 
@@ -19,7 +22,7 @@ orienterExteriorWallThickness = 2*orienterBaseCZ + orienterTopFlatWidth;
 orienterBaseDia = centerHoleDia + 2*cartridgeLen + 2*orienterExteriorWallThickness;
 orienterFunnelDia = orienterBaseDia - 2*orienterBaseCZ - 2*orienterTopFlatWidth;
 
-orienterFunnelZ = 20;
+orienterFunnelZ = 40;
 
 orienterBaseZ = 3;
 
@@ -47,10 +50,10 @@ module orienter()
             translate([0,0,orienterZ-orienterFunnelZ]) cylinder(d2=orienterFunnelDia, d1=0, h=orienterFunnelZ+nothing);
 
             // Slot funnel modifier:
-            dia = brassOD + 12;
+            dia = brassOD + 2;
             offsetZctr = orienterZ - orienterFunnelZ;
-            offsetZedge = offsetZctr + 8;
-            offsetY = orienterSlotY + 1.5;
+            offsetZedge = offsetZctr + 14;
+            offsetY = orienterSlotY - 1; // + 1.5;
             ctrY = offsetY - dia/2;
 
             echo(str("offsetZedge = ", offsetZedge));
@@ -62,7 +65,7 @@ module orienter()
         // Slot:
         hull()
         {
-            dia = brassRimOD + 0.2;
+            dia = brassRimOD + 0.6;
             slotZ = 200;
             slotBottomZ = -slotZ/2;
             ctrY = orienterSlotY - brassOD/2;
@@ -75,7 +78,7 @@ module orienter()
     }
 
     // Lip:
-    tcu([-5, -10-brassRimOD/2, 0], [10, 10, orienterLipZ]);
+    tcu([-10, -20-brassRimOD/2+1.6, 0], [20, 20, orienterLipZ]);
 }
 
 module clip(d=0)
