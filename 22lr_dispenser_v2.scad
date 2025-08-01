@@ -23,6 +23,8 @@ orienterBaseZ = 3;
 
 orienterZ = orienterBaseZ + cartridgeLen + orienterFunnelZ;
 
+orienterLipZ = 1;
+
 module orienter()
 {
     difference() 
@@ -32,6 +34,7 @@ module orienter()
 
         // Center Hole:
         tcy([0,0,-100], d=centerHoleDia, h=200);
+        translate([0,0,-10+centerHoleDia/2+orienterLipZ]) cylinder(d2=0, d1=20, h=10);
 
         // Funnel:
         hull()
