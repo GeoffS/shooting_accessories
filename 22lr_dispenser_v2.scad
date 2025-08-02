@@ -12,6 +12,7 @@ brassRimDiaDifference = brassRimOD - brassOD;
 echo(str("brassRimDiaDifference = ", brassRimDiaDifference));
 
 makeOrienter = false;
+makeOrienterTest = false;
 
 
 orienterLipZ = 1;
@@ -59,24 +60,8 @@ module orienter()
                     }
                     tcu([-30, -60, -30], 60);
                 }
-                #tcy([0, centerHoleDia, -30], d=centerHoleDia, h=30);
+                tcy([0, centerHoleDia, -30], d=centerHoleDia, h=30);
             }
-
-            // tcy([0,0,-h], d=centerHoleDia, h=h); 
-
-            // d2 = 2*centerHoleDia;
-            // translate([0 ,-centerHoleDia, 3]) difference()
-            // {
-            //     scale([0.5,1,1]) sphere(d=d2);
-            //     tcu([-30, -60, -30], 60);
-            // }
-
-            // hull()
-            // {
-            //     #sphere(d=centerHoleDia);
-            //     tsp([0, -centerHoleDia/2, centerHoleDia/2+1], d=centerHoleDia);
-            //     tsp([0, -centerHoleDia/2,               0], d=centerHoleDia);
-            // }
         }
 
         // Funnel:
@@ -115,21 +100,40 @@ module orienter()
     }
 
     // Lip:
-    // #tcu([-10, -20-brassRimOD/2+1.6, 0], [20, 20, orienterLipZ]);
     tcu([-10, -20-centerHoleDia/2+centerHoleBottomOffsetY, 0], [20, 20, orienterLipZ]);
 }
 
-module clip(d=0)
+module orienterTest()
 {
-	//tc([-200, -400-d, -10], 400);
-    tcu([-d, -200, -200], 400);
+    difference()
+    {
+        extraXY = 4;
+        orienter();
+        // Clip +/-X:
+        doubleX() tcu([centerHoleDia/2+extraXY, -200, -200], 400);
+        // Clip +Y:
+        tcu([-200, orienterSlotY+extraXY, -200], 400);
+        // Clip -Y:
+        tcu([-200, -(centerHoleDia/2+extraXY)-400, -200], 400);
+        // Clip +Z:
+        tcu([-200, -200, cartridgeLen+5], 400);
+    }
 }
+
+    module clip(d=0)
+    {
+        //tc([-200, -400-d, -10], 400);
+        tcu([-d, -200, -200], 400);
+    }
 
 if(developmentRender)
 {
-	display() orienter();
+	// display() orienter();
+    
+    display() orienterTest();
 }
 else
 {
 	if(makeOrienter) orienter();
+    if(makeOrienterTest) orienterTest();
 }
