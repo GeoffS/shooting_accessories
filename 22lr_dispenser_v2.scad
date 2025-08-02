@@ -14,7 +14,11 @@ echo(str("brassRimDiaDifference = ", brassRimDiaDifference));
 makeOrienter = false;
 
 
+orienterLipZ = 1;
+
 centerHoleDia = brassRimOD + 2;
+centerHoleBottomOffsetY = centerHoleDia; ///2 + 1.5;
+centerHoleBottomOffsetZ = orienterLipZ + brassRimOD;
 
 orienterBaseCZ = 2;
 orienterTopFlatWidth = 2;
@@ -28,8 +32,6 @@ orienterBaseZ = 3;
 
 orienterZ = orienterBaseZ + cartridgeLen + orienterFunnelZ;
 
-orienterLipZ = 1;
-
 orienterSlotY = cartridgeLen + 2;
 
 module orienter()
@@ -41,7 +43,41 @@ module orienter()
 
         // Center Hole:
         tcy([0,0,-100], d=centerHoleDia, h=200);
-        rotate([5,0,0]) translate([0,0,-10+centerHoleDia/2+orienterLipZ]) cylinder(d2=0, d1=20, h=10);
+        // #rotate([10,0,0]) translate([0,0,-10+centerHoleDia/2+orienterLipZ]) cylinder(d2=0, d1=20, h=10);
+        translate([0, centerHoleDia, centerHoleBottomOffsetZ]) hull()
+        {
+            h = centerHoleBottomOffsetZ+nothing;
+            d2 = 2*centerHoleDia;
+            translate([0 ,-centerHoleDia, 0]) hull() 
+            {
+                difference()
+                {
+                    scale([0.5,1,1]) 
+                    {
+                        tcy([0,0,-30], d=d2, h=30); //sphere(d=d2);
+                        translate([0,0,-nothing]) cylinder(d1=d2, d2=0, h=d2/2);
+                    }
+                    tcu([-30, -60, -30], 60);
+                }
+                #tcy([0, centerHoleDia, -30], d=centerHoleDia, h=30);
+            }
+
+            // tcy([0,0,-h], d=centerHoleDia, h=h); 
+
+            // d2 = 2*centerHoleDia;
+            // translate([0 ,-centerHoleDia, 3]) difference()
+            // {
+            //     scale([0.5,1,1]) sphere(d=d2);
+            //     tcu([-30, -60, -30], 60);
+            // }
+
+            // hull()
+            // {
+            //     #sphere(d=centerHoleDia);
+            //     tsp([0, -centerHoleDia/2, centerHoleDia/2+1], d=centerHoleDia);
+            //     tsp([0, -centerHoleDia/2,               0], d=centerHoleDia);
+            // }
+        }
 
         // Funnel:
         hull()
@@ -79,7 +115,8 @@ module orienter()
     }
 
     // Lip:
-    tcu([-10, -20-brassRimOD/2+1.6, 0], [20, 20, orienterLipZ]);
+    // #tcu([-10, -20-brassRimOD/2+1.6, 0], [20, 20, orienterLipZ]);
+    tcu([-10, -20-centerHoleDia/2+centerHoleBottomOffsetY, 0], [20, 20, orienterLipZ]);
 }
 
 module clip(d=0)
