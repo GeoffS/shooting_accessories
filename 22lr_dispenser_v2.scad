@@ -18,8 +18,6 @@ makeOrienterTest = false;
 orienterLipZ = 1;
 
 centerHoleDia = brassRimOD + 2;
-centerHoleBottomOffsetY = centerHoleDia; ///2 + 1.5;
-centerHoleBottomOffsetZ = orienterLipZ + brassRimOD;
 
 orienterBaseCZ = 2;
 orienterTopFlatWidth = 2;
@@ -35,6 +33,11 @@ orienterZ = orienterBaseZ + cartridgeLen + orienterFunnelZ;
 
 orienterSlotY = cartridgeLen + 2;
 
+basicFunnelBottomZ = orienterZ-orienterFunnelZ;
+
+centerHoleBottomOffsetY = centerHoleDia; ///2 + 1.5;
+centerHoleBottomOffsetZ = basicFunnelBottomZ - 5; //orienterLipZ + brassRimOD;
+
 module orienter()
 {
     difference() 
@@ -44,19 +47,20 @@ module orienter()
 
         // Center Hole:
         tcy([0,0,-100], d=centerHoleDia, h=200);
-        // #rotate([10,0,0]) translate([0,0,-10+centerHoleDia/2+orienterLipZ]) cylinder(d2=0, d1=20, h=10);
-        translate([0, centerHoleDia, centerHoleBottomOffsetZ]) hull()
+
+        // Shift in center hole to reorient the cartridge:
+        translate([0, 0, centerHoleBottomOffsetZ]) hull()
         {
             h = centerHoleBottomOffsetZ+nothing;
-            d2 = 2*centerHoleDia;
-            translate([0 ,-centerHoleDia, 0]) hull() 
+            shiftY = centerHoleDia;
+            translate([0, 0, 0]) hull() 
             {
                 difference()
                 {
-                    scale([0.5,1,1]) 
+                    //scale([1/shiftFactor,1,1]) 
                     {
-                        tcy([0,0,-30], d=d2, h=30); //sphere(d=d2);
-                        translate([0,0,-nothing]) cylinder(d1=d2, d2=0, h=d2/2);
+                        #tcy([0,shiftY,-30], d=centerHoleDia, h=30);
+                        #translate([0,0,-nothing]) cylinder(d1=centerHoleDia, d2=0, h=centerHoleDia/2);
                     }
                     tcu([-30, -60, -30], 60);
                 }
@@ -68,7 +72,7 @@ module orienter()
         hull()
         {
             // Basic funnel shape:
-            translate([0,0,orienterZ-orienterFunnelZ]) cylinder(d2=orienterFunnelDia, d1=0, h=orienterFunnelZ+nothing);
+            translate([0,0,basicFunnelBottomZ]) cylinder(d2=orienterFunnelDia, d1=0, h=orienterFunnelZ+nothing);
 
             // Slot funnel modifier:
             dia = brassOD + 2;
@@ -100,7 +104,12 @@ module orienter()
     }
 
     // Lip:
-    tcu([-10, -20-centerHoleDia/2+centerHoleBottomOffsetY, 0], [20, 20, orienterLipZ]);
+    translate([0, -centerHoleDia/2, 0]) hull()
+    {
+        z = centerHoleBottomOffsetZ - brassRimOD - 1;
+        tcu([-50, -100+centerHoleDia, 0], [100, 100, z]);
+        tcu([-50, -100, 0], [100, 100, z+centerHoleDia]);
+    }
 }
 
 module orienterTest()
