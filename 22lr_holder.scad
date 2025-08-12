@@ -91,7 +91,7 @@ module cartridgeRecess(x, y, z)
 {
     translate([x, y, 0])
     {
-        tcy([0,0,cartridgeRecessOffsetZ], d=cartridgeRecessDia, h=100);
+        tcy([0,0,z-cartridgeRecessZ], d=cartridgeRecessDia, h=100);
         translate([0,0,z-cartridgeRecessDia/2-cartridgeRecessCZ]) cylinder(d2=14, d1=0, h=7);
     }
 }
@@ -99,6 +99,7 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
+    tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
