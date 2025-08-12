@@ -24,7 +24,7 @@ cartridgeRecessOffsetZ = 3;
 cartridgeRecessCZ = 4*layerThickness;
 
 numCartridgesPerRow = 5;
-numRows = 7;
+numRows = 6;
 
 baseX = 2*cartridgeAreaOutsideX + (numCartridgesPerRow-1) * cartridgeSpacingX;
 baseY = 2*cartridgeAreaOutsideY + numRows * cartridgeSpacingY;
@@ -46,22 +46,24 @@ module itemModule()
     //         simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=cartridgeRecessOffsetZ, cz=holderBaseCZ);
 
     // Cartridge holes:
-    translate([0, -baseY/2, 0]) 
+    translate([0, 0, 0]) 
     {
         // Step exterior:
         for(rowIndex = [0 : (numRows-1)])
         {
             z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
-            y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY;
+            y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY - baseY/2;
 
-            translate([0, y, 0]) 
+            translate([0, 0, 0]) 
             {
                 difference()
                 {
                     // Exterior:
-                    hull() doubleX() doubleY() 
-                        translate([holderBaseCornerOffsetX, 2*holderBaseCZ, 0]) 
-                            simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=z, cz=holderBaseCZ);
+                    hull() 
+                    {
+                        step(y, z);
+                        step(holderBaseCornerOffsetY, z);
+                    }
                     
                     // Cartridge recesses:
                     // echo(str("y = ", y));
@@ -69,18 +71,25 @@ module itemModule()
                     {
                         x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
                         // echo(str("x = ", x));
-                        cartridgeRecess(x, z);
+                        cartridgeRecess(x, y, z);
                     }
                 }
             }
         }
     }
-    // }
 }
 
-module cartridgeRecess(x, z)
+module step(y, z)
 {
-    translate([x, 0, 0])
+    translate([0,y,0])
+        doubleX() doubleY() 
+            translate([holderBaseCornerOffsetX, 2*holderBaseCZ, 0]) 
+                simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=z, cz=holderBaseCZ);
+}
+
+module cartridgeRecess(x, y, z)
+{
+    translate([x, y, 0])
     {
         tcy([0,0,cartridgeRecessOffsetZ], d=cartridgeRecessDia, h=100);
         translate([0,0,z-cartridgeRecessDia/2-cartridgeRecessCZ]) cylinder(d2=14, d1=0, h=7);
