@@ -1,6 +1,8 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
+layerThickness = 0.2;
+
 brassOD = 5.75 + 0.3;
 brassRimOD = 6.9 + 0.25 ;
 brassRimThickness = 1.1;
@@ -9,15 +11,16 @@ cartridgeLen = 26;
 cartridgeSpacingX = 20;
 cartridgeSpacingY = 20;
 
-cartridgeAreaOutsideX = 12;
-cartridgeAreaOutsideY = 6;
+cartridgeAreaOutsideX = 14;
+cartridgeAreaOutsideY = 4;
 
-cartridgeRecessDia = brassRimOD;
+cartridgeRecessDia = brassOD;
 cartridgeRecessZ = 13;
 cartridgeRecessOffsetZ = 3;
+cartridgeRecessCZ = 4*layerThickness;
 
 numCartridgesPerRow = 5;
-numRows = 8;
+numRows = 7;
 
 baseX = 2*cartridgeAreaOutsideX + (numCartridgesPerRow-1) * cartridgeSpacingX;
 baseY = 2*cartridgeAreaOutsideY + numRows * cartridgeSpacingY;
@@ -62,12 +65,13 @@ module cartridgeRecess(x, y)
     translate([x, y, 0])
     {
         tcy([0,0,cartridgeRecessOffsetZ], d=cartridgeRecessDia, h=100);
+        translate([0,0,baseZ-cartridgeRecessDia/2-cartridgeRecessCZ]) cylinder(d2=14, d1=0, h=7);
     }
 }
 
 module clip(d=0)
 {
-	//tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
 }
 
 if(developmentRender)
