@@ -11,6 +11,10 @@ cartridgeLen = 26;
 cartridgeSpacingX = 20;
 cartridgeSpacingY = 20;
 
+holderBaseCZ = 2;
+
+incrementZ = holderBaseCZ + 1;
+
 cartridgeAreaOutsideX = 14;
 cartridgeAreaOutsideY = 4;
 
@@ -28,36 +32,48 @@ baseZ = cartridgeRecessZ + cartridgeRecessOffsetZ;
 
 holderBaseCornerDia = 20;
 
-holderBaseCZ = 2;
-
 holderBaseCornerOffsetX = baseX/2 - holderBaseCornerDia/2;
 holderBaseCornerOffsetY = baseY/2 - holderBaseCornerDia/2;
+holderStepCornerOffsetY = cartridgeSpacingY/2 - holderBaseCornerDia/2;
+
+echo(str("holderStepCornerOffsetY = ", holderStepCornerOffsetY));
 
 module itemModule()
 {
-	difference() 
-    {
-        // Base exterior:
+	// difference() 
+    // {
+    //     // Base exterior:
 		hull() doubleX() doubleY() 
             translate([holderBaseCornerOffsetX, holderBaseCornerOffsetY, 0]) 
-                simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=baseZ, cz=holderBaseCZ);
+                simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=cartridgeRecessOffsetZ, cz=holderBaseCZ);
 
         // Cartridge holes:
-        translate([-baseX/2, -baseY/2, 0]) 
+        translate([0, -baseY/2, 0]) 
         {
             for(rowIndex = [0 : (numRows-1)])
             {
+                z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
                 y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY;
-                echo(str("y = ", y));
-                for(columnIndex = [0 : (numCartridgesPerRow-1)])
+
+                translate([0, y, 0]) difference()
                 {
-                    x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX;
-                    echo(str("x = ", x));
-                    cartridgeRecess(x, y);
+                    // Exterior:
+                    hull() doubleX() doubleY() 
+                        translate([holderBaseCornerOffsetX, 2*holderBaseCZ, 0]) 
+                            simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=z, cz=holderBaseCZ);
+                    
+                    // Cartridge recesses:
+                    // echo(str("y = ", y));
+                    for(columnIndex = [0 : (numCartridgesPerRow-1)])
+                    {
+                        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX;
+                        // echo(str("x = ", x));
+                        cartridgeRecess(x, y);
+                    }
                 }
             }
         }
-    }
+    // }
 }
 
 module cartridgeRecess(x, y)
