@@ -40,22 +40,23 @@ echo(str("holderStepCornerOffsetY = ", holderStepCornerOffsetY));
 
 module itemModule()
 {
-	// difference() 
-    // {
-    //     // Base exterior:
-		hull() doubleX() doubleY() 
-            translate([holderBaseCornerOffsetX, holderBaseCornerOffsetY, 0]) 
-                simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=cartridgeRecessOffsetZ, cz=holderBaseCZ);
+    // Base:
+	// hull() doubleX() doubleY() 
+    //     translate([holderBaseCornerOffsetX, holderBaseCornerOffsetY, 0]) 
+    //         simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=cartridgeRecessOffsetZ, cz=holderBaseCZ);
 
-        // Cartridge holes:
-        translate([0, -baseY/2, 0]) 
+    // Cartridge holes:
+    translate([0, -baseY/2, 0]) 
+    {
+        // Step exterior:
+        for(rowIndex = [0 : (numRows-1)])
         {
-            for(rowIndex = [0 : (numRows-1)])
-            {
-                z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
-                y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY;
+            z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
+            y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY;
 
-                translate([0, y, 0]) difference()
+            translate([0, y, 0]) 
+            {
+                difference()
                 {
                     // Exterior:
                     hull() doubleX() doubleY() 
@@ -66,22 +67,23 @@ module itemModule()
                     // echo(str("y = ", y));
                     for(columnIndex = [0 : (numCartridgesPerRow-1)])
                     {
-                        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX;
+                        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
                         // echo(str("x = ", x));
-                        cartridgeRecess(x, y);
+                        cartridgeRecess(x, z);
                     }
                 }
             }
         }
+    }
     // }
 }
 
-module cartridgeRecess(x, y)
+module cartridgeRecess(x, z)
 {
-    translate([x, y, 0])
+    translate([x, 0, 0])
     {
         tcy([0,0,cartridgeRecessOffsetZ], d=cartridgeRecessDia, h=100);
-        translate([0,0,baseZ-cartridgeRecessDia/2-cartridgeRecessCZ]) cylinder(d2=14, d1=0, h=7);
+        translate([0,0,z-cartridgeRecessDia/2-cartridgeRecessCZ]) cylinder(d2=14, d1=0, h=7);
     }
 }
 
