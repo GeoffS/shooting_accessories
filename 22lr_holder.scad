@@ -33,13 +33,10 @@ baseZ = cartridgeRecessZ + cartridgeRecessOffsetZ;
 holderBaseCornerDia = cartridgeSpacingY + holderBaseCZ;
 
 holderBaseCornerOffsetX = baseX/2 - holderBaseCornerDia/2;
-holderBaseCornerOffsetY = baseY; // - holderBaseCornerDia;
+holderBaseCornerOffsetY = baseY;
 holderBaseCornerOffsetZ = cartridgeRecessZ + cartridgeRecessOffsetZ + ((numRows)*incrementZ);
 
 echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
-// holderStepCornerOffsetY = cartridgeSpacingY/2 - holderBaseCornerDia/2;
-
-// echo(str("holderStepCornerOffsetY = ", holderStepCornerOffsetY));
 
 module itemModule()
 {
@@ -64,7 +61,7 @@ module itemModule()
             hull() step(holderBaseCornerOffsetY, holderBaseCornerOffsetZ);
         }
                 
-        // Cartridge recessesexcept the last one:
+        // Cartridge recesses except the last one:
         for(rowIndex = [0 : (numRows-1)])
         {
             z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
@@ -72,8 +69,6 @@ module itemModule()
 
             cartridgeRecesses(y, z);
         }
-        // Last (biggest Y) recess:
-        // cartridgeRecesses(holderBaseCornerOffsetY, holderBaseCornerOffsetZ);
     }
 }
 
@@ -83,10 +78,6 @@ module step(y, z)
         doubleX()
             translate([holderBaseCornerOffsetX, 0, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=z, cz=holderBaseCZ);
-
-        // doubleX() doubleY() 
-        //     translate([holderBaseCornerOffsetX, 2*holderBaseCZ, 0]) 
-        //         simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=z, cz=holderBaseCZ);
 }
 
 module cartridgeRecesses(y, z)
@@ -95,7 +86,6 @@ module cartridgeRecesses(y, z)
     for(columnIndex = [0 : (numCartridgesPerRow-1)])
     {
         x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
-        // echo(str("x = ", x));
         cartridgeRecess(x, y, z);
     }
 }
@@ -112,7 +102,7 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([0+d, -200, -200], 400);
+    // tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
