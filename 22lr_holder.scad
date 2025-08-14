@@ -45,8 +45,7 @@ module itemModule()
     //     translate([holderBaseCornerOffsetX, holderBaseCornerOffsetY, 0]) 
     //         simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=cartridgeRecessOffsetZ, cz=holderBaseCZ);
 
-    // Cartridge holes:
-    translate([0, 0, 0]) 
+    difference()
     {
         // Step exterior:
         for(rowIndex = [0 : (numRows-1)])
@@ -54,30 +53,48 @@ module itemModule()
             z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
             y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY - baseY/2;
 
-            translate([0, 0, 0]) 
+            hull() 
             {
-                difference()
-                {
-                    // Exterior:
-                    hull() 
-                    {
-                        step(y, z);
-                        step(holderBaseCornerOffsetY, z);
-                    }
-                    
-                    // Cartridge recesses:
-                    // echo(str("y = ", y));
-                    for(columnIndex = [0 : (numCartridgesPerRow-1)])
-                    {
-                        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
-                        // echo(str("x = ", x));
-                        cartridgeRecess(x, y, z);
-                    }
-                }
+                step(y, z);
+                step(holderBaseCornerOffsetY, z);
+            }
+        }
+                
+        // Cartridge recesses:
+        for(rowIndex = [0 : (numRows-1)])
+        {
+            z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
+            y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY - baseY/2;
+
+            // echo(str("y = ", y));
+            for(columnIndex = [0 : (numCartridgesPerRow-1)])
+            {
+                x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
+                // echo(str("x = ", x));
+                cartridgeRecess(x, y, z);
             }
         }
     }
+
+    // rowsXform()
+    // {
+    //     hull() 
+    //     {
+    //         step(y, z);
+    //         step(holderBaseCornerOffsetY, z);
+    //     }
+    // }
 }
+
+// module rowsXform()
+// {
+//     for(rowIndex = [0 : (numRows-1)])
+//     {
+//         z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
+//         y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY - baseY/2;
+//         children(y, z);
+//     }
+// }
 
 module step(y, z)
 {
