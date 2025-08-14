@@ -71,10 +71,10 @@ module itemModule()
         }
 
         // Text on top step:
-        ts = 6;
-        translate([0, holderBaseCornerOffsetY-(ts*0.14), holderBaseCornerOffsetZ-layerThickness])
+        ts = 6.2;
+        translate([0, holderBaseCornerOffsetY-(ts*0.1), holderBaseCornerOffsetZ-layerThickness])
         {
-            makeText(text="22lr Cartridge Holder", textSize=ts, spacing=1.1);
+            makeText(text="22lr Cartridge Holder", textSize=ts, spacing=1.15);
         }
     }
 
