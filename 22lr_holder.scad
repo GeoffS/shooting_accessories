@@ -3,6 +3,9 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 layerThickness = 0.2;
 
+makeHolder = false;
+makeLoader = false;
+
 brassOD = 5.75 + 0.3;
 brassRimOD = 6.9 + 0.25 ;
 brassRimThickness = 1.1;
@@ -42,7 +45,12 @@ holderBaseCornerOffsetZ = cartridgeRecessZ + cartridgeRecessOffsetZ + ((numRows)
 
 echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
 
-module itemModule()
+module loader()
+{
+    
+}
+
+module holder()
 {
     difference()
     {
@@ -144,9 +152,13 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() itemModule();
+	// display() holder();
+
+    display() translate([-120,0,0]) holder();
+    display() loader();
 }
 else
 {
-	itemModule();
+	if(makeHolder) holder();
+    if(makeLoader) loader();
 }
