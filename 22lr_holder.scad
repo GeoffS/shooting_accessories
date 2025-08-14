@@ -47,7 +47,7 @@ echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
 
 module loader()
 {
-    
+
 }
 
 module holder()
@@ -147,14 +147,14 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([0+d, -200, -200], 400);
+    tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
 	// display() holder();
 
-    display() translate([-120,0,0]) holder();
+    displayGhost() translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holder();
     display() loader();
 }
 else
