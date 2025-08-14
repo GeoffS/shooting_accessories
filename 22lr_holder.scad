@@ -48,13 +48,14 @@ echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
 loaderBaseCornerDia = 4;
 loadeCZ = 1;
 loaderBaseCornerOffsetX = 10;
-loaderBaseExtraY = 5;
+loaderBaseExtraY = 4;
 loaderBaseCornerOffsetY = cartridgeSpacingY/2 - holderBaseCZ - loadeCZ + loaderBaseExtraY; //7;
 
-loaderExtraZ = 4;
+loaderExtraZ = 8;
 loaderZ = 2*cartridgeLen + loaderExtraZ;
 
-loaderEntryGuideHoleCtrY = brassRimOD;
+loaderEntryGuideHoleCtrY = brassRimOD * 0.8;
+
 module loader()
 {
     difference()
@@ -71,7 +72,7 @@ module loader()
         translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
 
         // Guide-hole into loader:
-        translate([0,loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ/2])
+        translate([0,loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ])
         {
             // Guide hole:
             cylinder(d=brassRimOD, h=100);
@@ -83,11 +84,26 @@ module loader()
             }
         }
 
+        // Transition between guide-holes:
+        dy = 2;
+        hull()
+        {
+            tcy([0, loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ*1.75], d=brassRimOD, h=nothing);
+            tcy([0, loaderEntryGuideHoleCtrY,      cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+            tcy([0,                        0,      cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+        }
+        hull()
+        {
+            tcy([0, loaderEntryGuideHoleCtrY-dy,           cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+            tcy([0,                           0,           cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+            tcy([0,                           0, cartridgeLen+loaderExtraZ/2-nothing], d=brassRimOD, h=nothing);
+        }
+
         // Guide-hole into holder:
         translate([0,0,-1])
         {
             // Guide hole:
-            cylinder(d=brassRimOD, h=cartridgeLen+loaderExtraZ/2);
+            cylinder(d=brassRimOD, h=cartridgeLen+loaderExtraZ/2+1);
             // Slot to allow rotation:
             hull()
             {
@@ -197,18 +213,20 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([0+d, -200, -200], 400);
+    tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
 	// display() holder();
 
-    displayGhost() translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holder();
-    display() loader();
+    // displayGhost() translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holder();
+    // display() loader();
+
+    display() rotate([180,0,0]) loader();
 }
 else
 {
 	if(makeHolder) holder();
-    if(makeLoader) loader();
+    if(makeLoader) rotate([180,0,0]) loader();
 }
