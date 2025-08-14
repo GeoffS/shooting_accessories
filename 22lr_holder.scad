@@ -69,7 +69,40 @@ module itemModule()
 
             cartridgeRecesses(y, z);
         }
+
+        // Text on top step:
+        ts = 6;
+        translate([0, holderBaseCornerOffsetY-(ts*0.14), holderBaseCornerOffsetZ-layerThickness])
+        {
+            makeText(text="22lr Cartridge Holder", textSize=ts, spacing=1.1);
+        }
     }
+
+}
+
+module makeText(
+	text="Hello World",
+	textSize = 6,
+	spacing = 1.0,
+	font="Roboto:style=Bold",
+	halign="center",
+	valign="center")
+{
+	echo("makeText: text = ", text);
+	echo("makeText: textSize = ", textSize);
+	echo("makeText: font = ", font);
+	echo("makeText: halign = ", halign);
+	echo("makeText: valign = ", valign);
+	linear_extrude(height = 2)
+	{
+	text(
+		text=text,
+		font=font,
+		size=textSize,
+		spacing=spacing,
+		halign=halign,
+		valign=valign);
+	}
 }
 
 module step(y, z)
