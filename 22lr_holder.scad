@@ -45,9 +45,25 @@ holderBaseCornerOffsetZ = cartridgeRecessZ + cartridgeRecessOffsetZ + ((numRows)
 
 echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
 
+loaderBaseCornerDia = 4;
+loadeCZ = 1;
+loaderBaseCornerOffsetX = 10;
+loaderBaseCornerOffsetY = cartridgeSpacingY/2 - holderBaseCZ - loadeCZ; //7;
+
+loaderZ = 2*cartridgeLen;
+
 module loader()
 {
-
+    difference()
+    {
+        // Exterior:
+        hull()
+        {
+            doubleX() doubleY()
+                translate([loaderBaseCornerOffsetX, loaderBaseCornerOffsetY, 0]) 
+                    simpleChamferedCylinder(d=loaderBaseCornerDia, h=loaderZ, cz=loadeCZ);
+        }
+    }
 }
 
 module holder()
@@ -147,7 +163,7 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([0+d, -200, -200], 400);
+    // tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
