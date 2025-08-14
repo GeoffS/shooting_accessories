@@ -51,8 +51,10 @@ loaderBaseCornerOffsetX = 10;
 loaderBaseExtraY = 5;
 loaderBaseCornerOffsetY = cartridgeSpacingY/2 - holderBaseCZ - loadeCZ + loaderBaseExtraY; //7;
 
-loaderZ = 2*cartridgeLen;
+loaderExtraZ = 4;
+loaderZ = 2*cartridgeLen + loaderExtraZ;
 
+loaderEntryGuideHoleCtrY = brassRimOD;
 module loader()
 {
     difference()
@@ -68,8 +70,34 @@ module loader()
         // Trim the holder:
         translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
 
+        // Guide-hole into loader:
+        translate([0,loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ/2])
+        {
+            // Guide hole:
+            cylinder(d=brassRimOD, h=100);
+            // Slot to allow rotation:
+            hull()
+            {
+                cylinder(d=brassOD, h=100);
+                tcy([0,-20,0], d=brassOD, h=100);
+            }
+        }
+
         // Guide-hole into holder:
-        tcy([0,0,-1], d=brassRimOD, h=100);
+        translate([0,0,-1])
+        {
+            // Guide hole:
+            cylinder(d=brassRimOD, h=cartridgeLen+loaderExtraZ/2);
+            // Slot to allow rotation:
+            hull()
+            {
+                cylinder(d=brassOD, h=100);
+                tcy([0,-20,0], d=brassOD, h=100);
+            }
+        }
+
+        
+        
     }
 }
 
