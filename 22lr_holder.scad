@@ -95,9 +95,6 @@ module loader()
                 tcy([0,-20,0], d=brassOD, h=100);
             }
         }
-
-        
-        
     }
 }
 
