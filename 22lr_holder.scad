@@ -40,11 +40,6 @@ echo(str("holderStepCornerOffsetY = ", holderStepCornerOffsetY));
 
 module itemModule()
 {
-    // Base:
-	// hull() doubleX() doubleY() 
-    //     translate([holderBaseCornerOffsetX, holderBaseCornerOffsetY, 0]) 
-    //         simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=cartridgeRecessOffsetZ, cz=holderBaseCZ);
-
     difference()
     {
         // Step exterior:
@@ -75,26 +70,7 @@ module itemModule()
             }
         }
     }
-
-    // rowsXform()
-    // {
-    //     hull() 
-    //     {
-    //         step(y, z);
-    //         step(holderBaseCornerOffsetY, z);
-    //     }
-    // }
 }
-
-// module rowsXform()
-// {
-//     for(rowIndex = [0 : (numRows-1)])
-//     {
-//         z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
-//         y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY - baseY/2;
-//         children(y, z);
-//     }
-// }
 
 module step(y, z)
 {
