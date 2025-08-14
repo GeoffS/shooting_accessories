@@ -48,7 +48,8 @@ echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
 loaderBaseCornerDia = 4;
 loadeCZ = 1;
 loaderBaseCornerOffsetX = 10;
-loaderBaseCornerOffsetY = cartridgeSpacingY/2 - holderBaseCZ - loadeCZ; //7;
+loaderBaseExtraY = 5;
+loaderBaseCornerOffsetY = cartridgeSpacingY/2 - holderBaseCZ - loadeCZ + loaderBaseExtraY; //7;
 
 loaderZ = 2*cartridgeLen;
 
@@ -57,37 +58,45 @@ module loader()
     difference()
     {
         // Exterior:
-        hull()
+        translate([0,loaderBaseExtraY,0]) hull()
         {
             doubleX() doubleY()
                 translate([loaderBaseCornerOffsetX, loaderBaseCornerOffsetY, 0]) 
                     simpleChamferedCylinder(d=loaderBaseCornerDia, h=loaderZ, cz=loadeCZ);
         }
+
+        // Trim the holder:
+        translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
+
+        // Guide-hole into holder:
+        tcy([0,0,-1], d=brassRimOD, h=100);
     }
+}
+
+module holderExterior()
+{
+    // Exterior steps except the last one:
+    for(rowIndex = [0 : (numRows-1)])
+    {
+        z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
+        y = rowIndex * cartridgeSpacingY;
+        echo(str("Exterior y = ", y));
+
+        hull() 
+        {
+            step(y, z);
+            step(holderBaseCornerOffsetY, z);
+        }
+    }
+    // Last (biggest Y) step:
+    hull() step(holderBaseCornerOffsetY, holderBaseCornerOffsetZ);
 }
 
 module holder()
 {
     difference()
     {
-        union()
-        {
-            // Exterior steps except the last one:
-            for(rowIndex = [0 : (numRows-1)])
-            {
-                z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
-                y = rowIndex * cartridgeSpacingY;
-                echo(str("Exterior y = ", y));
-
-                hull() 
-                {
-                    step(y, z);
-                    step(holderBaseCornerOffsetY, z);
-                }
-            }
-            // Last (biggest Y) step:
-            hull() step(holderBaseCornerOffsetY, holderBaseCornerOffsetZ);
-        }
+        holderExterior();
                 
         // Cartridge recesses except the last one:
         for(rowIndex = [0 : (numRows-1)])
