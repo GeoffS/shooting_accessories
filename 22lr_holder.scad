@@ -12,7 +12,7 @@ cartridgeBoxSpacingY = 7.52;
 cartridgeBoxLipZ = 2.2;
 cartridgeBoxLipX = 39;
 
-cartridgeSpacingX = 20;
+cartridgeSpacingX = 17;
 cartridgeSpacingY = 20;
 
 holderBaseCZ = 2;
@@ -75,7 +75,7 @@ module itemModule()
         }
 
         // Text on top step:
-        ts = 6.2;
+        ts = 5.2;
         translate([0, holderBaseCornerOffsetY-(ts*0.1), holderBaseCornerOffsetZ-layerThickness])
         {
             makeText(text="22lr Cartridge Holder", textSize=ts, spacing=1.15);
@@ -88,7 +88,7 @@ module makeText(
 	text="Hello World",
 	textSize = 6,
 	spacing = 1.0,
-	font="Roboto:style=Bold",
+	font="Arial:style=Bold",
 	halign="center",
 	valign="center")
 {
