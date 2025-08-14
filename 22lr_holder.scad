@@ -8,6 +8,10 @@ brassRimOD = 6.9 + 0.25 ;
 brassRimThickness = 1.1;
 cartridgeLen = 26;
 
+cartridgeBoxSpacingY = 7.5;
+cartridgeBoxLipZ = 2.2;
+cartridgeBoxLipX = 35;
+
 cartridgeSpacingX = 20;
 cartridgeSpacingY = 20;
 
