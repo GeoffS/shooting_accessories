@@ -27,57 +27,77 @@ numCartridgesPerRow = 5;
 numRows = 6;
 
 baseX = 2*cartridgeAreaOutsideX + (numCartridgesPerRow-1) * cartridgeSpacingX;
-baseY = 2*cartridgeAreaOutsideY + numRows * cartridgeSpacingY;
+baseY = numRows * cartridgeSpacingY;
 baseZ = cartridgeRecessZ + cartridgeRecessOffsetZ;
 
-holderBaseCornerDia = 20;
+holderBaseCornerDia = cartridgeSpacingY + holderBaseCZ;
 
 holderBaseCornerOffsetX = baseX/2 - holderBaseCornerDia/2;
-holderBaseCornerOffsetY = baseY/2 - holderBaseCornerDia/2;
-holderStepCornerOffsetY = cartridgeSpacingY/2 - holderBaseCornerDia/2;
+holderBaseCornerOffsetY = baseY - holderBaseCornerDia;
+holderBaseCornerOffsetZ = cartridgeRecessZ + cartridgeRecessOffsetZ + ((numRows-1)*incrementZ);
 
-echo(str("holderStepCornerOffsetY = ", holderStepCornerOffsetY));
+echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
+// holderStepCornerOffsetY = cartridgeSpacingY/2 - holderBaseCornerDia/2;
+
+// echo(str("holderStepCornerOffsetY = ", holderStepCornerOffsetY));
 
 module itemModule()
 {
     difference()
     {
-        // Step exterior:
-        for(rowIndex = [0 : (numRows-1)])
+        union()
         {
-            z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
-            y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY - baseY/2;
-
-            hull() 
+            // Exterior steps except the last one:
+            for(rowIndex = [0 : (numRows-2)])
             {
-                step(y, z);
-                step(holderBaseCornerOffsetY, z);
+                z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
+                y = rowIndex * cartridgeSpacingY;
+                echo(str("Exterior y = ", y));
+
+                hull() 
+                {
+                    step(y, z);
+                    step(holderBaseCornerOffsetY, z);
+                }
             }
+            // Last (biggest Y) step:
+            hull() step(holderBaseCornerOffsetY, holderBaseCornerOffsetZ);
         }
                 
-        // Cartridge recesses:
-        for(rowIndex = [0 : (numRows-1)])
+        // Cartridge recessesexcept the last one:
+        for(rowIndex = [0 : (numRows-2)])
         {
             z = cartridgeRecessZ + cartridgeRecessOffsetZ + (rowIndex*incrementZ);
-            y = cartridgeAreaOutsideY + (rowIndex+0.5) * cartridgeSpacingY - baseY/2;
+            y = rowIndex * cartridgeSpacingY;
 
-            // echo(str("y = ", y));
-            for(columnIndex = [0 : (numCartridgesPerRow-1)])
-            {
-                x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
-                // echo(str("x = ", x));
-                cartridgeRecess(x, y, z);
-            }
+            cartridgeRecesses(y, z);
         }
+        // Last (biggest Y) recess:
+        cartridgeRecesses(holderBaseCornerOffsetY, holderBaseCornerOffsetZ);
     }
 }
 
 module step(y, z)
 {
     translate([0,y,0])
-        doubleX() doubleY() 
-            translate([holderBaseCornerOffsetX, 2*holderBaseCZ, 0]) 
+        doubleX()
+            translate([holderBaseCornerOffsetX, 0, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=z, cz=holderBaseCZ);
+
+        // doubleX() doubleY() 
+        //     translate([holderBaseCornerOffsetX, 2*holderBaseCZ, 0]) 
+        //         simpleChamferedCylinderDoubleEnded(d=holderBaseCornerDia, h=z, cz=holderBaseCZ);
+}
+
+module cartridgeRecesses(y, z)
+{
+    echo(str("Recess y = ", y));
+    for(columnIndex = [0 : (numCartridgesPerRow-1)])
+    {
+        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
+        // echo(str("x = ", x));
+        cartridgeRecess(x, y, z);
+    }
 }
 
 module cartridgeRecess(x, y, z)
