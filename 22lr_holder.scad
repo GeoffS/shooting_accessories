@@ -66,11 +66,21 @@ module loader()
     difference()
     {
         // Exterior:
-        translate([0,loaderBaseExtraY,0]) hull()
+         hull()
         {
-            doubleX() doubleY()
-                translate([loaderBaseCornerOffsetX, loaderBaseCornerOffsetY, 0]) 
-                    simpleChamferedCylinder(d=loaderBaseCornerDia, h=loaderZ, cz=loadeCZ);
+            // Main body:
+            translate([0,loaderBaseExtraY,0])
+                doubleX() doubleY()
+                    translate([loaderBaseCornerOffsetX, loaderBaseCornerOffsetY, 0]) 
+                        simpleChamferedCylinder(d=loaderBaseCornerDia, h=loaderZ, cz=loadeCZ);
+            
+            // Cartridge tip protector:
+            hull()
+            {
+                frontYTop = loaderEntryGuideHoleCtrY-cartridgeLen;
+                cartridgeTipProtectorDisk(frontY=frontYTop, topZ=loaderZ);
+                cartridgeTipProtectorDisk(frontY=frontYTop, topZ=30);
+            } 
         }
 
         // Trim the loader to fit the holder:
@@ -141,6 +151,19 @@ module loader()
         // Trim +Y:
         tcu([-50, 0, -50], 100);
     }
+}
+
+module cartridgeTipProtectorDisk(frontY, topZ)
+{
+    od = 20;
+    yo = frontY + od/2;
+    // MAGIC NUMBER!!!!!!
+    // -------vvvvvvv
+    zo = topZ*1.01268 - od/2;
+    translate([0, yo, zo]) 
+        rotate([0,90,0]) 
+            rotate([0,0,22.5])
+                hull() torus2fn(outsideDiameter=od, outsideFN=8, circleDiameter=brassRimOD+6);
 }
 
 module holderExterior()
@@ -242,7 +265,7 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([0+d, -200, -200], 400);
+    // tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
