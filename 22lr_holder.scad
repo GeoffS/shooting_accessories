@@ -57,9 +57,9 @@ loaderZ = 2*cartridgeLen + loaderExtraZ;
 
 loaderEntryGuideHoleCtrY = brassRimOD * 0.8;
 
-flipBumpDY = 2;
-flipBumpOD = 20;
-flipBumpZ = cartridgeLen - flipBumpOD*0.5;
+flipBumpDY = 1.6;
+flipBumpOD = 30;
+flipBumpZ = cartridgeLen - flipBumpOD*0.28;
                 
 module loader()
 {
