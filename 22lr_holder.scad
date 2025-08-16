@@ -59,97 +59,106 @@ loaderEntryGuideHoleCtrY = brassRimOD * 0.8;
 
 flipBumpDY = 2.5;
 flipBumpOD = 30;
-flipBumpZ = cartridgeLen - flipBumpOD*0.28;
+flipBumpZ = cartridgeLen - flipBumpOD*0.38; //0.28;
                 
 module loader()
 {
     difference()
     {
-        // Exterior:
-         hull()
+        union()
         {
-            // Main body:
-            translate([0,loaderBaseExtraY,0])
-                doubleX() doubleY()
-                    translate([loaderBaseCornerOffsetX, loaderBaseCornerOffsetY, 0]) 
-                        simpleChamferedCylinder(d=loaderBaseCornerDia, h=loaderZ, cz=loadeCZ);
-            
-            // Cartridge tip protector:
-            hull()
-            {
-                frontYTop = loaderEntryGuideHoleCtrY-cartridgeLen;
-                cartridgeTipProtectorDisk(frontY=frontYTop, topZ=loaderZ);
-                cartridgeTipProtectorDisk(frontY=frontYTop, topZ=30);
-            } 
-        }
-
-        // Trim the loader to fit the holder:
-        translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
-
-        // Guide-hole into loader:
-        translate([0,loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ])
-        {
-            // Guide hole:
-            cylinder(d=brassRimOD, h=100);
-
-            // Clearance for rim at bump to force flip:
             difference()
             {
-                translate([0, flipBumpOD/2-brassRimOD/2-flipBumpDY, flipBumpZ]) 
-                    rotate([0,90,0]) 
-                        hull() torus3(outsideDiameter=flipBumpOD, circleDiameter=brassRimOD);
+                // Exterior:
+                hull()
+                {
+                    // Main body:
+                    translate([0,loaderBaseExtraY,0])
+                        doubleX() doubleY()
+                            translate([loaderBaseCornerOffsetX, loaderBaseCornerOffsetY, 0]) 
+                                simpleChamferedCylinder(d=loaderBaseCornerDia, h=loaderZ, cz=loadeCZ);
+                    
+                    // Cartridge tip protector:
+                    hull()
+                    {
+                        frontYTop = loaderEntryGuideHoleCtrY-cartridgeLen;
+                        cartridgeTipProtectorDisk(frontY=frontYTop, topZ=loaderZ);
+                        cartridgeTipProtectorDisk(frontY=frontYTop, topZ=30);
+                    } 
+                }
+
+                // Trim the loader to fit the holder:
+                translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
+
+                // Guide-hole into loader:
+                translate([0,loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ])
+                {
+                    // Guide hole:
+                    cylinder(d=brassRimOD, h=100);
+
+                    // Clearance for rim at bump to force flip:
+                    difference()
+                    {
+                        translate([0, flipBumpOD/2-brassRimOD/2-flipBumpDY, flipBumpZ]) 
+                            rotate([0,90,0]) 
+                                hull() torus3(outsideDiameter=flipBumpOD, circleDiameter=brassRimOD);
+
+                        // Trim +Y:
+                        tcu([-50,0,-50], 100);
+                    }
+
+                    // Slot to allow rotation:
+                    hull()
+                    {
+                        cylinder(d=brassOD, h=100);
+                        tcy([0,-20,0], d=brassOD, h=100);
+                    }
+                }
+
+                // Transition between guide-holes:
+                dy = 2;
+                hull()
+                {
+                    tcy([0, loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ*1.75], d=brassRimOD, h=nothing);
+                    tcy([0, loaderEntryGuideHoleCtrY,      cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+                    tcy([0,                        0,      cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+                }
+                hull()
+                {
+                    tcy([0, loaderEntryGuideHoleCtrY-dy,           cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+                    tcy([0,                           0,           cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+                    tcy([0,                           0, cartridgeLen+loaderExtraZ/2-nothing], d=brassRimOD, h=nothing);
+                }
+
+                // Guide-hole into holder:
+                translate([0,0,-1])
+                {
+                    // Guide hole:
+                    cylinder(d=brassRimOD, h=cartridgeLen+loaderExtraZ/2+1);
+                    // Slot to allow rotation:
+                    hull()
+                    {
+                        cylinder(d=brassOD, h=100);
+                        tcy([0,-20,0], d=brassOD, h=100);
+                    }
+                }
+            }
+
+            // Flip-bump:
+            translate([0, loaderEntryGuideHoleCtrY+brassRimOD/2, cartridgeLen+loaderExtraZ]) difference()
+            {
+                translate([0,0, 0]) 
+                    translate([0, flipBumpOD/2-flipBumpDY, flipBumpZ]) 
+                        rotate([0,90,0]) 
+                            hull() torus3(outsideDiameter=flipBumpOD, circleDiameter=3);
 
                 // Trim +Y:
-                tcu([-50,0,-50], 100);
-            }
-
-            // Slot to allow rotation:
-            hull()
-            {
-                cylinder(d=brassOD, h=100);
-                tcy([0,-20,0], d=brassOD, h=100);
+                tcu([-50, 0, -50], 100);
             }
         }
 
-        // Transition between guide-holes:
-        dy = 2;
-        hull()
-        {
-            tcy([0, loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ*1.75], d=brassRimOD, h=nothing);
-            tcy([0, loaderEntryGuideHoleCtrY,      cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
-            tcy([0,                        0,      cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
-        }
-        hull()
-        {
-            tcy([0, loaderEntryGuideHoleCtrY-dy,           cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
-            tcy([0,                           0,           cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
-            tcy([0,                           0, cartridgeLen+loaderExtraZ/2-nothing], d=brassRimOD, h=nothing);
-        }
-
-        // Guide-hole into holder:
-        translate([0,0,-1])
-        {
-            // Guide hole:
-            cylinder(d=brassRimOD, h=cartridgeLen+loaderExtraZ/2+1);
-            // Slot to allow rotation:
-            hull()
-            {
-                cylinder(d=brassOD, h=100);
-                tcy([0,-20,0], d=brassOD, h=100);
-            }
-        }
-    }
-
-    // Flip-bump:
-    translate([0, loaderEntryGuideHoleCtrY+brassRimOD/2, cartridgeLen+loaderExtraZ]) difference()
-    {
-        translate([0,0, 0]) 
-            translate([0, flipBumpOD/2-flipBumpDY, flipBumpZ]) 
-                rotate([0,90,0]) 
-                    hull() torus3(outsideDiameter=flipBumpOD, circleDiameter=3);
-
-        // Trim +Y:
-        tcu([-50, 0, -50], 100);
+        // Chamfer top:
+        translate([0, loaderEntryGuideHoleCtrY-0.5, loaderZ-brassRimOD/2-3.7]) cylinder(d1=0, d2=20, h=10);
     }
 }
 
@@ -266,7 +275,7 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([0+d, -200, -200], 400);
+    tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
