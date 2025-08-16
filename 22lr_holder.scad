@@ -28,7 +28,7 @@ cartridgeRecessOffsetZ = 3;
 cartridgeRecessCZ = 4*layerThickness;
 
 numCartridgesPerRow = 5;
-numRows = 3;
+numRows = 5;
 
 baseX = 2*cartridgeAreaOutsideX + (numCartridgesPerRow-1) * cartridgeSpacingX;
 baseY = numRows * cartridgeSpacingY;
