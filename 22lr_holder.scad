@@ -159,6 +159,9 @@ module loader()
 
         // Chamfer top:
         translate([0, loaderEntryGuideHoleCtrY-0.5, loaderZ-brassRimOD/2-3.7]) cylinder(d1=0, d2=20, h=10);
+
+        // Chamfer bottom:
+        translate([0, 0, -10+brassRimOD/2+1.5]) cylinder(d2=0, d1=20, h=10);
     }
 }
 
