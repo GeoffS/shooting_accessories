@@ -131,15 +131,22 @@ module loader()
                 }
 
                 // Guide-hole into holder:
-                translate([0,0,-1])
+                union()
                 {
                     // Guide hole:
-                    cylinder(d=brassRimOD, h=cartridgeLen+loaderExtraZ/2+1);
+                    translate([0,0,-1]) cylinder(d=brassRimOD, h=cartridgeLen+loaderExtraZ/2+1);
+
                     // Slot to allow rotation:
-                    hull()
+                    difference()
                     {
-                        cylinder(d=brassOD, h=100);
-                        tcy([0,-20,0], d=brassOD, h=100);
+                        // Slot:
+                        hull()
+                        {
+                            cylinder(d=brassOD, h=100);
+                            tcy([0,-20,-1], d=brassOD, h=100);
+                        }
+                        // Trim angle to guide tip into holder:
+                        translate([0,0,3]) rotate([50,0,0]) tcu([-50,-100,-50], 100);
                     }
                 }
             }
