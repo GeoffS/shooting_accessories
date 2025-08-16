@@ -57,7 +57,7 @@ loaderZ = 2*cartridgeLen + loaderExtraZ;
 
 loaderEntryGuideHoleCtrY = brassRimOD * 0.8;
 
-flipBumpDY = 1.6;
+flipBumpDY = 2.5;
 flipBumpOD = 30;
 flipBumpZ = cartridgeLen - flipBumpOD*0.28;
                 
