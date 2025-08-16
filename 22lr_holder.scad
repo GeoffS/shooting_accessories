@@ -1,5 +1,6 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
+include <../OpenSCAD_Lib/torus.scad>
 
 layerThickness = 0.2;
 
@@ -56,6 +57,10 @@ loaderZ = 2*cartridgeLen + loaderExtraZ;
 
 loaderEntryGuideHoleCtrY = brassRimOD * 0.8;
 
+flipBumpDY = 2;
+flipBumpOD = 20;
+flipBumpZ = cartridgeLen - flipBumpOD*0.5;
+                
 module loader()
 {
     difference()
@@ -68,7 +73,7 @@ module loader()
                     simpleChamferedCylinder(d=loaderBaseCornerDia, h=loaderZ, cz=loadeCZ);
         }
 
-        // Trim the holder:
+        // Trim the loader to fit the holder:
         translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
 
         // Guide-hole into loader:
@@ -76,6 +81,18 @@ module loader()
         {
             // Guide hole:
             cylinder(d=brassRimOD, h=100);
+
+            // Clearance for rim at bump to force flip:
+            difference()
+            {
+                translate([0, flipBumpOD/2-brassRimOD/2-flipBumpDY, flipBumpZ]) 
+                    rotate([0,90,0]) 
+                        hull() torus3(outsideDiameter=flipBumpOD, circleDiameter=brassRimOD);
+
+                // Trim +Y:
+                tcu([-50,0,-50], 100);
+            }
+
             // Slot to allow rotation:
             hull()
             {
@@ -111,6 +128,18 @@ module loader()
                 tcy([0,-20,0], d=brassOD, h=100);
             }
         }
+    }
+
+    // Flip-bump:
+    translate([0, loaderEntryGuideHoleCtrY+brassRimOD/2, cartridgeLen+loaderExtraZ]) difference()
+    {
+        translate([0,0, 0]) 
+            translate([0, flipBumpOD/2-flipBumpDY, flipBumpZ]) 
+                rotate([0,90,0]) 
+                    hull() torus3(outsideDiameter=flipBumpOD, circleDiameter=3);
+
+        // Trim +Y:
+        tcu([-50, 0, -50], 100);
     }
 }
 
@@ -220,10 +249,10 @@ if(developmentRender)
 {
 	// display() holder();
 
-    // displayGhost() translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holder();
-    // display() loader();
+    displayGhost() translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holder();
+    display() loader();
 
-    display() rotate([180,0,0]) loader();
+    // display() rotate([180,0,0]) loader();
 }
 else
 {
