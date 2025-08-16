@@ -155,11 +155,12 @@ module loader()
 
 module cartridgeTipProtectorDisk(frontY, topZ)
 {
-    od = 20;
-    yo = frontY + od/2;
     // MAGIC NUMBER!!!!!!
-    // -------vvvvvvv
-    zo = topZ*1.01268 - od/2;
+    // ---------------------vvvvvvv
+    octagonDiameterFactor = 1.01268;
+    od = 20;
+    yo = frontY*octagonDiameterFactor + od/2;
+    zo = topZ*octagonDiameterFactor - od/2;
     translate([0, yo, zo]) 
         rotate([0,90,0]) 
             rotate([0,0,22.5])
