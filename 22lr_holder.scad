@@ -60,6 +60,10 @@ loaderEntryGuideHoleCtrY = brassRimOD * 0.8;
 flipBumpDY = 2.5;
 flipBumpOD = 30;
 flipBumpZ = cartridgeLen - flipBumpOD*0.38; //0.28;
+
+slotMidY = -5; 
+slotOuterY = -20;
+slotOuterDia = brassOD + 2;
                 
 module loader()
 {
@@ -111,7 +115,12 @@ module loader()
                     hull()
                     {
                         cylinder(d=brassOD, h=100);
-                        tcy([0,-20,0], d=brassOD, h=100);
+                        tcy([0,slotMidY-loaderEntryGuideHoleCtrY,0], d=brassOD, h=100);
+                    }
+                    hull()
+                    {
+                        tcy([0,slotMidY-loaderEntryGuideHoleCtrY,0], d=brassOD, h=100);
+                        tcy([0,slotOuterY-loaderEntryGuideHoleCtrY,0], d=slotOuterDia, h=100);
                     }
                 }
 
@@ -140,10 +149,18 @@ module loader()
                     difference()
                     {
                         // Slot:
-                        hull()
+                        union()
                         {
-                            cylinder(d=brassOD, h=100);
-                            tcy([0,-20,-1], d=brassOD, h=100);
+                            hull()
+                            {
+                                cylinder(d=brassOD, h=100);
+                                tcy([0,slotMidY,0], d=brassOD, h=100);
+                            }
+                            hull()
+                            {
+                                tcy([0,slotMidY,0], d=brassOD, h=100);
+                                tcy([0,slotOuterY,0], d=slotOuterDia, h=100);
+                            }
                         }
                         // Trim angle to guide tip into holder:
                         translate([0,0,3]) rotate([50,0,0]) tcu([-50,-100,-50], 100);
