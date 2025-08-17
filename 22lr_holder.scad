@@ -7,8 +7,8 @@ layerThickness = 0.2;
 makeHolder = false;
 makeLoader = false;
 
-brassOD = 5.75 + 0.3;
-brassRimOD = 6.9 + 0.25 ;
+brassClearanceOD = 5.75 + 0.6;
+brassRimClearanceOD = 6.9 + 0.25 ;
 brassRimThickness = 1.1;
 cartridgeLen = 26;
 
@@ -26,7 +26,7 @@ incrementZ = holderBaseCZ + 2;
 cartridgeAreaOutsideX = 14;
 cartridgeAreaOutsideY = 4;
 
-cartridgeRecessDia = brassOD;
+cartridgeRecessDia = brassClearanceOD;
 cartridgeRecessZ = 13;
 cartridgeRecessOffsetZ = 3;
 cartridgeRecessCZ = 4*layerThickness;
@@ -55,15 +55,19 @@ loaderBaseCornerOffsetY = cartridgeSpacingY/2 - holderBaseCZ - loadeCZ + loaderB
 loaderExtraZ = 8;
 loaderZ = 2*cartridgeLen + loaderExtraZ;
 
-loaderEntryGuideHoleCtrY = brassRimOD * 0.8;
+loaderEntryGuideHoleCtrY = brassRimClearanceOD * 0.8;
 
 flipBumpDY = 2.5;
 flipBumpOD = 30;
 flipBumpZ = cartridgeLen - flipBumpOD*0.38; //0.28;
 
-slotMidY = -5; 
-slotOuterY = -20;
-slotOuterDia = brassOD + 2;
+frontYTop = loaderEntryGuideHoleCtrY - cartridgeLen - 3; 
+echo(str("frontYTop = ", frontYTop));
+
+slotOuterExtraDia = 2;
+slotMidY = -3.4; 
+slotOuterY = frontYTop + slotOuterExtraDia/2;
+slotOuterDia = brassClearanceOD + slotOuterExtraDia; 
                 
 module loader()
 {
@@ -85,7 +89,6 @@ module loader()
                     // Cartridge tip protector:
                     hull()
                     {
-                        frontYTop = loaderEntryGuideHoleCtrY-cartridgeLen;
                         cartridgeTipProtectorDisk(frontY=frontYTop, topZ=loaderZ);
                         cartridgeTipProtectorDisk(frontY=frontYTop, topZ=30);
                     } 
@@ -98,14 +101,14 @@ module loader()
                 translate([0,loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ])
                 {
                     // Guide hole:
-                    cylinder(d=brassRimOD, h=100);
+                    cylinder(d=brassRimClearanceOD, h=100);
 
                     // Clearance for rim at bump to force flip:
                     difference()
                     {
-                        translate([0, flipBumpOD/2-brassRimOD/2-flipBumpDY, flipBumpZ]) 
+                        translate([0, flipBumpOD/2-brassRimClearanceOD/2-flipBumpDY, flipBumpZ]) 
                             rotate([0,90,0]) 
-                                hull() torus3(outsideDiameter=flipBumpOD, circleDiameter=brassRimOD);
+                                hull() torus3(outsideDiameter=flipBumpOD, circleDiameter=brassRimClearanceOD);
 
                         // Trim +Y:
                         tcu([-50,0,-50], 100);
@@ -114,36 +117,38 @@ module loader()
                     // Slot to allow rotation:
                     hull()
                     {
-                        cylinder(d=brassOD, h=100);
-                        tcy([0,slotMidY-loaderEntryGuideHoleCtrY,0], d=brassOD, h=100);
+                        cylinder(d=brassClearanceOD, h=100);
+                        tcy([0,slotMidY-loaderEntryGuideHoleCtrY,0], d=brassClearanceOD, h=100);
                     }
                     hull()
                     {
-                        tcy([0,slotMidY-loaderEntryGuideHoleCtrY,0], d=brassOD, h=100);
+                        tcy([0,slotMidY-loaderEntryGuideHoleCtrY,0], d=brassClearanceOD, h=100);
                         tcy([0,slotOuterY-loaderEntryGuideHoleCtrY,0], d=slotOuterDia, h=100);
                     }
                 }
 
                 // Transition between guide-holes:
                 dy = 2;
+                dd = 0.3;
+                td = brassRimClearanceOD + dd;
                 hull()
                 {
-                    tcy([0, loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ*1.75], d=brassRimOD, h=nothing);
-                    tcy([0, loaderEntryGuideHoleCtrY,      cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
-                    tcy([0,                        0,      cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
+                    tcy([0, loaderEntryGuideHoleCtrY, cartridgeLen+loaderExtraZ*2], d=brassRimClearanceOD, h=nothing);
+                    tcy([0, loaderEntryGuideHoleCtrY,      cartridgeLen+loaderExtraZ], d=td, h=nothing);
+                    tcy([0,                      dd,      cartridgeLen+loaderExtraZ], d=td, h=nothing);
                 }
                 hull()
                 {
-                    tcy([0, loaderEntryGuideHoleCtrY-dy,           cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
-                    tcy([0,                           0,           cartridgeLen+loaderExtraZ], d=brassRimOD, h=nothing);
-                    tcy([0,                           0, cartridgeLen+loaderExtraZ/2-nothing], d=brassRimOD, h=nothing);
+                    tcy([0, loaderEntryGuideHoleCtrY-dy,           cartridgeLen+loaderExtraZ], d=td, h=nothing);
+                    tcy([0,                          dd,           cartridgeLen+loaderExtraZ], d=td, h=nothing);
+                    tcy([0,                           0, cartridgeLen+loaderExtraZ/2-nothing], d=brassRimClearanceOD, h=nothing);
                 }
 
                 // Guide-hole into holder:
                 union()
                 {
                     // Guide hole:
-                    translate([0,0,-1]) cylinder(d=brassRimOD, h=cartridgeLen+loaderExtraZ/2+1);
+                    translate([0,0,-1]) cylinder(d=brassRimClearanceOD, h=cartridgeLen+loaderExtraZ/2+1);
 
                     // Slot to allow rotation:
                     difference()
@@ -153,12 +158,12 @@ module loader()
                         {
                             hull()
                             {
-                                cylinder(d=brassOD, h=100);
-                                tcy([0,slotMidY,0], d=brassOD, h=100);
+                                cylinder(d=brassClearanceOD, h=100);
+                                tcy([0,slotMidY,0], d=brassClearanceOD, h=100);
                             }
                             hull()
                             {
-                                tcy([0,slotMidY,0], d=brassOD, h=100);
+                                tcy([0,slotMidY,0], d=brassClearanceOD, h=100);
                                 tcy([0,slotOuterY,0], d=slotOuterDia, h=100);
                             }
                         }
@@ -169,7 +174,7 @@ module loader()
             }
 
             // Flip-bump:
-            translate([0, loaderEntryGuideHoleCtrY+brassRimOD/2, cartridgeLen+loaderExtraZ]) difference()
+            translate([0, loaderEntryGuideHoleCtrY+brassRimClearanceOD/2, cartridgeLen+loaderExtraZ]) difference()
             {
                 translate([0,0, 0]) 
                     translate([0, flipBumpOD/2-flipBumpDY, flipBumpZ]) 
@@ -182,10 +187,10 @@ module loader()
         }
 
         // Chamfer top:
-        translate([0, loaderEntryGuideHoleCtrY-0.5, loaderZ-brassRimOD/2-3.7]) cylinder(d1=0, d2=20, h=10);
+        translate([0, loaderEntryGuideHoleCtrY-0.5, loaderZ-brassRimClearanceOD/2-3.7]) cylinder(d1=0, d2=20, h=10);
 
         // Chamfer bottom:
-        translate([0, 0, -10+brassRimOD/2+1.5]) cylinder(d2=0, d1=20, h=10);
+        translate([0, 0, -10+brassRimClearanceOD/2+1.5]) cylinder(d2=0, d1=20, h=10);
     }
 }
 
@@ -200,7 +205,7 @@ module cartridgeTipProtectorDisk(frontY, topZ)
     translate([0, yo, zo]) 
         rotate([0,90,0]) 
             rotate([0,0,22.5])
-                hull() torus2fn(outsideDiameter=od, outsideFN=8, circleDiameter=brassRimOD+6);
+                hull() torus2fn(outsideDiameter=od, outsideFN=8, circleDiameter=brassRimClearanceOD+6);
 }
 
 module holderExterior()
