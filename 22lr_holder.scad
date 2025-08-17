@@ -163,7 +163,7 @@ module loader()
                             }
                         }
                         // Trim angle to guide tip into holder:
-                        translate([0,0,3]) rotate([50,0,0]) tcu([-50,-100,-50], 100);
+                        translate([0,0,3]) rotate([70,0,0]) tcu([-50,-100,-50], 100);
                     }
                 }
             }
