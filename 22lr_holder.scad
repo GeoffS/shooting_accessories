@@ -49,10 +49,10 @@ echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
 
 loader2BaseCornerDia = 4;
 
-loader2SubBaseX = baseX;
-loader2SubBaseY = cartridgeSpacingY + 40;
-loader2SubBaseOffsetY = -holderBaseCornerDia/2 - 3; //-loader2SubBaseY/2 + holderBaseCZ;
-loader2SubBaseZ = 19*layerThickness;
+loader2SubBaseX = baseX - 0.5;
+loader2SubBaseY = 14;
+loader2SubBaseOffsetY = holderBaseCornerDia/2 - 3; //-loader2SubBaseY/2 + holderBaseCZ;
+loader2SubBaseZ = 4; //19*layerThickness;
 
 echo(str("loader2SubBaseZ = ", loader2SubBaseZ));
 
@@ -61,37 +61,50 @@ loader2SubBaseCornerOffsetX = loader2SubBaseX/2 - loader2BaseCornerDia/2;
 loader2SubBaseCornerOffsetY = loader2SubBaseY/2;
 
 loader2CZ = 1;
-loader2BaseCornerOffsetX = loader2SubBaseX/2 - loader2BaseCornerDia/2;
-loader2BaseCornerOffsetY = cartridgeSpacingY/2 - holderBaseCZ - loader2CZ;
+
+loader2BaseX = loader2SubBaseX;
+loader2BaseY = 70; //60;
+loader2BaseOffsetY = -7; //-2;
+
+loader2BaseCornerOffsetX = loader2BaseX/2 - loader2BaseCornerDia/2;
+loader2BaseCornerOffsetY = loader2BaseY/2 - loader2BaseCornerDia/2;
 loader2Z = 2*cartridgeLen;
 
 module loader2()
 {
     difference()
     {
-        // Sub-base:
-        difference()
+        union()
         {
-            translate([0, loader2SubBaseOffsetY, 0]) hull()
+        // Sub-base:
+            difference()
             {
-                // Main body:
-                doubleX() doubleY()
-                    translate([loader2SubBaseCornerOffsetX, loader2SubBaseCornerOffsetY, 0]) 
-                        simpleChamferedCylinderDoubleEnded(d=loader2BaseCornerDia, h=loader2SubBaseZ, cz=loader2CZ);
+                union()
+                {
+                    translate([0, loader2SubBaseOffsetY, 0]) hull()
+                    {
+                        // Main body:
+                        doubleX() doubleY()
+                            translate([loader2SubBaseCornerOffsetX, loader2SubBaseCornerOffsetY, 0]) 
+                                simpleChamferedCylinderDoubleEnded(d=loader2BaseCornerDia, h=loader2SubBaseZ, cz=loader2CZ);
+                    }
+
+                    // Exterior:
+                    translate([0, loader2BaseOffsetY, 0]) hull()hull()
+                    {
+                        // Main body:
+                        doubleX() doubleY()
+                            translate([loader2BaseCornerOffsetX, loader2BaseCornerOffsetY, 0]) 
+                                simpleChamferedCylinderDoubleEnded(d=loader2BaseCornerDia, h=loader2Z, cz=loader2CZ);
+                    }
+                }
+
+                // Trim the loader to fit the holder:
+                translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
             }
 
-            // Trim the loader to fit the holder:
-            translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
+            
         }
-
-        // Exterior:
-        // hull()
-        // {
-        //     // Main body:
-        //     doubleX() doubleY()
-        //         translate([loader2BaseCornerOffsetX, loader2BaseCornerOffsetY, 0]) 
-        //             simpleChamferedCylinder(d=loader2BaseCornerDia, h=loader2Z, cz=loader2CZ);
-        // }
 
         // Trough:
 
