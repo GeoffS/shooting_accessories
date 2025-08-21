@@ -6,6 +6,7 @@ layerThickness = 0.2;
 
 makeHolder = false;
 makeLoader = false;
+makeLoader2 = false;
 
 brassClearanceOD = 5.75 + 0.6;
 brassRimClearanceOD = 6.9 + 0.25 ;
@@ -45,6 +46,60 @@ holderBaseCornerOffsetY = baseY;
 holderBaseCornerOffsetZ = cartridgeRecessZ + cartridgeRecessOffsetZ + ((numRows)*incrementZ);
 
 echo(str("holderBaseCornerOffsetZ = ", holderBaseCornerOffsetZ));
+
+loader2BaseCornerDia = 4;
+
+loader2SubBaseX = baseX;
+loader2SubBaseY = cartridgeSpacingY + 40;
+loader2SubBaseOffsetY = -holderBaseCornerDia/2 - 3; //-loader2SubBaseY/2 + holderBaseCZ;
+loader2SubBaseZ = 19*layerThickness;
+
+echo(str("loader2SubBaseZ = ", loader2SubBaseZ));
+
+loader2SubBaseCZ = 1;
+loader2SubBaseCornerOffsetX = loader2SubBaseX/2 - loader2BaseCornerDia/2;
+loader2SubBaseCornerOffsetY = loader2SubBaseY/2;
+
+loader2CZ = 1;
+loader2BaseCornerOffsetX = loader2SubBaseX/2 - loader2BaseCornerDia/2;
+loader2BaseCornerOffsetY = cartridgeSpacingY/2 - holderBaseCZ - loader2CZ;
+loader2Z = 2*cartridgeLen;
+
+module loader2()
+{
+    difference()
+    {
+        // Sub-base:
+        difference()
+        {
+            translate([0, loader2SubBaseOffsetY, 0]) hull()
+            {
+                // Main body:
+                doubleX() doubleY()
+                    translate([loader2SubBaseCornerOffsetX, loader2SubBaseCornerOffsetY, 0]) 
+                        simpleChamferedCylinderDoubleEnded(d=loader2BaseCornerDia, h=loader2SubBaseZ, cz=loader2CZ);
+            }
+
+            // Trim the loader to fit the holder:
+            translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
+        }
+
+        // Exterior:
+        // hull()
+        // {
+        //     // Main body:
+        //     doubleX() doubleY()
+        //         translate([loader2BaseCornerOffsetX, loader2BaseCornerOffsetY, 0]) 
+        //             simpleChamferedCylinder(d=loader2BaseCornerDia, h=loader2Z, cz=loader2CZ);
+        // }
+
+        // Trough:
+
+        // Slot:
+
+        // Exit hole:
+    }
+}
 
 loaderBaseCornerDia = 4;
 loadeCZ = 1;
@@ -307,20 +362,30 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([0+d, -200, -200], 400);
+    // tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
 	// display() holder();
+    
+    // display() loader();
+    // displayGhost() holderGhost();
 
-    displayGhost() translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holder();
-    display() loader();
+    display() loader2();
+    displayGhost() holderGhost();
 
     // display() rotate([180,0,0]) loader();
+    displayGhost() translate([-150,100,0])  loader();
 }
 else
 {
 	if(makeHolder) holder();
     if(makeLoader) rotate([180,0,0]) loader();
+    if(makeLoader2) loader2();
+}
+
+module holderGhost()
+{
+    translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holder();
 }
