@@ -119,6 +119,11 @@ module loader2()
         }
 
         // Slot:
+        troughXform()
+        {
+            tcy([0, 0, -1], d=brassClearanceOD, h=100);
+            translate([0, 0, -1]) cylinder(d=brassClearanceOD, h=100);
+        }
 
         // Exit holes:
         for(columnIndex = [0 : (numCartridgesPerRow-1)])
