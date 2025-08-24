@@ -16,6 +16,7 @@ cartridgeLen = 26;
 cartridgeBoxSpacingX = 7.52;
 cartridgeBoxLipZ = 2.2;
 cartridgeBoxLipX = 39;
+cartridgeBoxExteriorX = 43.5;
 
 cartridgeSpacingX = 17;
 cartridgeSpacingY = 20;
@@ -75,6 +76,8 @@ loader2BaseCornerOffsetX = loader2BaseX/2 - loader2BaseCornerDia/2;
 loader2BaseCornerOffsetY = loader2BaseY/2 - loader2BaseCornerDia/2;
 loader2Z = loader2GuideTopZ + 6;
 
+m3SocketHeadDia = 5.6;
+
 module loader2()
 {
     difference()
@@ -106,10 +109,15 @@ module loader2()
 
                 // Trim the loader to fit the holder:
                 translate([0,0,-(cartridgeRecessZ + cartridgeRecessOffsetZ)]) holderExterior();
-            }
-
-            
+            }            
         }
+
+        // Holes for M3 socket-head screws to guide the box:
+       
+        // doubleX() tcy([boxGuideScrewsCtrX, 0, loader2Z-16], d=3, h=100);
+        cartridgeBoxGuideScrewHoles(y=-2);
+        rearGuideScrewCtrsY = -loader2BaseY/2 + loader2BaseOffsetY + loader2CZ + 0.5 + m3SocketHeadDia/2;
+        cartridgeBoxGuideScrewHoles(y=rearGuideScrewCtrsY);
 
         // Trough:
         troughXform()
@@ -141,10 +149,25 @@ module loader2()
     }
 }
 
+module cartridgeBoxGuideScrewHolesXform(y)
+{
+    boxGuideScrewsCtrX = cartridgeBoxExteriorX/2 + m3SocketHeadDia/2;
+    doubleX() translate([boxGuideScrewsCtrX, y, loader2Z]) children();
+}
+
+module cartridgeBoxGuideScrewHoles(y)
+{
+    cartridgeBoxGuideScrewHolesXform(y) 
+    {
+        screHoleDia = 3;
+        tcy([0,0,-16], d=screHoleDia, h=100);
+        translate([0,0,-screHoleDia/2-0.5]) cylinder(d2=10, d1=0, h=5);
+    }
+}
+
 module troughXform()
 {
     for(columnIndex = [0 : (numCartridgesPerRow-1)])
-    // columnIndex = 2;
     hull() 
     {
         // Front/bottom end:
