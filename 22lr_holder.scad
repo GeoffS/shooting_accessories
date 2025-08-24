@@ -111,6 +111,13 @@ module loader2()
         // Slot:
 
         // Exit hole:
+        translate([0,0,0])
+        {
+            // Guide hole:
+            tcy([0,0,-1], d=brassRimClearanceOD, h=100);
+            // Bottom chamfer:
+            translate([0,0,-10+brassRimClearanceOD/2+cartridgeRecessCZ]) cylinder(d1=20, d2=0, h=10);
+        }
     }
 }
 
@@ -375,7 +382,7 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([0+d, -200, -200], 400);
+    tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
