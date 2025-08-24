@@ -9,7 +9,7 @@ makeLoader = false;
 makeLoader2 = false;
 
 brassClearanceOD = 5.75 + 0.6;
-brassRimClearanceOD = 6.9 + 0.25 + 0.2;
+brassRimClearanceOD = 6.9 + 0.25;
 brassRimThickness = 1.1;
 cartridgeLen = 26;
 
