@@ -62,13 +62,18 @@ loader2SubBaseCornerOffsetY = loader2SubBaseY/2;
 
 loader2CZ = 1;
 
-loader2BaseX = loader2SubBaseX;
 loader2BaseY = 70; //60;
+
+loader2GuideExitHoleZ = cartridgeLen + 2;
+loader2GuideTopY = loader2BaseY - 5;
+loader2GuideTopZ = loader2GuideExitHoleZ + 8;
+
+loader2BaseX = loader2SubBaseX;
 loader2BaseOffsetY = -7; //-2;
 
 loader2BaseCornerOffsetX = loader2BaseX/2 - loader2BaseCornerDia/2;
 loader2BaseCornerOffsetY = loader2BaseY/2 - loader2BaseCornerDia/2;
-loader2Z = 2*cartridgeLen;
+loader2Z = loader2GuideTopZ + 6;
 
 module loader2()
 {
@@ -107,11 +112,26 @@ module loader2()
         }
 
         // Trough:
+        troughXform()
+        {
+            tcy([0, 0, loader2GuideExitHoleZ], d=brassRimClearanceOD, h=100);
+            translate([0, 0, loader2GuideTopZ]) cylinder(d=brassRimClearanceOD, h=100);
+        }
+        // // for(columnIndex = [0 : (numCartridgesPerRow-1)])
+        // columnIndex = 2;
+        // hull() 
+        // {
+        //     x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
+        //     // Front/bottom end:
+        //     tcy([x,0,loader2GuideExitHoleZ], d=brassRimClearanceOD, h=100);
+        //     // Rear/top end:
+        //     rearY = -loader2BaseY/2 + loader2BaseOffsetY + brassRimClearanceOD/2 + loader2CZ + 2 + loader2CZ;
+        //     translate([0, rearY, loader2GuideTopZ]) cylinder(d=brassRimClearanceOD, h=100);
+        // }
 
         // Slot:
 
         // Exit holes:
-        echo(str("Recess y = ", y));
         for(columnIndex = [0 : (numCartridgesPerRow-1)])
         {
             x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
@@ -120,6 +140,21 @@ module loader2()
             // Bottom chamfer:
             translate([0,0,-10+brassRimClearanceOD/2+cartridgeRecessCZ]) cylinder(d1=20, d2=0, h=10);
         }
+    }
+}
+
+module troughXform()
+{
+    // for(columnIndex = [0 : (numCartridgesPerRow-1)])
+    columnIndex = 2;
+    hull() 
+    {
+        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
+        // Front/bottom end:
+        translate([x,0,0]) children(0);
+        // Rear/top end:
+        rearY = -loader2BaseY/2 + loader2BaseOffsetY + brassRimClearanceOD/2 + loader2CZ + 2 + loader2CZ;
+        translate([0, rearY, 0]) children(1);
     }
 }
 
