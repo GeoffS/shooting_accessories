@@ -143,8 +143,19 @@ module loader2()
         for(columnIndex = [0 : (numCartridgesPerRow-1)])
         {
             x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
+
             // Guide hole:
             tcy([x,0,-1], d=brassRimClearanceOD, h=100);
+
+            // Extra clearance at bottom of slope:
+            clearanceZ = 8;
+            translate([0,0,loader2GuideExitHoleZ-clearanceZ/2+0.5]) 
+            {
+                // simpleChamferedCylinder(d=brassRimClearanceOD+2, h=clearanceZ, cz=2);
+                cylinder(d=brassRimClearanceOD+2, h=100);
+                translate([0,0,-clearanceZ/2-4+nothing]) cylinder(d1=brassRimClearanceOD+nothing, d2=brassRimClearanceOD+2, h=8);
+            }
+
             // Bottom chamfer:
             translate([x,0,-10+brassRimClearanceOD/2+cartridgeRecessCZ]) cylinder(d1=20, d2=0, h=10);
         }
