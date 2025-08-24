@@ -114,7 +114,11 @@ module loader2()
         // Trough:
         troughXform()
         {
-            tcy([0, 0, loader2GuideExitHoleZ], d=brassRimClearanceOD, h=100);
+            hull()
+            {
+                tcy([0, 0, loader2GuideExitHoleZ], d=brassRimClearanceOD, h=100);
+                tcy([0, 0, loader2Z], d=brassRimClearanceOD, h=100);
+            }
             translate([0, 0, loader2GuideTopZ]) cylinder(d=brassRimClearanceOD, h=100);
         }
 
@@ -132,7 +136,7 @@ module loader2()
             // Guide hole:
             tcy([x,0,-1], d=brassRimClearanceOD, h=100);
             // Bottom chamfer:
-            translate([0,0,-10+brassRimClearanceOD/2+cartridgeRecessCZ]) cylinder(d1=20, d2=0, h=10);
+            translate([x,0,-10+brassRimClearanceOD/2+cartridgeRecessCZ]) cylinder(d1=20, d2=0, h=10);
         }
     }
 }
