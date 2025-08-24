@@ -117,17 +117,6 @@ module loader2()
             tcy([0, 0, loader2GuideExitHoleZ], d=brassRimClearanceOD, h=100);
             translate([0, 0, loader2GuideTopZ]) cylinder(d=brassRimClearanceOD, h=100);
         }
-        // // for(columnIndex = [0 : (numCartridgesPerRow-1)])
-        // columnIndex = 2;
-        // hull() 
-        // {
-        //     x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
-        //     // Front/bottom end:
-        //     tcy([x,0,loader2GuideExitHoleZ], d=brassRimClearanceOD, h=100);
-        //     // Rear/top end:
-        //     rearY = -loader2BaseY/2 + loader2BaseOffsetY + brassRimClearanceOD/2 + loader2CZ + 2 + loader2CZ;
-        //     translate([0, rearY, loader2GuideTopZ]) cylinder(d=brassRimClearanceOD, h=100);
-        // }
 
         // Slot:
 
@@ -145,16 +134,17 @@ module loader2()
 
 module troughXform()
 {
-    // for(columnIndex = [0 : (numCartridgesPerRow-1)])
-    columnIndex = 2;
+    for(columnIndex = [0 : (numCartridgesPerRow-1)])
+    // columnIndex = 2;
     hull() 
     {
-        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
         // Front/bottom end:
+        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
         translate([x,0,0]) children(0);
+
         // Rear/top end:
         rearY = -loader2BaseY/2 + loader2BaseOffsetY + brassRimClearanceOD/2 + loader2CZ + 2 + loader2CZ;
-        translate([0, rearY, 0]) children(1);
+        translate([x, rearY, 0]) children(1);
     }
 }
 
