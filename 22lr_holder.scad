@@ -9,9 +9,11 @@ makeLoader = false;
 makeLoader2 = false;
 
 brassClearanceOD = 5.75 + 0.6;
-brassRimClearanceOD = 6.9 + 0.25 ;
+brassRimClearanceOD = 6.9 + 0.25 + 0.2;
 brassRimThickness = 1.1;
 cartridgeLen = 26;
+
+echo(str("brassRimClearanceOD = ", brassRimClearanceOD));
 
 cartridgeBoxSpacingX = 7.52;
 cartridgeBoxLipZ = 2.2;
@@ -65,16 +67,16 @@ loader2CZ = 1;
 
 loader2BaseY = 70; //60;
 
-loader2GuideExitHoleZ = cartridgeLen + 2;
+loader2GuideExitHoleZ = cartridgeLen + 3;
 loader2GuideTopY = loader2BaseY - 5;
-loader2GuideTopZ = loader2GuideExitHoleZ + 8;
+loader2GuideTopZ = loader2GuideExitHoleZ + 12;
 
 loader2BaseX = loader2SubBaseX;
 loader2BaseOffsetY = -7; //-2;
 
 loader2BaseCornerOffsetX = loader2BaseX/2 - loader2BaseCornerDia/2;
 loader2BaseCornerOffsetY = loader2BaseY/2 - loader2BaseCornerDia/2;
-loader2Z = loader2GuideTopZ + 6;
+loader2Z = loader2GuideTopZ + cartridgeLen + 1;
 
 m3SocketHeadDia = 5.6;
 
@@ -443,7 +445,7 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([0+d, -200, -200], 400);
+    tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
