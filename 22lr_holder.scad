@@ -436,7 +436,7 @@ else
 {
 	if(makeHolder) holder();
     if(makeLoader) rotate([180,0,0]) loader();
-    if(makeLoader2) loader2();
+    if(makeLoader2) rotate([180,0,0]) loader2();
 }
 
 module holderGhost()
