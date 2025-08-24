@@ -13,7 +13,7 @@ brassRimClearanceOD = 6.9 + 0.25 ;
 brassRimThickness = 1.1;
 cartridgeLen = 26;
 
-cartridgeBoxSpacingY = 7.52;
+cartridgeBoxSpacingX = 7.52;
 cartridgeBoxLipZ = 2.2;
 cartridgeBoxLipX = 39;
 
@@ -144,12 +144,14 @@ module troughXform()
     hull() 
     {
         // Front/bottom end:
-        x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
-        translate([x,0,0]) children(0);
+        frontX = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
+        translate([frontX,0,0]) children(0);
 
         // Rear/top end:
         rearY = -loader2BaseY/2 + loader2BaseOffsetY + brassRimClearanceOD/2 + loader2CZ + 2 + loader2CZ;
-        translate([x, rearY, 0]) children(1);
+        boxCartridgeAreaOutsideX = -(numCartridgesPerRow-1)/2 * cartridgeBoxSpacingX;
+        rearX = boxCartridgeAreaOutsideX + columnIndex*cartridgeBoxSpacingX;
+        translate([rearX, rearY, 0]) children(1);
     }
 }
 
@@ -414,7 +416,7 @@ module cartridgeRecess(x, y, z)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([0+d, -200, -200], 400);
+    // tcu([0+d, -200, -200], 400);
 }
 
 if(developmentRender)
