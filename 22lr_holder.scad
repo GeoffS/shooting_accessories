@@ -110,11 +110,13 @@ module loader2()
 
         // Slot:
 
-        // Exit hole:
-        translate([0,0,0])
+        // Exit holes:
+        echo(str("Recess y = ", y));
+        for(columnIndex = [0 : (numCartridgesPerRow-1)])
         {
+            x = cartridgeAreaOutsideX + columnIndex*cartridgeSpacingX - baseX/2;
             // Guide hole:
-            tcy([0,0,-1], d=brassRimClearanceOD, h=100);
+            tcy([x,0,-1], d=brassRimClearanceOD, h=100);
             // Bottom chamfer:
             translate([0,0,-10+brassRimClearanceOD/2+cartridgeRecessCZ]) cylinder(d1=20, d2=0, h=10);
         }
