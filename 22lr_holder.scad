@@ -80,6 +80,11 @@ loader2Z = loader2GuideTopZ + cartridgeLen + 1;
 
 m3SocketHeadDia = 5.6;
 
+module loader3()
+{
+
+}
+
 module loader2()
 {
     difference()
@@ -478,11 +483,12 @@ if(developmentRender)
     // displayGhost() holderGhost();
 
     display() loader3();
-    displayGhost() holderGhost();
+    // displayGhost() holderGhost();
 
     // display() rotate([180,0,0]) loader();
     displayGhost() translate([-150,100,0])  loader();
-     displayGhost() translate([-150,0,0])  loader2();
+    displayGhost() translate([-150,0,0])  loader2();
+    displayGhost() translate([-150,-180,0])  holderGhost();
 }
 else
 {
