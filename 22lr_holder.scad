@@ -474,17 +474,22 @@ if(developmentRender)
     // display() loader();
     // displayGhost() holderGhost();
 
-    display() loader2();
+    // display() loader2();
+    // displayGhost() holderGhost();
+
+    display() loader3();
     displayGhost() holderGhost();
 
     // display() rotate([180,0,0]) loader();
     displayGhost() translate([-150,100,0])  loader();
+     displayGhost() translate([-150,0,0])  loader2();
 }
 else
 {
 	if(makeHolder) holder();
     if(makeLoader) rotate([180,0,0]) loader();
     if(makeLoader2) rotate([180,0,0]) loader2();
+    if(makeLoader3) rotate([180,0,0]) loader3();
 }
 
 module holderGhost()
