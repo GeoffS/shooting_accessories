@@ -80,7 +80,7 @@ loader2Z = loader2GuideTopZ + cartridgeLen + 1;
 
 m3SocketHeadDia = 5.6;
 
-loader3X = 20;
+loader3X = 30;
 loader3Y = 2*cartridgeLen + 10;
 loader3Z = 2*cartridgeLen + 10;
 
