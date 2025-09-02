@@ -7,6 +7,7 @@ layerThickness = 0.2;
 makeHolder = false;
 makeLoader = false;
 makeLoader2 = false;
+makeLoader3 = false;
 
 brassClearanceOD = 5.75 + 0.6;
 brassRimClearanceOD = 6.9 + 0.25;
