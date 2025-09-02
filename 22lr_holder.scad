@@ -80,9 +80,81 @@ loader2Z = loader2GuideTopZ + cartridgeLen + 1;
 
 m3SocketHeadDia = 5.6;
 
+loader3X = 20;
+loader3Y = 2*cartridgeLen + 10;
+loader3Z = 2*cartridgeLen + 10;
+
+loader3EntryOffsetY = -5;
+
+loader3SlopeOffsetY = -cartridgeLen/2;
+loader3SlopeOffsetZ = -10;
+
 module loader3()
 {
+    difference()
+    {
+        // Exterior:
+        tcu([-loader3X/2, 0, 0], [loader3X, loader3Y, loader3Z]);
 
+        // Entry:
+        translate([0, 55, 0])  
+        {
+            // Rim:
+            hull()
+            {
+                tcy([0, loader3EntryOffsetY, loader3Z], d=brassRimClearanceOD, h=1);
+                tcy([0, 0, loader3Z-cartridgeLen+1], d=brassRimClearanceOD, h=1);
+            }
+            // Entry Slot:
+            difference()
+            {
+                hull()
+                {
+                    tcu([-brassClearanceOD/2, -cartridgeLen+loader3EntryOffsetY, loader3Z], [brassClearanceOD, cartridgeLen, 1]);
+                    tcu([-brassClearanceOD/2, -cartridgeLen+loader3EntryOffsetY, loader3Z-cartridgeLen-1.7], [brassClearanceOD, cartridgeLen-loader3EntryOffsetY, 1]);
+                }
+                translate([0,0,40]) rotate([13,0,0]) tcu([-200,-200, -400], 400);
+            }
+            // // Entry Slot:
+            // hull()
+            // {
+            //     tcu([-brassClearanceOD/2, -cartridgeLen+loader3EntryOffsetY, loader3Z], [brassClearanceOD, cartridgeLen, 1]);
+            //     tcu([-brassClearanceOD/2, -cartridgeLen+loader3EntryOffsetY, loader3Z-cartridgeLen], [brassClearanceOD, cartridgeLen-loader3EntryOffsetY, 1]);
+            // }
+            // // Slope Slot:
+            // hull()
+            // {
+            //     tcu([-brassClearanceOD/2, -cartridgeLen+loader3EntryOffsetY, loader3Z-cartridgeLen], [brassClearanceOD, cartridgeLen-loader3EntryOffsetY, 1]);
+            //     tcu([-brassClearanceOD/2, -cartridgeLen+loader3EntryOffsetY+loader3SlopeOffsetY, loader3Z-cartridgeLen+loader3SlopeOffsetZ], [brassClearanceOD, 1, brassClearanceOD]);
+            // }
+            // Slope Rim:
+            hull()
+            {
+                dy = 4;
+                dz = -1;
+                translate([0, 0, loader3Z-cartridgeLen+brassRimClearanceOD/2]) 
+                    rotate([90,0,0]) cylinder(d=brassRimClearanceOD, h=1);
+                translate([0, dy, loader3Z-cartridgeLen+brassRimClearanceOD/2+dz]) 
+                    rotate([90,0,0]) cylinder(d=brassRimClearanceOD, h=1);
+
+                translate([0, -cartridgeLen+loader3EntryOffsetY+loader3SlopeOffsetY+1, loader3Z-cartridgeLen+loader3SlopeOffsetZ+brassRimClearanceOD/2]) 
+                    rotate([90,0,0]) cylinder(d=brassRimClearanceOD, h=1);
+                translate([0, -cartridgeLen+loader3EntryOffsetY+loader3SlopeOffsetY+1+dy, loader3Z-cartridgeLen+loader3SlopeOffsetZ+brassRimClearanceOD/2+dz]) 
+                    rotate([90,0,0]) cylinder(d=brassRimClearanceOD, h=1);
+            }
+            // Slot to exit:
+            difference()
+            {
+                esz = cartridgeLen;
+                tcu(
+                    [-brassClearanceOD/2, -cartridgeLen+loader3EntryOffsetY+loader3SlopeOffsetY, loader3Z-cartridgeLen+loader3SlopeOffsetZ+brassRimClearanceOD/2+1.5-esz], 
+                    [brassClearanceOD, cartridgeLen+5, esz]);
+                translate([0,-48,0]) rotate([50,0,0]) tcu([-200,-200, -400], 400);
+            }
+            // Exit:
+            tcy([0, -cartridgeLen+loader3EntryOffsetY+loader3SlopeOffsetY, loader3Z-cartridgeLen+loader3SlopeOffsetZ-100+brassRimClearanceOD], d=brassRimClearanceOD, 100);
+        }
+    }
 }
 
 module loader2()
