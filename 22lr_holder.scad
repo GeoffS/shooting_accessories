@@ -103,7 +103,7 @@ module loader3()
             hull()
             {
                 tcy([0, loader3EntryOffsetY, loader3Z], d=brassRimClearanceOD, h=1);
-                tcy([0, 0, loader3Z-cartridgeLen+1], d=brassRimClearanceOD, h=1);
+                tcy([0, 0, loader3Z-cartridgeLen+1.7], d=brassRimClearanceOD, h=1);
             }
             // Entry Slot:
             difference()
@@ -139,7 +139,7 @@ module loader3()
 
                 translate([0, -cartridgeLen+loader3EntryOffsetY+loader3SlopeOffsetY+1, loader3Z-cartridgeLen+loader3SlopeOffsetZ+brassRimClearanceOD/2]) 
                     rotate([90,0,0]) cylinder(d=brassRimClearanceOD, h=1);
-                translate([0, -cartridgeLen+loader3EntryOffsetY+loader3SlopeOffsetY+1+dy, loader3Z-cartridgeLen+loader3SlopeOffsetZ+brassRimClearanceOD/2+dz]) 
+                translate([0, -cartridgeLen+loader3EntryOffsetY+loader3SlopeOffsetY+1, loader3Z-cartridgeLen+loader3SlopeOffsetZ+brassRimClearanceOD/2+dz-0.7]) 
                     rotate([90,0,0]) cylinder(d=brassRimClearanceOD, h=1);
             }
             // Slot to exit:
