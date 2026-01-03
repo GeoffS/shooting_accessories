@@ -7,24 +7,30 @@ magX = 22.6;
 magRibX = 11.8;
 
 magBodyInteriorX = magX + 0.5;
-magBodyInteriorY = magWithRibY + 0.5;
+magBodyInteriorRibX = magRibX + 0.5;
+magBodyInteriorY = magY + 0.5;
+magBodyInteriorWithRibY = magWithRibY + 0.5;
 
-wallXY = 2;
+wallXY = 3;
 wallZ = 2;
 
-magBodyExteriorX = magBodyInteriorX + wallXY;
-magBodyExteriorY = magBodyInteriorY + wallXY;
+magBodyExteriorX = magBodyInteriorX + 2*wallXY;
+magBodyExteriorY = magBodyInteriorWithRibY + 2*wallXY;
 magBodyExteriorZ = 10;
 
 echo(str("magBodyExteriorX = ", magBodyExteriorX));
 echo(str("magBodyExteriorY = ", magBodyExteriorY));
 
-magBodyExteriorDia = 6;
+magBodyExteriorDia = 5;
 magBodyExteriorCZ = 2;
 
 exteriorXYCtrX = magBodyExteriorX/2 - magBodyExteriorDia/2;
 exteriorXYCtr1Y = magBodyExteriorDia/2;
 exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
+
+// interiorXYCtrX = magBodyInteriorX/2 - magBodyInteriorDia/2;
+// interiorXYCtr1Y = magBodyInteriorDia/2;
+// interiorXYCtr2Y = magBodyInteriorY - magBodyInteriorDia/2;
 
 module itemModule()
 {
@@ -41,10 +47,8 @@ module itemModule()
         }
 
         // Interior: 
-        hull()
-        {
-            // tcu([], [magBodyInteriorX, magBodyInteriorY, 100]);
-        }
+        tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, 200]);
+        tcu([-magBodyInteriorRibX/2, wallXY, wallZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
     }
 }
 
