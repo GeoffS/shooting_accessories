@@ -86,16 +86,8 @@ module mainBody()
     {
         exterior();        
 
-        // Interior: 
-        // frontStepY = 0;
-        // frontY = frontStepY + wallXY;
-        // Full width recess:
+        // Mag recess:
         tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, 200]);
-        // Front Step:
-        // tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
-        // tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
-        // frontStepSideX = (magBodyInteriorX - magFrontStepX)/2;
-        // doubleX() tcu([magFrontStepX/2, wallXY, wallZ], [frontStepSideX, magBodyInteriorY, 200]);
         // Rear rib recess:
         tcu([-magBodyInteriorRibX/2, wallXY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
         dy = 1;
