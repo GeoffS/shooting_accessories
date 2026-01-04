@@ -7,6 +7,7 @@ magX = 22.6;
 magRibX = 11.8;
 magRibOffsetZ = 11.17;
 magFrontStepZ = 4.3;
+magFrontStepX = 4;
 magCatchZ = 28.34;
 magCatchCtrY = 44.7;
 magStopZ = 33.8;
@@ -79,7 +80,10 @@ module mainBody()
         // Full width recess:
         tcu([-magBodyInteriorX/2, frontY, wallZ], [magBodyInteriorX, magBodyInteriorY-frontStepY, 200]);
         // Front Step:
+        // tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
         tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
+        frontStepSideX = (magBodyInteriorX - magFrontStepX)/2;
+        doubleX() tcu([magFrontStepX/2, wallXY, wallZ], [frontStepSideX, magBodyInteriorY, 200]);
         // Rear rib recess:
         tcu([-magBodyInteriorRibX/2, frontY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY-frontStepY, 200]);
         dy = 1;
@@ -96,6 +100,7 @@ module mainBody()
 module clip(d=0)
 {
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
+    // tcu([-d, -200, -200], 400);
 }
 
 if(developmentRender)
