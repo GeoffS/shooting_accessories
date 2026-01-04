@@ -7,7 +7,6 @@ magX = 22.7; //22.6;
 magRibX = 11.8;
 magRibOffsetZ = 11.17;
 magFrontStepX = 4.5;
-magFrontStepY = 3.25; //5;
 magFrontStepZ = 7.9; //4.3;
 magCatchZ = 28.34;
 magCatchCtrY = 45.2; //44.7;
@@ -55,17 +54,15 @@ module itemModule()
         translate([-magBodyInteriorX/2-magCatchBumpDia/2+0.7, catchOffsetY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
     }
     
-    // Front step:
-    intersection()
+    // Step to support the front of the magazine:
+    translate([0, wallXY, 0]) hull()
     {
-        exterior();
-
-        hull()
-        {
-            frontStepZ = magFrontStepZ+wallZ;
-            tcy([0, wallXY+magFrontStepY-magFrontStepX/2, 0], d=magFrontStepX, h=frontStepZ);
-            tcy([0, 0, 0], d=magFrontStepX, h=frontStepZ);
-        }
+        frontStepFullY = 2.5;
+        frontStepInsideY = 5.5;
+        frontStepZ = wallZ + magFrontStepZ;
+        frontStepInsideDia = 2;
+        tcu([-magFrontStepX/2, 0, 0], [magFrontStepX, frontStepFullY, frontStepZ]);
+        tcy([0, frontStepInsideY-frontStepInsideDia/2, 0], d=frontStepInsideDia, h=frontStepZ);
     }
 }
 
