@@ -6,8 +6,9 @@ magWithRibY = 64.14;
 magX = 22.6;
 magRibX = 11.8;
 magRibOffsetZ = 11.17;
-magFrontStepZ = 4.3;
 magFrontStepX = 4;
+magFrontStepY = 5;
+magFrontStepZ = 4.3;
 magCatchZ = 28.34;
 magCatchCtrY = 44.7;
 magStopZ = 33.8;
@@ -61,8 +62,7 @@ module itemModule()
 
         hull()
         {
-            frontStepY = 5;
-            tcy([0, wallXY+frontStepY-magFrontStepX/2, 0], d=magFrontStepX, h=magFrontStepZ+wallZ);
+            tcy([0, wallXY+magFrontStepY-magFrontStepX/2, 0], d=magFrontStepX, h=magFrontStepZ+wallZ);
             tcy([0, 0, 0], d=magFrontStepX+3, h=magFrontStepZ+wallZ);
         }
     }
