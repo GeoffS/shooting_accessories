@@ -49,7 +49,7 @@ module itemModule()
         magCatchBumpDia = 4;
         magCatchBumpOffsetZ = wallZ + magCatchZ + magCatchBumpDia/2 - 0.9;
         magCatchBumpsOffsetY = catchCutsY/2 - magCatchBumpDia/2;
-        translate([magBodyInteriorX/2+magCatchBumpDia/2-0.7, magCatchCtrY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
+        translate([-magBodyInteriorX/2-magCatchBumpDia/2+0.7, magCatchCtrY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
     }
     
 }
@@ -82,12 +82,12 @@ module mainBody()
         // Rear rib recess:
         tcu([-magBodyInteriorRibX/2, frontY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY-frontStepY, 200]);
         dy = 1;
-        tcu([-magBodyInteriorRibX/2, frontY-dy, wallZ], [magBodyInteriorRibX, magBodyInteriorWithRibY-frontStepY-dy, 200]);
+        tcu([-magBodyInteriorRibX/2, frontY+dy, wallZ], [magBodyInteriorRibX, magBodyInteriorY-frontStepY+dy, 200]);
 
         // Mag-catch cuts for spring:
         translate([0, magCatchCtrY, 0])
         {
-            doubleY() tcu([0, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
+            doubleY() tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
         }
     }
 }
