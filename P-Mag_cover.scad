@@ -7,6 +7,9 @@ magX = 22.6;
 magRibX = 11.8;
 magRibOffsetZ = 11.17;
 magFrontStepZ = 4.3;
+magCatchZ = 28.34;
+magCatchCtrY = 44.7;
+magStopZ = 33.8;
 
 magBodyInteriorX = magX; // + 0.5;
 magBodyInteriorRibX = magRibX; // + 0.5;
@@ -18,7 +21,7 @@ wallZ = 2;
 
 magBodyExteriorX = magBodyInteriorX + 2*wallXY;
 magBodyExteriorY = magBodyInteriorWithRibY + 2*wallXY;
-magBodyExteriorZ = 17;
+magBodyExteriorZ = magStopZ;
 
 echo(str("magBodyExteriorX = ", magBodyExteriorX));
 echo(str("magBodyExteriorY = ", magBodyExteriorY));
@@ -30,19 +33,44 @@ exteriorXYCtrX = magBodyExteriorX/2 - magBodyExteriorDia/2;
 exteriorXYCtr1Y = magBodyExteriorDia/2;
 exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
+catchCutsGapY = 0.6;
+catchCutsY = 8;
+catchCutsOffsetZ = 15;
+
 module itemModule()
 {
-	difference()
+	mainBody();
+
+    // Catch bump:
+    intersection()
     {
-        // Exterior:
-        hull() 
+        exterior();
+
+        magCatchBumpDia = 4;
+        magCatchBumpOffsetZ = wallZ + magCatchZ + magCatchBumpDia/2 - 0.9;
+        magCatchBumpsOffsetY = catchCutsY/2 - magCatchBumpDia/2;
+        translate([magBodyInteriorX/2+magCatchBumpDia/2-0.7, magCatchCtrY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
+    }
+    
+}
+
+module exterior()
+{
+    hull() 
+    {
+        doubleX() translate([exteriorXYCtrX,0,0]) 
         {
-            doubleX() translate([exteriorXYCtrX,0,0]) 
-            {
-                translate([0,exteriorXYCtr1Y,0]) simpleChamferedCylinderDoubleEnded(d=magBodyExteriorDia, h=magBodyExteriorZ, cz=magBodyExteriorCZ);
-                translate([0,exteriorXYCtr2Y,0]) simpleChamferedCylinderDoubleEnded(d=magBodyExteriorDia, h=magBodyExteriorZ, cz=magBodyExteriorCZ);
-            }
+            translate([0,exteriorXYCtr1Y,0]) simpleChamferedCylinderDoubleEnded(d=magBodyExteriorDia, h=magBodyExteriorZ, cz=magBodyExteriorCZ);
+            translate([0,exteriorXYCtr2Y,0]) simpleChamferedCylinderDoubleEnded(d=magBodyExteriorDia, h=magBodyExteriorZ, cz=magBodyExteriorCZ);
         }
+    }
+}
+
+module mainBody()
+{
+    difference()
+    {
+        exterior();        
 
         // Interior: 
         frontStepY = 5;
@@ -53,17 +81,24 @@ module itemModule()
         tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
         // Rear rib recess:
         tcu([-magBodyInteriorRibX/2, frontY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY-frontStepY, 200]);
+
+        // Mag-catch cuts for spring:
+        translate([0, magCatchCtrY, 0])
+        {
+            doubleY() tcu([0, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
+        }
     }
 }
 
 module clip(d=0)
 {
-	//tc([-200, -400-d, -10], 400);
+	// tcu([-200, -400+magCatchCtrY+d, -10], 400);
 }
 
 if(developmentRender)
 {
 	display() itemModule();
+    // displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 }
 else
 {
