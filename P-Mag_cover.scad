@@ -1,6 +1,12 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
+firstLayerHeight = 0.2;
+layerHeight = 0.2;
+
+makeCover = false;
+makeTest = false;
+
 magY = 60.56;
 magWithRibY = 64.14;
 magX = 22.7; //22.6;
@@ -39,7 +45,7 @@ catchCutsY = 9;
 catchCutsOffsetZ = 15;
 catchOffsetY = magCatchCtrY + wallXY;
 
-module itemModule()
+module cover()
 {
 	mainBody();
 
@@ -55,11 +61,11 @@ module itemModule()
     }
     
     // Step to support the front of the magazine:
-    translate([0, wallXY, 0]) hull()
+    translate([0, wallXY, 1]) hull()
     {
         frontStepFullY = 2.5;
         frontStepInsideY = 5.5;
-        frontStepZ = wallZ + magFrontStepZ;
+        frontStepZ = wallZ-1 + magFrontStepZ;
         frontStepInsideDia = 2;
         tcu([-magFrontStepX/2, 0, 0], [magFrontStepX, 1.9, frontStepZ]);
         cornerDia = 2.5;
@@ -99,6 +105,9 @@ module mainBody()
         {
             doubleY() tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
         }
+
+        // Cartridge outline on bottom:
+        translate([0,4,firstLayerHeight+2*layerHeight]) scale(0.3) translate([-34.8,0,-10]) linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
     }
 }
 
@@ -106,15 +115,27 @@ module clip(d=0)
 {
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
     // tcu([-d, -200, -200], 400);
-    tcu([-200, magBodyExteriorY/2, -200], 400);
+    // tcu([-200, magBodyExteriorY/2, -200], 400);
 }
 
 if(developmentRender)
 {
-	display() itemModule();
+	// display() cover();
     // displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
+
+    display() test();
 }
 else
 {
-	itemModule();
+	if(makeCover) cover();
+    if(makeTest) test();
+}
+
+module test()
+{
+    difference()
+    {
+        cover();
+        tcu([-200, -200, firstLayerHeight+5*layerHeight], 400);
+    }
 }
