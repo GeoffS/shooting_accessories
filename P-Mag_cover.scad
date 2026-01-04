@@ -81,6 +81,8 @@ module mainBody()
         tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
         // Rear rib recess:
         tcu([-magBodyInteriorRibX/2, frontY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY-frontStepY, 200]);
+        dy = 1;
+        tcu([-magBodyInteriorRibX/2, frontY-dy, wallZ], [magBodyInteriorRibX, magBodyInteriorWithRibY-frontStepY-dy, 200]);
 
         // Mag-catch cuts for spring:
         translate([0, magCatchCtrY, 0])
