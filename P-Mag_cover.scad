@@ -1,7 +1,7 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
-magY = 60.56; //61.66;
+magY = 60.56;
 magWithRibY = 64.14;
 magX = 22.6;
 magRibX = 11.8;
@@ -13,8 +13,8 @@ magCatchZ = 28.34;
 magCatchCtrY = 44.7;
 magStopZ = 33.8;
 
-magBodyInteriorX = magX; // + 0.5;
-magBodyInteriorRibX = magRibX; // + 0.5;
+magBodyInteriorX = magX;
+magBodyInteriorRibX = magRibX;
 magBodyInteriorY = magY + 0.5;
 magBodyInteriorWithRibY = magWithRibY + 0.5;
 
@@ -88,12 +88,13 @@ module mainBody()
 
         // Mag recess:
         tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, 200]);
+
         // Rear rib recess:
         tcu([-magBodyInteriorRibX/2, wallXY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
         dy = 1;
         tcu([-magBodyInteriorRibX/2, wallXY+dy, wallZ], [magBodyInteriorRibX, magBodyInteriorY+dy, 200]);
 
-        // Mag-catch cuts for spring:
+        // Mag-catch cuts for springiness:
         translate([0, catchOffsetY, 0])
         {
             doubleY() tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
