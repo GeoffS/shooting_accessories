@@ -54,6 +54,18 @@ module itemModule()
         translate([-magBodyInteriorX/2-magCatchBumpDia/2+0.7, catchOffsetY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
     }
     
+    // Front step:
+    intersection()
+    {
+        exterior();
+
+        hull()
+        {
+            frontStepY = 5;
+            tcy([0, wallXY+frontStepY-magFrontStepX/2, 0], d=magFrontStepX, h=magFrontStepZ+wallZ);
+            tcy([0, 0, 0], d=magFrontStepX+3, h=magFrontStepZ+wallZ);
+        }
+    }
 }
 
 module exterior()
@@ -75,19 +87,19 @@ module mainBody()
         exterior();        
 
         // Interior: 
-        frontStepY = 5;
-        frontY = frontStepY + wallXY;
+        // frontStepY = 0;
+        // frontY = frontStepY + wallXY;
         // Full width recess:
-        tcu([-magBodyInteriorX/2, frontY, wallZ], [magBodyInteriorX, magBodyInteriorY-frontStepY, 200]);
+        tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, 200]);
         // Front Step:
         // tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
-        tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
-        frontStepSideX = (magBodyInteriorX - magFrontStepX)/2;
-        doubleX() tcu([magFrontStepX/2, wallXY, wallZ], [frontStepSideX, magBodyInteriorY, 200]);
+        // tcu([-magBodyInteriorX/2, wallXY, wallZ+magFrontStepZ], [magBodyInteriorX, magBodyInteriorY, 200]);
+        // frontStepSideX = (magBodyInteriorX - magFrontStepX)/2;
+        // doubleX() tcu([magFrontStepX/2, wallXY, wallZ], [frontStepSideX, magBodyInteriorY, 200]);
         // Rear rib recess:
-        tcu([-magBodyInteriorRibX/2, frontY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY-frontStepY, 200]);
+        tcu([-magBodyInteriorRibX/2, wallXY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
         dy = 1;
-        tcu([-magBodyInteriorRibX/2, frontY+dy, wallZ], [magBodyInteriorRibX, magBodyInteriorY-frontStepY+dy, 200]);
+        tcu([-magBodyInteriorRibX/2, wallXY+dy, wallZ], [magBodyInteriorRibX, magBodyInteriorY+dy, 200]);
 
         // Mag-catch cuts for spring:
         translate([0, catchOffsetY, 0])
