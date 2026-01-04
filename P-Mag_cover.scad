@@ -10,7 +10,7 @@ magFrontStepX = 4;
 magFrontStepY = 5;
 magFrontStepZ = 4.3;
 magCatchZ = 28.34;
-magCatchCtrY = 44.7;
+magCatchCtrY = 45.2; //44.7;
 magStopZ = 33.8;
 
 magBodyInteriorX = magX;
@@ -36,7 +36,7 @@ exteriorXYCtr1Y = magBodyExteriorDia/2;
 exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
 catchCutsGapY = 0.6;
-catchCutsY = 8;
+catchCutsY = 9;
 catchCutsOffsetZ = 15;
 catchOffsetY = magCatchCtrY + wallXY;
 
