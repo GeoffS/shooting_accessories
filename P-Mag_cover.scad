@@ -36,6 +36,7 @@ exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 catchCutsGapY = 0.6;
 catchCutsY = 8;
 catchCutsOffsetZ = 15;
+catchOffsetY = magCatchCtrY + wallXY;
 
 module itemModule()
 {
@@ -49,7 +50,7 @@ module itemModule()
         magCatchBumpDia = 4;
         magCatchBumpOffsetZ = wallZ + magCatchZ + magCatchBumpDia/2 - 0.9;
         magCatchBumpsOffsetY = catchCutsY/2 - magCatchBumpDia/2;
-        translate([-magBodyInteriorX/2-magCatchBumpDia/2+0.7, magCatchCtrY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
+        translate([-magBodyInteriorX/2-magCatchBumpDia/2+0.7, catchOffsetY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
     }
     
 }
@@ -85,7 +86,7 @@ module mainBody()
         tcu([-magBodyInteriorRibX/2, frontY+dy, wallZ], [magBodyInteriorRibX, magBodyInteriorY-frontStepY+dy, 200]);
 
         // Mag-catch cuts for spring:
-        translate([0, magCatchCtrY, 0])
+        translate([0, catchOffsetY, 0])
         {
             doubleY() tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
         }
@@ -94,7 +95,7 @@ module mainBody()
 
 module clip(d=0)
 {
-	// tcu([-200, -400+magCatchCtrY+d, -10], 400);
+	// tcu([-200, -400+catchOffsetY+d, -10], 400);
 }
 
 if(developmentRender)
