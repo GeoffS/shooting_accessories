@@ -3,11 +3,11 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 magY = 60.56;
 magWithRibY = 64.14;
-magX = 22.6;
+magX = 22.7; //22.6;
 magRibX = 11.8;
 magRibOffsetZ = 11.17;
-magFrontStepX = 4;
-magFrontStepY = 5;
+magFrontStepX = 4.5;
+magFrontStepY = 3.25; //5;
 magFrontStepZ = 7.9; //4.3;
 magCatchZ = 28.34;
 magCatchCtrY = 45.2; //44.7;
@@ -29,7 +29,7 @@ echo(str("magBodyExteriorX = ", magBodyExteriorX));
 echo(str("magBodyExteriorY = ", magBodyExteriorY));
 
 magBodyExteriorDia = 5;
-magBodyExteriorCZ = 2;
+magBodyExteriorCZ = 1.4;
 
 exteriorXYCtrX = magBodyExteriorX/2 - magBodyExteriorDia/2;
 exteriorXYCtr1Y = magBodyExteriorDia/2;
@@ -62,8 +62,9 @@ module itemModule()
 
         hull()
         {
-            tcy([0, wallXY+magFrontStepY-magFrontStepX/2, 0], d=magFrontStepX, h=magFrontStepZ+wallZ);
-            tcy([0, 0, 0], d=magFrontStepX+3, h=magFrontStepZ+wallZ);
+            frontStepZ = magFrontStepZ+wallZ;
+            tcy([0, wallXY+magFrontStepY-magFrontStepX/2, 0], d=magFrontStepX, h=frontStepZ);
+            tcy([0, 0, 0], d=magFrontStepX, h=frontStepZ);
         }
     }
 }
