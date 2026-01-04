@@ -61,7 +61,9 @@ module itemModule()
         frontStepInsideY = 5.5;
         frontStepZ = wallZ + magFrontStepZ;
         frontStepInsideDia = 2;
-        tcu([-magFrontStepX/2, 0, 0], [magFrontStepX, frontStepFullY, frontStepZ]);
+        tcu([-magFrontStepX/2, 0, 0], [magFrontStepX, 1.9, frontStepZ]);
+        cornerDia = 2.5;
+        doubleX() tcy([magFrontStepX/2-cornerDia/2-0.1, frontStepFullY, 0], d=cornerDia, h=frontStepZ);
         tcy([0, frontStepInsideY-frontStepInsideDia/2, 0], d=frontStepInsideDia, h=frontStepZ);
     }
 }
