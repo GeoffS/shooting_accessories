@@ -4,7 +4,8 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
-makeCover = false;
+makeFullGraphics = false;
+makePlain = false;
 makeTest = false;
 
 magY = 60.56;
@@ -45,9 +46,9 @@ catchCutsY = 9;
 catchCutsOffsetZ = 15;
 catchOffsetY = magCatchCtrY + wallXY;
 
-module cover()
+module cover(text=true, graphics=true)
 {
-	mainBody();
+	mainBody(text, graphics);
 
     // Catch bump:
     intersection()
@@ -86,7 +87,7 @@ module exterior()
     }
 }
 
-module mainBody()
+module mainBody(text, graphics)
 {
     difference()
     {
@@ -106,17 +107,23 @@ module mainBody()
             doubleY() tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
         }
 
-        // Cartridge outline on bottom:
-        rotate180degressAroundTheCenter() translate([0,1.0,firstLayerHeight+2*layerHeight]) scale(0.34) translate([-34.8,0,-10]) 
-            linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
+        if(graphics)
+        {
+            // Cartridge outline on bottom:
+            rotate180degressAroundTheCenter() translate([0,1.0,firstLayerHeight+2*layerHeight]) scale(0.34) translate([-34.8,0,-10]) 
+                linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 
-        // Text on bottom:
-        rotate180degressAroundTheCenter() translate([-0.25, magBodyExteriorY/2-10.5, firstLayerHeight+2*layerHeight]) rotate([0,0,90]) rotate([180,0,0])
-            linear_extrude(height = 10, convexity = 10) 
-                text("5.56 P-Mag", 
-                    font="Calibri:style=Bold",
-                    size=5.8, 
-                    valign="center", halign="center");
+            if(text)
+            {
+                // Text on bottom:
+                rotate180degressAroundTheCenter() translate([-0.25, magBodyExteriorY/2-10.5, firstLayerHeight+2*layerHeight]) rotate([0,0,90]) rotate([180,0,0])
+                    linear_extrude(height = 10, convexity = 10) 
+                        text("5.56 P-Mag", 
+                            font="Calibri:style=Bold",
+                            size=5.8, 
+                            valign="center", halign="center");
+            }
+        }
     }
 }
 
@@ -141,7 +148,9 @@ if(developmentRender)
 }
 else
 {
-	if(makeCover) cover();
+	if(makeFullGraphics) cover();
+    if(makeJustSymbol) cover(text=false);
+    if(makePlain) cover(graphics=false);
     if(makeTest) test();
 }
 
