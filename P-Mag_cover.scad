@@ -107,7 +107,13 @@ module mainBody()
         }
 
         // Cartridge outline on bottom:
-        translate([0,4,firstLayerHeight+2*layerHeight]) scale(0.3) translate([-34.8,0,-10]) linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
+        translate([0,3.0,firstLayerHeight+2*layerHeight]) scale(0.32) translate([-34.8,0,-10]) 
+            linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
+
+        // Text on bottom:
+        translate([-0.3, magBodyExteriorY/2-10, firstLayerHeight+2*layerHeight]) rotate([0,0,90]) rotate([180,0,0]) translate([0,0,0])
+            linear_extrude(height = 10, convexity = 10) 
+                text("5.56 P-Mag", size=4.7, valign="center", halign="center");
     }
 }
 
