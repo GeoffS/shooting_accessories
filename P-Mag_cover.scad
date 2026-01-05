@@ -5,6 +5,7 @@ firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
 makeFullGraphics = false;
+makeJustSymbol = false;
 makePlain = false;
 makeTest = false;
 
