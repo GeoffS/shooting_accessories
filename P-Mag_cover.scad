@@ -111,7 +111,7 @@ module mainBody()
             linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 
         // Text on bottom:
-        rotate180degressAroundTheCenter() translate([-0.2, magBodyExteriorY/2-10.5, firstLayerHeight+2*layerHeight]) rotate([0,0,90]) rotate([180,0,0])
+        rotate180degressAroundTheCenter() translate([-0.25, magBodyExteriorY/2-10.5, firstLayerHeight+2*layerHeight]) rotate([0,0,90]) rotate([180,0,0])
             linear_extrude(height = 10, convexity = 10) 
                 text("5.56 P-Mag", 
                     font="Calibri:style=Bold",
@@ -122,7 +122,7 @@ module mainBody()
 
 module rotate180degressAroundTheCenter()
 {
-    children();
+    translate([0, magBodyExteriorY/2, 0]) rotate([0,0,180]) translate([0, -magBodyExteriorY/2, 0]) children();
 }
 
 module clip(d=0)
@@ -134,10 +134,10 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	// display() cover();
+	display() cover();
     // displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
-    display() test();
+    // display() test();
 }
 else
 {
