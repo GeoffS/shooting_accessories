@@ -12,13 +12,13 @@ makeTest = false;
 magY = 60.35;  // A1-Mini PLA
 // magY = 60.1;  // A1 PLA-HT-CF
 magWithRibY = 64.14;
-magX = 22.7; //22.6;
+magX = 22.7;
 magRibX = 11.8;
 magRibOffsetZ = 11.17;
 magFrontStepX = 4.5;
-magFrontStepZ = 7.9; //4.3;
+magFrontStepZ = 7.9;
 magCatchZ = 28.34;
-magCatchCtrY = 45.2; //44.7;
+magCatchCtrY = 45.2;
 magStopZ = 33.8;
 
 magBodyInteriorX = magX;
@@ -143,7 +143,9 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() cover();
+	display() cover(text=false);
+    display() translate([-40,0,0]) cover();
+    display() translate([ 40,0,0]) cover(graphics=false);
     // displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
     // display() test();
