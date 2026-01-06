@@ -9,7 +9,8 @@ makeJustSymbol = false;
 makePlain = false;
 makeTest = false;
 
-magY = 60.35; //60.1; ///60.56;
+magY = 60.35;  // A1-Mini PLA
+// magY = 60.1;  // A1 PLA-HT-CF
 magWithRibY = 64.14;
 magX = 22.7; //22.6;
 magRibX = 11.8;
