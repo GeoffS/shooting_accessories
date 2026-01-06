@@ -9,7 +9,7 @@ makeJustSymbol = false;
 makePlain = false;
 makeTest = false;
 
-magY = 60.1; ///60.56;
+magY = 60.35; //60.1; ///60.56;
 magWithRibY = 64.14;
 magX = 22.7; //22.6;
 magRibX = 11.8;
