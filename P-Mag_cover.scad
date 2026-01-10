@@ -4,10 +4,10 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
-makeFullGraphics = false;
+// makeFullGraphics = false;
 makeJustSymbol = false;
 makePlain = false;
-makeTest = false;
+// makeTest = false;
 
 // // P-Mag:
 // magX = 22.7;
@@ -166,10 +166,10 @@ if(developmentRender)
 }
 else
 {
-	if(makeFullGraphics) cover();
+	// if(makeFullGraphics) cover();
     if(makeJustSymbol) cover(text=false);
     if(makePlain) cover(graphics=false);
-    if(makeTest) test();
+    // if(makeTest) test();
 }
 
 module test()
