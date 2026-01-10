@@ -50,7 +50,7 @@ exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
 catchCutsGapY = 0.6;
 catchCutsY = 9;
-catchCutsOffsetZ = 15;
+catchCutsOffsetZ = 21; //15;
 catchOffsetY = magCatchCtrY + wallXY;
 
 $fn=180;
