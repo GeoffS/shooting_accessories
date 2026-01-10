@@ -4,6 +4,7 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
+makeAllGraphics = false;
 makeJustSymbol = false;
 makePlain = false;
 // makeTest = false;
@@ -26,7 +27,12 @@ magBodyInteriorY = magY + 0.5;
 magBodyInteriorWithRibY = magWithRibY + 0.8; //0.5;
 
 wallXY = 3;
-wallZ = 2;
+//                   Bottom                                    Inside
+//                  Graphics                    Core          Graphics
+//      /------------------------------\   /------------\   /-----------\
+wallZ = firstLayerHeight + 2*layerHeight + 10*layerHeight + 1*layerHeight;
+
+echo(str("wallZ = ", wallZ));
 
 magBodyExteriorX = magBodyInteriorX + 2*wallXY;
 magBodyExteriorY = magBodyInteriorWithRibY + 2*wallXY;
@@ -126,16 +132,16 @@ module mainBody(text, graphics)
             rotate180degressAroundTheCenter() translate([0,1.0,firstLayerHeight+2*layerHeight]) scale(0.34) translate([-34.8,0,-10]) 
                 linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 
-            // if(text)
-            // {
-            //     // Text on bottom:
-            //     rotate180degressAroundTheCenter() translate([-0.25, magBodyExteriorY/2-10.5, firstLayerHeight+2*layerHeight]) rotate([0,0,90]) rotate([180,0,0])
-            //         linear_extrude(height = 10, convexity = 10) 
-            //             text("5.56 P-Mag", 
-            //                 font="Calibri:style=Bold",
-            //                 size=5.8, 
-            //                 valign="center", halign="center");
-            // }
+            if(text)
+            {
+                // Text on bottom:
+                rotate180degressAroundTheCenter() translate([0.25, magBodyExteriorY/2, wallZ-layerHeight]) rotate([0,0,90])
+                    linear_extrude(height = 10, convexity = 10) 
+                        text("Defend Equality", 
+                            font="Calibri:style=Bold",
+                            size=5.8, 
+                            valign="center", halign="center");
+            }
         }
     }
 }
@@ -150,22 +156,24 @@ module clip(d=0)
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
     // tcu([-200, magBodyExteriorY-10-d, -10], 400);
 
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
     // tcu([-400+d, -200, -200], 400);
     // tcu([-200, magBodyExteriorY/2, -200], 400);
 }
 
 if(developmentRender)
 {
-	display() cover(text=false);
+    display() translate([-40,0,0]) cover(text=false);
+	display() cover();
     display() translate([ 40,0,0]) cover(graphics=false);
+    display() translate([ 80,0,0]) test();
     displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
     // display() test();
 }
 else
 {
-	// if(makeFullGraphics) cover();
+	if(makeAllGraphics) cover();
     if(makeJustSymbol) cover(text=false);
     if(makePlain) cover(graphics=false);
     // if(makeTest) test();
@@ -176,6 +184,6 @@ module test()
     difference()
     {
         cover();
-        tcu([-200, -200, firstLayerHeight+5*layerHeight], 400);
+        tcu([-200, -200, wallZ+5*layerHeight], 400);
     }
 }
