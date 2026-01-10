@@ -12,7 +12,6 @@ makePlain = false;
 // RF Metal Magazine:
 magX = 22.7;
 magY = 60.55;  // A1-Mini PLA
-// magY = ??? 60.1;  // A1 PLA-HT-CF
 
 magWithRibY = 64.14;
 magRibX = 11.8;
