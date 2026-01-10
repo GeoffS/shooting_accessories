@@ -83,15 +83,6 @@ module cover(text=true, graphics=true)
         magFrontStepZ = 7.9;
         frontStepZ = wallZ-1 + magFrontStepZ;
 
-        // magFrontStepX = 4.5;
-        // frontStepFullY = 2.5;
-        // frontStepInsideY = 3.0; //5.5;
-        // frontStepInsideDia = 2;
-        // tcu([-magFrontStepX/2, 0, 0], [magFrontStepX, 1.9, frontStepZ]);
-        // cornerDia = 2.5;
-        // doubleX() tcy([magFrontStepX/2-cornerDia/2-0.1, frontStepFullY, 0], d=cornerDia, h=frontStepZ);
-        // tcy([0, frontStepInsideY-frontStepInsideDia/2, 0], d=frontStepInsideDia, h=frontStepZ);
-
         magFrontStepX = 4.5;
         cornerDia = 1.5;
         frontStepFullY = 3;
