@@ -23,7 +23,7 @@ magStopZ = 33.8;
 magBodyInteriorX = magX;
 magBodyInteriorRibX = magRibX;
 magBodyInteriorY = magY + 0.5;
-magBodyInteriorWithRibY = magWithRibY + 0.8; //0.5;
+magBodyInteriorWithRibY = magWithRibY + 0.8;
 
 wallXY = 3;
 //                   Bottom                                    Inside
