@@ -53,7 +53,7 @@ catchCutsY = 9;
 catchCutsOffsetZ = 15;
 catchOffsetY = magCatchCtrY + wallXY;
 
-// $fn=180;
+$fn=180;
 
 module cover(text=true, graphics=true)
 {
@@ -64,11 +64,21 @@ module cover(text=true, graphics=true)
     {
         exterior();
 
-        magCatchBumpDia = 5.2;
-        magCatchBumpsOffsetX = -magBodyInteriorX/2  -magCatchBumpDia/2 + 0.95;
-        magCatchBumpsOffsetY = catchCutsY/2 - magCatchBumpDia/2;
-        magCatchBumpOffsetZ = wallZ + magCatchZ + magCatchBumpDia/2 - 1.17; //0.9;
-        translate([magCatchBumpsOffsetX, catchOffsetY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
+        magCatchBumpDia1 = 5.2;
+        magCatchBumpDia2 = 2;
+        magCatchBumpX = 1.2;
+        magCatchBumpsOffsetX = -magBodyInteriorX/2;
+        magCatchBumpsOffsetX1 = magCatchBumpsOffsetX + magCatchBumpX-0.2 - magCatchBumpDia1/2;
+        magCatchBumpsOffsetX2 = magCatchBumpsOffsetX + magCatchBumpX - magCatchBumpDia2/2;
+        magCatchBumpsOffsetY1 = catchCutsY/2 - magCatchBumpDia1/2;
+        magCatchBumpsOffsetY2 = catchCutsY/2 - magCatchBumpDia2/2;
+        magCatchBumpOffsetZ1 = wallZ + magCatchZ + magCatchBumpDia1/2 - 1.17;
+        magCatchBumpOffsetZ2 = wallZ + magCatchZ + magCatchBumpDia1/2 - 2.15;
+        hull()
+        {
+            translate([magCatchBumpsOffsetX1, catchOffsetY, magCatchBumpOffsetZ1]) doubleY() tsp([0,magCatchBumpsOffsetY1,0], d=magCatchBumpDia1);
+            translate([magCatchBumpsOffsetX2, catchOffsetY, magCatchBumpOffsetZ2]) doubleY() tsp([0,magCatchBumpsOffsetY2,0], d=magCatchBumpDia2);
+        }
     }
     
     // Step to support the front of the magazine:
@@ -152,8 +162,8 @@ module rotate180degressAroundTheCenter()
 
 module clip(d=0)
 {
-	// tcu([-200, -400+catchOffsetY+d, -10], 400);
-    // tcu([-200, magBodyExteriorY-10-d, -10], 400);
+	tcu([-200, -400+catchOffsetY+d, -10], 400);
+    tcu([-200, magBodyExteriorY-10-d, -10], 400);
 
     // tcu([-d, -200, -200], 400);
     // tcu([-400+d, -200, -200], 400);
