@@ -114,9 +114,6 @@ module mainBody(text, graphics)
         tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, 200]);
 
         // Rear rib recess:
-        // tcu([-magBodyInteriorRibX/2, wallXY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
-        // dy = 1;
-        // tcu([-magBodyInteriorRibX/2, wallXY+dy, wallZ], [magBodyInteriorRibX, magBodyInteriorY+dy, 200]);
         tcu([-magBodyInteriorRibX/2, wallXY, wallZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
 
         // Mag-catch cuts for springiness:
