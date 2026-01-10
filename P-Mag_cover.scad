@@ -9,11 +9,6 @@ makeJustSymbol = false;
 makePlain = false;
 // makeTest = false;
 
-// // P-Mag:
-// magX = 22.7;
-// magY = 60.35;  // A1-Mini PLA
-// // magY = 60.1;  // A1 PLA-HT-CF
-
 // RF Metal Magazine:
 magX = 22.7;
 magY = 60.55;  // A1-Mini PLA
@@ -29,7 +24,7 @@ magStopZ = 33.8;
 magBodyInteriorX = magX;
 magBodyInteriorRibX = magRibX;
 magBodyInteriorY = magY + 0.5;
-magBodyInteriorWithRibY = magWithRibY + 0.5;
+magBodyInteriorWithRibY = magWithRibY + 0.8; //0.5;
 
 wallXY = 3;
 wallZ = 2;
@@ -50,7 +45,7 @@ exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
 catchCutsGapY = 0.6;
 catchCutsY = 9;
-catchCutsOffsetZ = 18; //21; //15;
+catchCutsOffsetZ = 15;
 catchOffsetY = magCatchCtrY + wallXY;
 
 $fn=180;
@@ -69,7 +64,7 @@ module cover(text=true, graphics=true)
         magCatchBumpX = 1.2;
         magCatchBumpsOffsetX = -magBodyInteriorX/2;
         magCatchBumpsOffsetX1 = magCatchBumpsOffsetX + magCatchBumpX-0.2 - magCatchBumpDia1/2;
-        magCatchBumpsOffsetX2 = magCatchBumpsOffsetX + magCatchBumpX - magCatchBumpDia2/2;
+        magCatchBumpsOffsetX2 = magCatchBumpsOffsetX + magCatchBumpX     - magCatchBumpDia2/2;
         magCatchBumpsOffsetY1 = catchCutsY/2 - magCatchBumpDia1/2;
         magCatchBumpsOffsetY2 = catchCutsY/2 - magCatchBumpDia2/2;
         magCatchBumpOffsetZ1 = wallZ + magCatchZ + magCatchBumpDia1/2 - 1.17;
@@ -162,8 +157,8 @@ module rotate180degressAroundTheCenter()
 
 module clip(d=0)
 {
-	tcu([-200, -400+catchOffsetY+d, -10], 400);
-    tcu([-200, magBodyExteriorY-10-d, -10], 400);
+	// tcu([-200, -400+catchOffsetY+d, -10], 400);
+    // tcu([-200, magBodyExteriorY-10-d, -10], 400);
 
     // tcu([-d, -200, -200], 400);
     // tcu([-400+d, -200, -200], 400);
