@@ -9,14 +9,19 @@ makeJustSymbol = false;
 makePlain = false;
 makeTest = false;
 
-magY = 60.35;  // A1-Mini PLA
-// magY = 60.1;  // A1 PLA-HT-CF
-magWithRibY = 64.14;
+// // P-Mag:
+// magX = 22.7;
+// magY = 60.35;  // A1-Mini PLA
+// // magY = 60.1;  // A1 PLA-HT-CF
+
+// RF Metal Magazine:
 magX = 22.7;
+magY = 60.55;  // A1-Mini PLA
+// magY = ??? 60.1;  // A1 PLA-HT-CF
+
+magWithRibY = 64.14;
 magRibX = 11.8;
 magRibOffsetZ = 11.17;
-magFrontStepX = 4.5;
-magFrontStepZ = 7.9;
 magCatchZ = 28.34;
 magCatchCtrY = 45.2;
 magStopZ = 33.8;
@@ -66,14 +71,24 @@ module cover(text=true, graphics=true)
     // Step to support the front of the magazine:
     translate([0, wallXY, 1]) hull()
     {
-        frontStepFullY = 2.5;
-        frontStepInsideY = 5.5;
+        
+        magFrontStepZ = 7.9;
         frontStepZ = wallZ-1 + magFrontStepZ;
-        frontStepInsideDia = 2;
-        tcu([-magFrontStepX/2, 0, 0], [magFrontStepX, 1.9, frontStepZ]);
-        cornerDia = 2.5;
-        doubleX() tcy([magFrontStepX/2-cornerDia/2-0.1, frontStepFullY, 0], d=cornerDia, h=frontStepZ);
-        tcy([0, frontStepInsideY-frontStepInsideDia/2, 0], d=frontStepInsideDia, h=frontStepZ);
+
+        // magFrontStepX = 4.5;
+        // frontStepFullY = 2.5;
+        // frontStepInsideY = 3.0; //5.5;
+        // frontStepInsideDia = 2;
+        // tcu([-magFrontStepX/2, 0, 0], [magFrontStepX, 1.9, frontStepZ]);
+        // cornerDia = 2.5;
+        // doubleX() tcy([magFrontStepX/2-cornerDia/2-0.1, frontStepFullY, 0], d=cornerDia, h=frontStepZ);
+        // tcy([0, frontStepInsideY-frontStepInsideDia/2, 0], d=frontStepInsideDia, h=frontStepZ);
+
+        magFrontStepX = 4.5;
+        cornerDia = 1.5;
+        frontStepFullY = 3;
+        tcu([-magFrontStepX/2, -1, 0], [magFrontStepX, 1.1, frontStepZ]);
+        doubleX() tcy([magFrontStepX/2-cornerDia/2, frontStepFullY-cornerDia/2, 0], d=cornerDia, h=frontStepZ);
     }
 }
 
@@ -99,9 +114,10 @@ module mainBody(text, graphics)
         tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, 200]);
 
         // Rear rib recess:
-        tcu([-magBodyInteriorRibX/2, wallXY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
-        dy = 1;
-        tcu([-magBodyInteriorRibX/2, wallXY+dy, wallZ], [magBodyInteriorRibX, magBodyInteriorY+dy, 200]);
+        // tcu([-magBodyInteriorRibX/2, wallXY, wallZ+magRibOffsetZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
+        // dy = 1;
+        // tcu([-magBodyInteriorRibX/2, wallXY+dy, wallZ], [magBodyInteriorRibX, magBodyInteriorY+dy, 200]);
+        tcu([-magBodyInteriorRibX/2, wallXY, wallZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
 
         // Mag-catch cuts for springiness:
         translate([0, catchOffsetY, 0])
@@ -138,6 +154,7 @@ module clip(d=0)
 {
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
     // tcu([-d, -200, -200], 400);
+    tcu([-400+d, -200, -200], 400);
     // tcu([-200, magBodyExteriorY/2, -200], 400);
 }
 
