@@ -107,6 +107,9 @@ module exterior()
     }
 }
 
+frontFrictionBumpCutOffsetX = magBodyInteriorX/2 - wallXY - 1;
+echo(str("2*frontFrictionBumpCutOffsetX = ", 2*frontFrictionBumpCutOffsetX));
+
 module mainBody(text, graphics)
 {
     difference()
@@ -123,6 +126,12 @@ module mainBody(text, graphics)
         translate([0, catchOffsetY, 0])
         {
             doubleY() tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
+        }
+
+        // Front-bump cuts for springiness:
+        translate([0, 0, 0])
+        {
+            doubleX() tcu([frontFrictionBumpCutOffsetX, -100+10, catchCutsOffsetZ], [catchCutsGapY, 100, 100]);
         }
 
         if(graphics)
@@ -155,7 +164,9 @@ module clip(d=0)
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
     // tcu([-200, magBodyExteriorY-10-d, -10], 400);
 
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
+    tcu([-400-magBodyExteriorX/2+4+d, -200, -200], 400);
+
     // tcu([-400+d, -200, -200], 400);
     // tcu([-200, magBodyExteriorY/2, -200], 400);
 }
