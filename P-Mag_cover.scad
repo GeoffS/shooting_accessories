@@ -9,7 +9,7 @@ makeJustSymbol = false;
 makePlain = false;
 // makeTest = false;
 
-// RF Metal Magazine:
+// RF metal and P-Mag plastic Magazines:
 magX = 22.7;
 magY = 60.55;  // A1-Mini PLA
 
@@ -35,7 +35,7 @@ echo(str("wallZ = ", wallZ));
 
 magBodyExteriorX = magBodyInteriorX + 2*wallXY;
 magBodyExteriorY = magBodyInteriorWithRibY + 2*wallXY;
-magBodyExteriorZ = magStopZ;
+magBodyExteriorZ = wallZ + magStopZ - 1;
 
 echo(str("magBodyExteriorX = ", magBodyExteriorX));
 echo(str("magBodyExteriorY = ", magBodyExteriorY));
@@ -49,7 +49,7 @@ exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
 catchCutsGapY = 0.6;
 catchCutsY = 9;
-catchCutsOffsetZ = wallZ + 2;
+catchCutsOffsetZ = 15; //wallZ + 2;
 catchOffsetY = magCatchCtrY + wallXY;
 
 $fn=180;
@@ -71,8 +71,9 @@ module cover(text=true, graphics=true)
         magCatchBumpsOffsetX2 = magCatchBumpsOffsetX + magCatchBumpX     - magCatchBumpDia2/2;
         magCatchBumpsOffsetY1 = catchCutsY/2 - magCatchBumpDia1/2;
         magCatchBumpsOffsetY2 = catchCutsY/2 - magCatchBumpDia2/2;
-        magCatchBumpOffsetZ1 = wallZ + magCatchZ + magCatchBumpDia1/2 - 1.17;
-        magCatchBumpOffsetZ2 = wallZ + magCatchZ + magCatchBumpDia1/2 - 2.15;
+        magCatchBumpOffsetZ = wallZ + magCatchZ;
+        magCatchBumpOffsetZ1 = magCatchBumpOffsetZ + magCatchBumpDia1/2 - 0.2;
+        magCatchBumpOffsetZ2 = magCatchBumpOffsetZ + magCatchBumpDia2/2 - 0;
         hull()
         {
             translate([magCatchBumpsOffsetX1, catchOffsetY, magCatchBumpOffsetZ1]) doubleY() tsp([0,magCatchBumpsOffsetY1,0], d=magCatchBumpDia1);
@@ -152,10 +153,10 @@ module rotate180degressAroundTheCenter()
 
 module clip(d=0)
 {
-	// tcu([-200, -400+catchOffsetY+d, -10], 400);
-    // tcu([-200, magBodyExteriorY-10-d, -10], 400);
+	tcu([-200, -400+catchOffsetY+d, -10], 400);
+    tcu([-200, magBodyExteriorY-10-d, -10], 400);
 
-    tcu([-d, -200, -200], 400);
+    // tcu([-d, -200, -200], 400);
     // tcu([-400+d, -200, -200], 400);
     // tcu([-200, magBodyExteriorY/2, -200], 400);
 }
