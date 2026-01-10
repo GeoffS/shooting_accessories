@@ -4,7 +4,6 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
-// makeFullGraphics = false;
 makeJustSymbol = false;
 makePlain = false;
 // makeTest = false;
@@ -127,16 +126,16 @@ module mainBody(text, graphics)
             rotate180degressAroundTheCenter() translate([0,1.0,firstLayerHeight+2*layerHeight]) scale(0.34) translate([-34.8,0,-10]) 
                 linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 
-            if(text)
-            {
-                // Text on bottom:
-                rotate180degressAroundTheCenter() translate([-0.25, magBodyExteriorY/2-10.5, firstLayerHeight+2*layerHeight]) rotate([0,0,90]) rotate([180,0,0])
-                    linear_extrude(height = 10, convexity = 10) 
-                        text("5.56 P-Mag", 
-                            font="Calibri:style=Bold",
-                            size=5.8, 
-                            valign="center", halign="center");
-            }
+            // if(text)
+            // {
+            //     // Text on bottom:
+            //     rotate180degressAroundTheCenter() translate([-0.25, magBodyExteriorY/2-10.5, firstLayerHeight+2*layerHeight]) rotate([0,0,90]) rotate([180,0,0])
+            //         linear_extrude(height = 10, convexity = 10) 
+            //             text("5.56 P-Mag", 
+            //                 font="Calibri:style=Bold",
+            //                 size=5.8, 
+            //                 valign="center", halign="center");
+            // }
         }
     }
 }
@@ -159,7 +158,6 @@ module clip(d=0)
 if(developmentRender)
 {
 	display() cover(text=false);
-    display() translate([-40,0,0]) cover();
     display() translate([ 40,0,0]) cover(graphics=false);
     displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
