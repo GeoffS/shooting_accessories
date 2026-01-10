@@ -53,6 +53,8 @@ catchCutsY = 9;
 catchCutsOffsetZ = 15;
 catchOffsetY = magCatchCtrY + wallXY;
 
+// $fn=180;
+
 module cover(text=true, graphics=true)
 {
 	mainBody(text, graphics);
@@ -62,10 +64,11 @@ module cover(text=true, graphics=true)
     {
         exterior();
 
-        magCatchBumpDia = 4;
-        magCatchBumpOffsetZ = wallZ + magCatchZ + magCatchBumpDia/2 - 0.9;
+        magCatchBumpDia = 5.2;
+        magCatchBumpsOffsetX = -magBodyInteriorX/2  -magCatchBumpDia/2 + 0.95;
         magCatchBumpsOffsetY = catchCutsY/2 - magCatchBumpDia/2;
-        translate([-magBodyInteriorX/2-magCatchBumpDia/2+0.7, catchOffsetY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
+        magCatchBumpOffsetZ = wallZ + magCatchZ + magCatchBumpDia/2 - 1.17; //0.9;
+        translate([magCatchBumpsOffsetX, catchOffsetY, magCatchBumpOffsetZ]) hull() doubleY() tsp([0,magCatchBumpsOffsetY,0], d=magCatchBumpDia);
     }
     
     // Step to support the front of the magazine:
@@ -150,8 +153,10 @@ module rotate180degressAroundTheCenter()
 module clip(d=0)
 {
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
+    // tcu([-200, magBodyExteriorY-10-d, -10], 400);
+
     // tcu([-d, -200, -200], 400);
-    tcu([-400+d, -200, -200], 400);
+    // tcu([-400+d, -200, -200], 400);
     // tcu([-200, magBodyExteriorY/2, -200], 400);
 }
 
@@ -160,7 +165,7 @@ if(developmentRender)
 	display() cover(text=false);
     display() translate([-40,0,0]) cover();
     display() translate([ 40,0,0]) cover(graphics=false);
-    // displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
+    displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
     // display() test();
 }
