@@ -46,6 +46,7 @@ magBodyExteriorZ = wallZ + magStopZ - 1;
 
 echo(str("magBodyExteriorX = ", magBodyExteriorX));
 echo(str("magBodyExteriorY = ", magBodyExteriorY));
+echo(str("magBodyExteriorZ = ", magBodyExteriorZ));
 
 magBodyExteriorDia = 5;
 magBodyExteriorCZ = 1.4;
@@ -188,7 +189,7 @@ if(developmentRender)
     display() translate([ 40,0,0]) cover(graphics=false);
     display() translate([ 80,0,0]) test();
 
-    // displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
+    displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
     // display() test();
 }
