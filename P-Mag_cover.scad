@@ -55,9 +55,9 @@ exteriorXYCtrX = magBodyExteriorX/2 - magBodyExteriorDia/2;
 exteriorXYCtr1Y = magBodyExteriorDia/2;
 exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
-catchCutsGapY = 1.0; //0.6;
+catchCutsGapY = 1.0;
 catchCutsY = 9.5;
-catchCutsOffsetZ = 20; //15; //wallZ + 2;
+catchCutsOffsetZ = 27;
 catchOffsetY = magCatchCtrY + wallXY;
 
 $fn=180;
@@ -163,7 +163,6 @@ module mainBody(text, graphics)
 
 module catchSlot()
 {
-    // %tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
     translate([-magBodyExteriorX/2+wallXY+1, catchCutsY/2, catchCutsOffsetZ]) catchCut(d=10, dy=catchCutsGapY, a=15, h=15);
 }
 
