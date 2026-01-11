@@ -71,17 +71,17 @@ module cover(text=true, graphics=true)
     {
         exterior();
 
-        magCatchBumpDia1 = 5.2;
-        magCatchBumpDia2 = 2.6;
-        magCatchBumpX = 1.35;
+        magCatchBumpDia1 = 4.5;
+        magCatchBumpDia2 = 2.8;
+        magCatchBumpX = 1.55;
         magCatchBumpsOffsetX = -magBodyInteriorX/2;
-        magCatchBumpsOffsetX1 = magCatchBumpsOffsetX + magCatchBumpX-0.2 - magCatchBumpDia1/2;
+        magCatchBumpsOffsetX1 = magCatchBumpsOffsetX + magCatchBumpX-0.3 - magCatchBumpDia1/2;
         magCatchBumpsOffsetX2 = magCatchBumpsOffsetX + magCatchBumpX     - magCatchBumpDia2/2;
         magCatchBumpsOffsetY1 = catchCutsY/2 - magCatchBumpDia1/2;
         magCatchBumpsOffsetY2 = catchCutsY/2 - magCatchBumpDia2/2;
         magCatchBumpOffsetZ = wallZ + magCatchZ;
-        magCatchBumpOffsetZ1 = magCatchBumpOffsetZ + magCatchBumpDia1/2 - 0.4;
-        magCatchBumpOffsetZ2 = magCatchBumpOffsetZ + magCatchBumpDia2/2 + 0.15;
+        magCatchBumpOffsetZ1 = magCatchBumpOffsetZ + magCatchBumpDia1/2;
+        magCatchBumpOffsetZ2 = magCatchBumpOffsetZ + magCatchBumpDia2/2 + 0.2;
         hull()
         {
             translate([magCatchBumpsOffsetX1, catchOffsetY, magCatchBumpOffsetZ1]) doubleY() tsp([0,magCatchBumpsOffsetY1,0], d=magCatchBumpDia1);
@@ -198,8 +198,8 @@ module clip(d=0)
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
     // tcu([-200, magBodyExteriorY-10-d, -10], 400);
 
-	// tcu([-200, -400+metalMagFollowerRecessY1+3+d, -10], 400);
-    // tcu([-200, metalMagFollowerRecessY2-3-d, -10], 400);
+	tcu([-200, -400+metalMagFollowerRecessY1+3+d, -10], 400);
+    tcu([-200, metalMagFollowerRecessY2-3-d, -10], 400);
 
     // tcu([-d, -200, -200], 400);
     // tcu([-400+d, -200, -200], 400);
