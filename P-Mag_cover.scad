@@ -25,11 +25,18 @@ magBodyInteriorRibX = magRibX;
 magBodyInteriorY = magY + 0.5;
 magBodyInteriorWithRibY = magWithRibY + 0.8;
 
+// Y measured form the front.
+metalMagFollowerRecessX1 = 5.4;
+metalMagFollowerRecessX2 = 10.9;
+metalMagFollowerRecessY1 = 19;
+metalMagFollowerRecessY2 = 51;
+metalMagFollowerRecessZ = 1.0;
+
 wallXY = 3;
 //                   Bottom                                    Inside
 //                  Graphics                    Core          Graphics
 //      /------------------------------\   /------------\   /-----------\
-wallZ = firstLayerHeight + 2*layerHeight + 10*layerHeight + 1*layerHeight;
+wallZ = firstLayerHeight + 2*layerHeight + 14*layerHeight + 1*layerHeight;
 
 echo(str("wallZ = ", wallZ));
 
@@ -120,6 +127,16 @@ module mainBody(text, graphics)
         // Rear rib recess:
         tcu([-magBodyInteriorRibX/2, wallXY, wallZ], [magBodyInteriorRibX, magBodyInteriorWithRibY, 200]);
 
+        // Recess for follower in metal magazine:
+        translate([(metalMagFollowerRecessX2+metalMagFollowerRecessX1)/2-wallXY, metalMagFollowerRecessY1+wallXY, wallZ])
+        {
+            d = 3;
+            dx = (metalMagFollowerRecessX2-metalMagFollowerRecessX1)/2 - d/2;
+            cz = 1;
+            h = metalMagFollowerRecessY2 - metalMagFollowerRecessY1 + 2*cz;
+            translate([0, 0, d/2-metalMagFollowerRecessZ]) rotate([-90,0,0]) hull() doubleX() translate([dx, 0, 0]) simpleChamferedCylinderDoubleEnded(d=d, h=h, cz=1);
+        }
+
         // Mag-catch cuts for springiness:
         translate([0, catchOffsetY, 0])
         {
@@ -134,12 +151,12 @@ module mainBody(text, graphics)
 
             if(text)
             {
-                // Text on bottom:
-                rotate180degressAroundTheCenter() translate([0.25, magBodyExteriorY/2, wallZ-layerHeight]) rotate([0,0,90])
+                // Text on inside:
+                rotate180degressAroundTheCenter() translate([4.8, magBodyExteriorY/2, wallZ-layerHeight]) rotate([0,0,90])
                     linear_extrude(height = 10, convexity = 10) 
                         text("Defend Equality", 
                             font="Calibri:style=Bold",
-                            size=5.8, 
+                            size=5.0, 
                             valign="center", halign="center");
             }
         }
@@ -153,8 +170,11 @@ module rotate180degressAroundTheCenter()
 
 module clip(d=0)
 {
-	tcu([-200, -400+catchOffsetY+d, -10], 400);
-    tcu([-200, magBodyExteriorY-10-d, -10], 400);
+	// tcu([-200, -400+catchOffsetY+d, -10], 400);
+    // tcu([-200, magBodyExteriorY-10-d, -10], 400);
+
+	// tcu([-200, -400+metalMagFollowerRecessY1+3+d, -10], 400);
+    // tcu([-200, metalMagFollowerRecessY2-3-d, -10], 400);
 
     // tcu([-d, -200, -200], 400);
     // tcu([-400+d, -200, -200], 400);
@@ -167,7 +187,8 @@ if(developmentRender)
 	display() cover();
     display() translate([ 40,0,0]) cover(graphics=false);
     display() translate([ 80,0,0]) test();
-    displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
+
+    // displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
     // display() test();
 }
