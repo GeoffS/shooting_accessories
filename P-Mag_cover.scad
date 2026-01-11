@@ -17,7 +17,7 @@ magWithRibY = 64.14;
 magRibX = 11.8;
 magRibOffsetZ = 11.17;
 magCatchZ = 28.34;
-magCatchCtrY = 45.2;
+magCatchCtrY = 44.9;
 magStopZ = 33.8;
 
 magBodyInteriorX = magX;
@@ -55,9 +55,9 @@ exteriorXYCtrX = magBodyExteriorX/2 - magBodyExteriorDia/2;
 exteriorXYCtr1Y = magBodyExteriorDia/2;
 exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
-catchCutsGapY = 0.6;
-catchCutsY = 9;
-catchCutsOffsetZ = 15; //wallZ + 2;
+catchCutsGapY = 1.0; //0.6;
+catchCutsY = 9.5;
+catchCutsOffsetZ = 20; //15; //wallZ + 2;
 catchOffsetY = magCatchCtrY + wallXY;
 
 $fn=180;
@@ -139,10 +139,7 @@ module mainBody(text, graphics)
         }
 
         // Mag-catch cuts for springiness:
-        translate([0, catchOffsetY, 0])
-        {
-            doubleY() catchCut();
-        }
+        translate([0, catchOffsetY, 0]) doubleY() catchSlot();
 
         if(graphics)
         {
@@ -164,9 +161,31 @@ module mainBody(text, graphics)
     }
 }
 
-module catchCut()
+module catchSlot()
 {
-    tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
+    // %tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
+    translate([-magBodyExteriorX/2+wallXY+1, catchCutsY/2, catchCutsOffsetZ]) catchCut(d=10, dy=catchCutsGapY, a=15, h=15);
+}
+
+module catchCut(d, dy, a, h)
+{
+    translate([-10, d/2, 0]) difference()
+    {
+        da = asin((dy/2)/h);
+        echo(str("catchCut() da = ", da));
+
+        catchCutHalf(d=d, a=a, x=10, y=15, z=100);
+        translate([-1,0,0]) catchCutHalf(d=d-dy, a=a-da, x=20, y=20, z=101);
+    }
+}
+
+module catchCutHalf(d, a, x, y, z)
+{
+    r = d/2;
+
+    tcu([0,-r,0], [x, y, z]);
+    rotate([0,90,0]) tcy([0,0,0], d=d, h=x);
+    rotate([a,0,0]) tcu([0,-r,-z], [x, y, z]);
 }
 
 module rotate180degressAroundTheCenter()
@@ -189,10 +208,10 @@ module clip(d=0)
 
 if(developmentRender)
 {
-    display() translate([-40,0,0]) cover(text=false);
+    // display() translate([-40,0,0]) cover(text=false);
 	display() cover();
-    display() translate([ 40,0,0]) cover(graphics=false);
-    display() translate([ 80,0,0]) test();
+    // display() translate([ 40,0,0]) cover(graphics=false);
+    // display() translate([ 80,0,0]) test();
 
     displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
