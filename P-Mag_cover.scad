@@ -141,7 +141,7 @@ module mainBody(text, graphics)
         // Mag-catch cuts for springiness:
         translate([0, catchOffsetY, 0])
         {
-            doubleY() tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
+            doubleY() catchCut();
         }
 
         if(graphics)
@@ -164,6 +164,11 @@ module mainBody(text, graphics)
     }
 }
 
+module catchCut()
+{
+    tcu([-100, catchCutsY/2, catchCutsOffsetZ], [100, catchCutsGapY, 100]);
+}
+
 module rotate180degressAroundTheCenter()
 {
     translate([0, magBodyExteriorY/2, 0]) rotate([0,0,180]) translate([0, -magBodyExteriorY/2, 0]) children();
@@ -174,8 +179,8 @@ module clip(d=0)
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
     // tcu([-200, magBodyExteriorY-10-d, -10], 400);
 
-	tcu([-200, -400+metalMagFollowerRecessY1+3+d, -10], 400);
-    tcu([-200, metalMagFollowerRecessY2-3-d, -10], 400);
+	// tcu([-200, -400+metalMagFollowerRecessY1+3+d, -10], 400);
+    // tcu([-200, metalMagFollowerRecessY2-3-d, -10], 400);
 
     // tcu([-d, -200, -200], 400);
     // tcu([-400+d, -200, -200], 400);
