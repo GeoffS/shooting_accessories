@@ -57,7 +57,10 @@ exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
 catchCutsGapY = 1.0;
 catchCutsY = 9.5;
-catchCutsOffsetZ = 27;
+catchCutsOffsetZ = 30;
+catchCutTransitionDiameter = 120;
+catchCutsAngle = 20;
+catchCutsPostTransitionZ = 7;
 catchOffsetY = magCatchCtrY + wallXY;
 
 $fn=180;
@@ -163,7 +166,12 @@ module mainBody(text, graphics)
 
 module catchSlot()
 {
-    translate([-magBodyExteriorX/2+wallXY+1, catchCutsY/2, catchCutsOffsetZ]) catchCut(d=10, dy=catchCutsGapY, a=15, h=15);
+    translate([-magBodyExteriorX/2+wallXY+1, catchCutsY/2, catchCutsOffsetZ]) 
+        catchCut(
+            d=catchCutTransitionDiameter, 
+            dy=catchCutsGapY, 
+            a=catchCutsAngle, 
+            h=catchCutsPostTransitionZ);
 }
 
 module catchCut(d, dy, a, h)
@@ -197,10 +205,10 @@ module clip(d=0)
 	// tcu([-200, -400+catchOffsetY+d, -10], 400);
     // tcu([-200, magBodyExteriorY-10-d, -10], 400);
 
-	tcu([-200, -400+metalMagFollowerRecessY1+3+d, -10], 400);
-    tcu([-200, metalMagFollowerRecessY2-3-d, -10], 400);
+	// tcu([-200, -400+metalMagFollowerRecessY1+3+d, -10], 400);
+    // tcu([-200, metalMagFollowerRecessY2-3-d, -10], 400);
 
-    // tcu([-d, -200, -200], 400);
+    tcu([-d, -200, -200], 400);
     // tcu([-400+d, -200, -200], 400);
     // tcu([-200, magBodyExteriorY/2, -200], 400);
 }
@@ -212,7 +220,7 @@ if(developmentRender)
     // display() translate([ 40,0,0]) cover(graphics=false);
     // display() translate([ 80,0,0]) test();
 
-    displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
+    // displayGhost() tcu([-magBodyInteriorX/2, wallXY, wallZ], [magBodyInteriorX, magBodyInteriorY, magCatchZ]);
 
     // display() test();
 }
