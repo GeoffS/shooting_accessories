@@ -57,9 +57,9 @@ exteriorXYCtr2Y = magBodyExteriorY - magBodyExteriorDia/2;
 
 catchCutsGapY = 1.0;
 catchCutsY = 9.5;
-catchCutsOffsetZ = 25;
-catchCutTransitionDiameter = 95;
-catchCutsAngle = 20;
+catchCutsOffsetZ = 26;
+catchCutTransitionDiameter = 60;
+catchCutsAngle = 35;
 catchCutsPostTransitionZ = 7;
 catchOffsetY = magCatchCtrY + wallXY;
 
