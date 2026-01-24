@@ -8,6 +8,7 @@ magWidth = 22.2; // Slightly less that 7/8"
 magLength = 60.5;
 magRibLength = 64;
 magStopHeight = 70;
+magWellBottomAngle = 80 - 90;
 
 magStopExtraXY = 8;
 
@@ -33,10 +34,46 @@ module itemModule()
 
             // Block for vice:
             // tcu([-magBlockViceX/2, -magStopExtraXY, 0], [magBlockViceX, magBlockViceY, magBlockViceZ]);
-            vdx = magBlockViceX/2 - magBlockViceDia/2;
-            vdy = magBlockViceY/2 - magBlockViceDia/2;
-            hull() translate([0, vdy-magStopExtraXY+magBlockViceDia/2, 0]) doubleX() doubleY() translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+            
+            translate([0, magLength/2, 0]) viceSection();
+            // // Vice section perpendicular to the mag-well bottom:
+            // magWellAngledStop();
+
+            // // Vice section perpendicular to the mag-well-interior/rifle:
+            // hull() translate([0, vdy-magStopExtraXY+magBlockViceDia/2, 0]) doubleX() doubleY() translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
         }
+    }
+}
+
+module viceSection()
+{
+    mainViceSection();
+    
+    magWellAngledStop();
+
+}
+
+module mainViceSection()
+{
+    vdx = magBlockViceX/2 - magBlockViceDia/2;
+    vdy = magBlockViceY/2 - magBlockViceDia/2;
+    doubleX() doubleY() translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+}
+
+module magWellAngledStop()
+{
+    fY = 1/cos(magWellBottomAngle);
+    y = fY * magBlockViceY;
+    yExtra = fY * magStopExtraXY;
+
+    echo(str("magBlockViceY = ", magBlockViceY));
+    echo(str("y = ", y));
+
+    vdx = magBlockViceX/2 - magBlockViceDia/2;
+    vdy = y/2 - magBlockViceDia/2;
+    translate([0,-yExtra,0]) rotate([magWellBottomAngle,0,0]) doubleX() doubleY() 
+    {
+        translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
     }
 }
 
