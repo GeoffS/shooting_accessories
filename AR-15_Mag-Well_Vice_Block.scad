@@ -93,7 +93,7 @@ module mainMagWellAngledStop()
 {
     // MAGIC!!!!!!!
     //   vvvvvv
-    fy = 0.1645; //0.15299;
+    fy = 0.16459; //0.1645; //0.15299;
     dy = magBlockViceZ * fy;
     echo(str("mainMagWellAngledStop() dy = ", dy));
 
