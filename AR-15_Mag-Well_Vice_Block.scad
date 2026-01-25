@@ -73,11 +73,15 @@ module viceSection()
     }
 }
 
+viceDX = magBlockViceX/2 - magBlockViceDia/2;
+
 module mainViceSection()
 {
-    vdx = magBlockViceX/2 - magBlockViceDia/2;
     vdy = magBlockViceY/2 - magBlockViceDia/2;
-    hull() translate([0,magBlockViceY/2,0]) doubleX() doubleY() translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+    hull() translate([0,magBlockViceY/2,0]) 
+        doubleX() doubleY() 
+            translate([viceDX, vdy, 0]) 
+                #simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
 }
 
 module magWellAngledStop()
@@ -97,13 +101,16 @@ module mainMagWellAngledStop()
     dy = magBlockViceZ * fy;
     echo(str("mainMagWellAngledStop() dy = ", dy));
 
-    vdx = magBlockViceX/2 - magBlockViceDia/2;
+    // vdx = magBlockViceX/2 - magBlockViceDia/2;
     vdy = (magwellStopY/2 - magBlockViceDia/2) * magwellStopFactorY;
 
-    hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) doubleX() doubleY() 
-    {
-        translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
-    }
+    hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) 
+        doubleX() doubleY() 
+            translate([viceDX, vdy, 0]) 
+                difference()
+                {
+                    #simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+                }
 }
 
 module clip(d=0)
