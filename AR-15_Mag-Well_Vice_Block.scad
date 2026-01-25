@@ -1,6 +1,9 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
+makeBlock = false;
+makeTest = false;
+
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 magWidth = 22.2; // Slightly less that 7/8"
@@ -13,7 +16,7 @@ magStopExtraXY = 8;
 
 magBlockViceX = magWidth + 2*magStopExtraXY;
 magBlockViceY = magLength + 2*magStopExtraXY;
-magBlockViceZ = 40;
+magBlockViceZ = 60;
 magBlockZ = magStopHeight + magBlockViceZ;
 
 magBlockDia = 4;
@@ -43,8 +46,15 @@ module itemModule()
         union()
         {
             // Core that goes into the mag-wall:
-            tcu([-magWidth/2, magwellStopExtraY, 0], [magWidth, magLength, magBlockZ]);
+            mwdx = magWidth/2 - magBlockDia/2;
+            mwdy = magLength/2 - magBlockDia/2;
+            // %tcu([-magWidth/2, magwellStopExtraY, 0], [magWidth, magLength, magBlockZ]);
+            translate([0, magLength/2+magwellStopExtraY, 0]) 
+                hull() doubleX() doubleY() 
+                    translate([mwdx, mwdy, 0])
+                        simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
             
+            // Angled piece that goes into the vice:
             hull()
             {
                 viceSection();
@@ -120,8 +130,21 @@ module clip(d=0)
 if(developmentRender)
 {
 	display() itemModule();
+
+    display() translate([100,0,0]) testModule();
 }
 else
 {
-	itemModule();
+	if(makeBlock) itemModule();
+    if(makeTest) testModule();
+}
+
+module testModule()
+{
+    difference()
+    {
+        itemModule();
+        tcy([0,0,-400+50], d=400, h=400);
+        tcy([0,0,95], d=400, h=400);
+    }
 }
