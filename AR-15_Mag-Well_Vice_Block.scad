@@ -15,6 +15,9 @@ magWellBottomAngle = 10;
 
 magCatchRampBottomZ = 60;
 magCatchTopZ = 63.5;
+magCatchX = 1.4;
+magCatchY = 13.4;
+magCatchZ = 6.5;
 
 magStopExtraXY = 8;
 
@@ -29,20 +32,34 @@ magBlockCZ = 1.5;
 magBlockViceDia = 8;
 magBlockViceCZ = 2.5;
 
+// From pre-MAGIC conversion:
+// ECHO: "magwellStopFactorY = 1.01543"
+// ECHO: "magBlockViceY = 76.5"
+// ECHO: "magwellStopY = 77.6804"
+// ECHO: "magwellStopFactorY * magStopExtraXY = 8.12344"
+// ECHO: "magwellStopExtraY = 6.12344"
+// ECHO: "mainMagWellAngledStop() dy = 9.8754"
+// ECHO: "mainMagWellAngledStop() dy = 9.8754"
+
 // MAGIC!!
 // Probably...
 //vvvvvvvvvvvvvvvv
-magwellStopFactorY = 1/cos(magWellBottomAngle);
+// magwellStopFactorY = 1/cos(magWellBottomAngle);
+// magwellStopFactorY = 1.01543;
+// echo(str("magwellStopFactorY = ", magwellStopFactorY));
 
-echo(str("magwellStopFactorY = ", magwellStopFactorY));
-
-magwellStopY = magwellStopFactorY * magBlockViceY;
 // MAGIC!!
-//  ------------------------------------------------------v
-magwellStopExtraY = magwellStopFactorY * magStopExtraXY - 2;
+//  -----------vvvvvvv
+magwellStopY = 77.6804; //magwellStopFactorY * magBlockViceY;
+
+// MAGIC!!
+//  ----------------vvvvvvv
+magwellStopExtraY = 6.12344; //magwellStopFactorY * magStopExtraXY - 2;
 
 echo(str("magBlockViceY = ", magBlockViceY));
 echo(str("magwellStopY = ", magwellStopY));
+// echo(str("magwellStopFactorY * magStopExtraXY = ", magwellStopFactorY * magStopExtraXY));
+echo(str("magwellStopExtraY = ", magwellStopExtraY));
 
 $fn = 180;
 
@@ -55,6 +72,7 @@ module itemModule()
             // Core that goes into the mag-wall:
             magCore();
             magCoreRib();
+            magCatchRamp();
             
             // Angled piece that goes into the vice:
             hull()
@@ -63,7 +81,24 @@ module itemModule()
                 magWellAngledStop();
             }
         }
+
+        magCatchRecess();
     }
+}
+
+module magCatchXform()
+{
+    children();
+}
+
+module magCatchRamp()
+{
+
+}
+
+module magCatchRecess()
+{
+
 }
 
 module magCore()
@@ -130,13 +165,19 @@ module magWellAngledStop()
 
 module mainMagWellAngledStop()
 {
+    // // MAGIC!!!!!!!
+    // //   vvvvvvv
+    // fy = 0.16459;
+
     // MAGIC!!!!!!!
     //   vvvvvvv
-    fy = 0.16459;
-    dy = magBlockViceZ * fy;
+    dy =  9.8754; //magBlockViceZ * fy;
     echo(str("mainMagWellAngledStop() dy = ", dy));
 
-    vdy = (magwellStopY/2 - magBlockViceDia/2) * magwellStopFactorY;
+    // MAGIC!!
+    //  --vvvvvvv
+    vdy = 35.3778; //(magwellStopY/2 - magBlockViceDia/2) * 1.01543; //magwellStopFactorY;
+    echo(str("mainMagWellAngledStop() vdy = ", vdy));
 
     hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) 
         doubleX() doubleY() 
@@ -151,7 +192,7 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() itemModule();
+	display() translate([0,0,nothing]) itemModule();
 
     display() translate([100,0,0]) testModule();
 }
