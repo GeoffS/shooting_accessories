@@ -92,6 +92,8 @@ module mainMagWellAngledStop()
     vdx = magBlockViceX/2 - magBlockViceDia/2;
     vdy = magwellStopY/2 - magBlockViceDia/2;
 
+    // MAGIC!!!!!!!
+    //  -----------------vvvvvvv
     dy = magBlockViceZ * 0.15299; //tan(magWellBottomAngle);
     echo(str("mainMagWellAngledStop() dy = ", dy));
 
