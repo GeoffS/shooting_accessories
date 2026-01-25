@@ -23,10 +23,10 @@ magBlockViceDia = 8;
 magBlockViceCZ = 2.5;
 
 magwellStopFactorY = 1/cos(magWellBottomAngle);
-magwellStopFactorZ = tan(magWellBottomAngle);
+// magwellStopFactorZ = tan(magWellBottomAngle);
 
 echo(str("magwellStopFactorY = ", magwellStopFactorY));
-echo(str("magwellStopFactorZ = ", magwellStopFactorZ));
+// echo(str("magwellStopFactorZ = ", magwellStopFactorZ));
 
 magwellStopY = magwellStopFactorY * magBlockViceY;
 magwellStopExtraY = magwellStopFactorY * magStopExtraXY;
@@ -45,8 +45,11 @@ module itemModule()
             // Core that goes into the mag-wall:
             tcu([-magWidth/2, magwellStopExtraY, 0], [magWidth, magLength, magBlockZ]);
             
-            viceSection();
-            magWellAngledStop();
+            hull()
+            {
+                viceSection();
+                magWellAngledStop();
+            }
         }
     }
 }
@@ -88,13 +91,14 @@ module magWellAngledStop()
 
 module mainMagWellAngledStop()
 {
-    vdx = magBlockViceX/2 - magBlockViceDia/2;
-    vdy = magwellStopY/2 - magBlockViceDia/2;
-
     // MAGIC!!!!!!!
-    //  -----------------vvvvvvv
-    dy = magBlockViceZ * 0.15299; //tan(magWellBottomAngle);
+    //   vvvvvv
+    fy = 0.1645; //0.15299;
+    dy = magBlockViceZ * fy;
     echo(str("mainMagWellAngledStop() dy = ", dy));
+
+    vdx = magBlockViceX/2 - magBlockViceDia/2;
+    vdy = (magwellStopY/2 - magBlockViceDia/2) * magwellStopFactorY;
 
     hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) doubleX() doubleY() 
     {
