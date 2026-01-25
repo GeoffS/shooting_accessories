@@ -7,7 +7,7 @@ magWidth = 22.2; // Slightly less that 7/8"
 magLength = 60.5;
 magRibLength = 64;
 magStopHeight = 70;
-magWellBottomAngle = 10; //10; //80 - 90;
+magWellBottomAngle = 10;
 
 magStopExtraXY = 8;
 
@@ -65,7 +65,7 @@ module viceSection()
 {
     difference()
     {
-        translate([0,0, 0]) mainViceSection();
+        mainViceSection();
         angledStopTrimXform() tcu([-200,-200,0], 400);
     }
 }
@@ -82,7 +82,6 @@ module magWellAngledStop()
     difference()
     {
         mainMagWellAngledStop();
-        // translate([0, magwellStopY/2 * magwellStopFactorY, 0]) mainMagWellAngledStop();
         angledStopTrimXform() tcu([-200,-200,-400], 400);
     }
 }
