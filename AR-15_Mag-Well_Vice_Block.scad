@@ -61,7 +61,9 @@ module angledStopXform()
 
 module angledStopTrimXform()
 {
-    translate([0,0,magBlockViceZ-magBlockViceCZ]) angledStopXform() children();
+    // MAGIC!!
+    // -----------------------------------------vvvvv
+    translate([0,0,magBlockViceZ-magBlockViceCZ-0.573]) angledStopXform() children();
 }
 
 module viceSection()
@@ -81,7 +83,7 @@ module mainViceSection()
     hull() translate([0,magBlockViceY/2,0]) 
         doubleX() doubleY() 
             translate([viceDX, vdy, 0]) 
-                #simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+                simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
 }
 
 module magWellAngledStop()
@@ -107,10 +109,7 @@ module mainMagWellAngledStop()
     hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) 
         doubleX() doubleY() 
             translate([viceDX, vdy, 0]) 
-                difference()
-                {
-                    #simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
-                }
+                simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
 }
 
 module clip(d=0)
