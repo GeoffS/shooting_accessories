@@ -92,7 +92,7 @@ module mainMagWellAngledStop()
     vdx = magBlockViceX/2 - magBlockViceDia/2;
     vdy = magwellStopY/2 - magBlockViceDia/2;
 
-    dy = 0; //magBlockViceZ * tan(magWellBottomAngle);
+    dy = magBlockViceZ * 0.15299; //tan(magWellBottomAngle);
     echo(str("mainMagWellAngledStop() dy = ", dy));
 
     hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) doubleX() doubleY() 
