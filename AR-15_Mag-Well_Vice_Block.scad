@@ -171,12 +171,12 @@ module mainMagWellAngledStop()
 
     // MAGIC!!!!!!!
     //   vvvvvvv
-    dy =  9.8754; //magBlockViceZ * fy;
+    dy = 10.3; //9.8754; //magBlockViceZ * fy;
     echo(str("mainMagWellAngledStop() dy = ", dy));
 
     // MAGIC!!
     //  --vvvvvvv
-    vdy = 35.3778; //(magwellStopY/2 - magBlockViceDia/2) * 1.01543; //magwellStopFactorY;
+    vdy = 34.93; //35.3778; //(magwellStopY/2 - magBlockViceDia/2) * 1.01543; //magwellStopFactorY;
     echo(str("mainMagWellAngledStop() vdy = ", vdy));
 
     hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) 
@@ -194,7 +194,7 @@ if(developmentRender)
 {
 	display() translate([0,0,nothing]) itemModule();
 
-    display() translate([100,0,0]) testModule();
+    // display() translate([100,0,0]) testModule();
 }
 else
 {
