@@ -3,12 +3,11 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
-
 magWidth = 22.2; // Slightly less that 7/8"
 magLength = 60.5;
 magRibLength = 64;
 magStopHeight = 70;
-magWellBottomAngle = 10; //80 - 90;
+magWellBottomAngle = 10; //10; //80 - 90;
 
 magStopExtraXY = 8;
 
@@ -26,13 +25,16 @@ magBlockViceCZ = 2.5;
 magwellStopFactorY = 1/cos(magWellBottomAngle);
 magwellStopFactorZ = tan(magWellBottomAngle);
 
+echo(str("magwellStopFactorY = ", magwellStopFactorY));
+echo(str("magwellStopFactorZ = ", magwellStopFactorZ));
+
 magwellStopY = magwellStopFactorY * magBlockViceY;
 magwellStopExtraY = magwellStopFactorY * magStopExtraXY;
 
 echo(str("magBlockViceY = ", magBlockViceY));
 echo(str("magwellStopY = ", magwellStopY));
 
-    
+$fn = 180;
 
 module itemModule()
 {
@@ -41,32 +43,12 @@ module itemModule()
         union()
         {
             // Core that goes into the mag-wall:
-            translate([0, magwellStopExtraY, 0]) 
-                tcu([-magWidth/2, 0, 0], [magWidth, magLength, magBlockZ]);
-
-            // Block for vice:
-            // tcu([-magBlockViceX/2, -magStopExtraXY, 0], [magBlockViceX, magBlockViceY, magBlockViceZ]);
+            tcu([-magWidth/2, magwellStopExtraY, 0], [magWidth, magLength, magBlockZ]);
             
             viceSection();
-            // // Vice section perpendicular to the mag-well bottom:
-            // magWellAngledStop();
-
-            // // Vice section perpendicular to the mag-well-interior/rifle:
-            // hull() translate([0, vdy-magStopExtraXY+magBlockViceDia/2, 0]) doubleX() doubleY() translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+            magWellAngledStop();
         }
     }
-}
-
-module viceSection()
-{
-    difference()
-    {
-        hull() translate([0, magLength/2, 0]) mainViceSection();
-        #translate([0,0,magBlockViceZ-magBlockViceCZ]) angledStopXform() tcu([-200,-200,0], 400);
-    }
-    
-    // magWellAngledStop();
-
 }
 
 module angledStopXform()
@@ -74,18 +56,46 @@ module angledStopXform()
     rotate([magWellBottomAngle,0,0]) children();
 }
 
+module angledStopTrimXform()
+{
+    translate([0,0,magBlockViceZ-magBlockViceCZ]) angledStopXform() children();
+}
+
+module viceSection()
+{
+    difference()
+    {
+        translate([0,0, 0]) mainViceSection();
+        angledStopTrimXform() tcu([-200,-200,0], 400);
+    }
+}
+
 module mainViceSection()
 {
     vdx = magBlockViceX/2 - magBlockViceDia/2;
     vdy = magBlockViceY/2 - magBlockViceDia/2;
-    translate([0,magwellStopExtraY,0]) doubleX() doubleY() translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+    hull() translate([0,magBlockViceY/2,0]) doubleX() doubleY() translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
 }
 
 module magWellAngledStop()
 {
+    difference()
+    {
+        mainMagWellAngledStop();
+        // translate([0, magwellStopY/2 * magwellStopFactorY, 0]) mainMagWellAngledStop();
+        angledStopTrimXform() tcu([-200,-200,-400], 400);
+    }
+}
+
+module mainMagWellAngledStop()
+{
     vdx = magBlockViceX/2 - magBlockViceDia/2;
     vdy = magwellStopY/2 - magBlockViceDia/2;
-    angledStopXform() doubleX() doubleY() 
+
+    dy = 0; //magBlockViceZ * tan(magWellBottomAngle);
+    echo(str("mainMagWellAngledStop() dy = ", dy));
+
+    hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) doubleX() doubleY() 
     {
         translate([vdx, vdy, 0]) simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
     }
