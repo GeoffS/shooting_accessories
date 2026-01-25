@@ -166,7 +166,7 @@ module testModule()
     difference()
     {
         itemModule();
-        tcy([0,0,-400+50], d=400, h=400);
-        tcy([0,0,95], d=400, h=400);
+        tcy([0,0,-400+55], d=400, h=400);
+        tcy([0,0,80], d=400, h=400);
     }
 }
