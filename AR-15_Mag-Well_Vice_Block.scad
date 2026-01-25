@@ -12,6 +12,9 @@ magRibLength = 64;
 magStopHeight = 70;
 magWellBottomAngle = 10;
 
+magCatchRampBottomZ = 60;
+magCatchTopZ = 63.5;
+
 magStopExtraXY = 8;
 
 magBlockViceX = magWidth + 2*magStopExtraXY;
