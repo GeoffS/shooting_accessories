@@ -9,6 +9,7 @@ layerHeight = 0.2;
 magWidth = 22.2; // Slightly less that 7/8"
 magLength = 60.5;
 magRibLength = 64;
+magRibWidth = 11;
 magStopHeight = 70;
 magWellBottomAngle = 10;
 
@@ -28,12 +29,17 @@ magBlockCZ = 1.5;
 magBlockViceDia = 8;
 magBlockViceCZ = 2.5;
 
+// MAGIC!!
+// Probably...
+//vvvvvvvvvvvvvvvv
 magwellStopFactorY = 1/cos(magWellBottomAngle);
 
 echo(str("magwellStopFactorY = ", magwellStopFactorY));
 
 magwellStopY = magwellStopFactorY * magBlockViceY;
-magwellStopExtraY = magwellStopFactorY * magStopExtraXY;
+// MAGIC!!
+//  ------------------------------------------------------v
+magwellStopExtraY = magwellStopFactorY * magStopExtraXY - 2;
 
 echo(str("magBlockViceY = ", magBlockViceY));
 echo(str("magwellStopY = ", magwellStopY));
@@ -47,12 +53,8 @@ module itemModule()
         union()
         {
             // Core that goes into the mag-wall:
-            mwdx = magWidth/2 - magBlockDia/2;
-            mwdy = magLength/2 - magBlockDia/2;
-            translate([0, magLength/2+magwellStopExtraY, 0]) 
-                hull() doubleX() doubleY() 
-                    translate([mwdx, mwdy, 0])
-                        simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
+            magCore();
+            magCoreRib();
             
             // Angled piece that goes into the vice:
             hull()
@@ -62,6 +64,27 @@ module itemModule()
             }
         }
     }
+}
+
+module magCore()
+{
+    magCoreParams(x=magWidth, y=magLength, dy=magwellStopExtraY);
+}
+
+module magCoreRib()
+{
+    dy = (magRibLength-magLength)/2 + magwellStopExtraY;
+    magCoreParams(x=magRibWidth, y=magRibLength, dy=dy);
+}
+
+module magCoreParams(x, y, dy)
+{
+    mwdx = x/2 - magBlockDia/2;
+    mwdy = y/2 - magBlockDia/2;
+    translate([0, magLength/2+dy, 0]) 
+        hull() doubleX() doubleY() 
+            translate([mwdx, mwdy, 0])
+                simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
 }
 
 module angledStopXform()
