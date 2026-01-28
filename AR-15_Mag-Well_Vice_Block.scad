@@ -70,7 +70,7 @@ module itemModule()
         union()
         {
             // Core that goes into the mag-wall:
-            // magCore();
+            magCore();
             // magCoreRib();
             // magCatchRamp();
             
@@ -103,7 +103,8 @@ module magCatchRecess()
 
 module magCore()
 {
-    magCoreParams(x=magWidth, y=magLength, dy=magwellStopExtraY);
+    // magCoreParams(x=magWidth, y=magLength, dy=magwellStopExtraY);
+    magCoreParams(x=magWidth, y=magLength, dy=0);
 }
 
 module magCoreRib()
@@ -116,7 +117,7 @@ module magCoreParams(x, y, dy)
 {
     mwdx = x/2 - magBlockDia/2;
     mwdy = y/2 - magBlockDia/2;
-    translate([0, magLength/2+dy, 0]) 
+    translate([0, dy, -magBlockViceZ]) 
         hull() doubleX() doubleY() 
             translate([mwdx, mwdy, 0])
                 simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
