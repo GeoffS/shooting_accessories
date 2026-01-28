@@ -70,12 +70,12 @@ module itemModule()
         union()
         {
             // Core that goes into the mag-wall:
-            magCore();
-            magCoreRib();
-            magCatchRamp();
+            // magCore();
+            // magCoreRib();
+            // magCatchRamp();
             
             // Angled piece that goes into the vice:
-            hull()
+            // hull()
             {
                 viceSection();
                 magWellAngledStop();
@@ -124,14 +124,16 @@ module magCoreParams(x, y, dy)
 
 module angledStopXform()
 {
-    rotate([magWellBottomAngle,0,0]) children();
+    rotate([magWellBottomAngle,0,0]) translate([0,0,-magBlockViceZ]) children();
 }
 
 module angledStopTrimXform()
 {
-    // MAGIC!!
-    // -----------------------------------------vvvvv
-    translate([0,0,magBlockViceZ-magBlockViceCZ-0.573]) angledStopXform() children();
+    // // MAGIC!!
+    // // -----------------------------------------vvvvv
+    // translate([0,0,magBlockViceZ-magBlockViceCZ-0.573]) angledStopXform() children();
+
+    translate([0,0,0]) angledStopXform() children();
 }
 
 module viceSection()
@@ -139,7 +141,7 @@ module viceSection()
     difference()
     {
         mainViceSection();
-        angledStopTrimXform() tcu([-200,-200,0], 400);
+        // angledStopTrimXform() tcu([-200,-200,0], 400);
     }
 }
 
@@ -148,9 +150,9 @@ viceDX = magBlockViceX/2 - magBlockViceDia/2;
 module mainViceSection()
 {
     vdy = magBlockViceY/2 - magBlockViceDia/2;
-    hull() translate([0,magBlockViceY/2,0]) 
+    // translate([0,magBlockViceY/2,0]) 
         doubleX() doubleY() 
-            translate([viceDX, vdy, 0]) 
+            translate([viceDX, vdy, -magBlockViceZ]) 
                 simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
 }
 
@@ -159,7 +161,7 @@ module magWellAngledStop()
     difference()
     {
         mainMagWellAngledStop();
-        #angledStopTrimXform() tcu([-200,-200,-400], 400);
+        // angledStopTrimXform() tcu([-200,-200,-400], 400);
     }
 }
 
@@ -179,10 +181,11 @@ module mainMagWellAngledStop()
     vdy = 34.93; //35.3778; //(magwellStopY/2 - magBlockViceDia/2) * 1.01543; //magwellStopFactorY;
     echo(str("mainMagWellAngledStop() vdy = ", vdy));
 
-    hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) 
+    // translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) 
+    angledStopXform() 
         doubleX() doubleY() 
             translate([viceDX, vdy, 0]) 
-                #simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+                simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
 }
 
 module clip(d=0)
