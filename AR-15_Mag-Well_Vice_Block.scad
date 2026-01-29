@@ -14,12 +14,6 @@ magRibWidth = 11;
 magStopHeight = 50;
 magWellBottomAngle = 10;
 
-magCatchRampBottomZ = 60;
-magCatchTopZ = 63.5;
-magCatchX = 1.4;
-magCatchY = 13.4;
-magCatchZ = 6.5;
-
 magStopExtraXY = 8;
 
 magBlockViceX = magWidth + 2*magStopExtraXY;
@@ -38,9 +32,8 @@ magBlockViceCZ = 2.5;
 magwellStopExtraY = 6.12344;
 
 echo(str("magBlockViceY = ", magBlockViceY));
-echo(str("magwellStopExtraY = ", magwellStopExtraY));
 
-$fn = 180;
+// $fn = 180;
 
 module itemModule()
 {
