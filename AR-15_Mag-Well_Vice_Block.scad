@@ -12,7 +12,7 @@ magWidth = 22.4; // Slightly less that 7/8"
 magLength = 60.7;
 magRibLength = 64;
 magRibWidth = 11;
-magStopHeight = 50;
+magStopHeight = 45;
 magWellBottomAngle = 10.1;
 // magWellBottomAngle = 10;
 
@@ -43,7 +43,7 @@ threadClearanceHoleDia = 6.7;
 module top()
 {
     topZ = 10;
-    insertZ = 2.5;
+    insertZ = 6;
     CZ = firstLayerHeight + 2*layerHeight;
     difference()
     {
