@@ -41,7 +41,9 @@ threadClearanceHoleDia = 6.7;
 
 module top()
 {
-    z = 10;
+    topZ = 10;
+    insertZ = 2.5;
+    CZ = firstLayerHeight + 2*layerHeight;
     difference()
     {
         union()
@@ -51,14 +53,14 @@ module top()
             translate([0, 0, 0]) 
                 hull() doubleX() doubleY() 
                     translate([mwdx, mwdy, 0])
-                        simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=2*z, cz=magBlockCZ);
+                        simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=insertZ+topZ, cz=CZ);
 
             dx = 34/2 - magBlockViceDia/2;
             dy = (magLength+magStopExtraXY)/2 - magBlockViceDia/2;
             translate([0, magStopExtraXY/2, 0]) hull() 
                 doubleX() doubleY() 
                     translate([dx, dy, 0]) 
-                        simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=z, cz=magBlockCZ);
+                        simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=topZ, cz=CZ);
         }
 
         // Vertical hole for clamp:
@@ -66,7 +68,7 @@ module top()
         {
             tcy([0,0,0], d=threadClearanceHoleDia+0.2, h=100);
         }
-        translate([0,0,2*z-threadableHoleDia/2-1])
+        translate([0,0,insertZ+topZ-threadableHoleDia/2-1])
         {
             cylinder(d2=20, d1=0, h=10);
         }
