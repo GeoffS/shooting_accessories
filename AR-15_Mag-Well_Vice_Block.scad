@@ -35,6 +35,9 @@ echo(str("magBlockViceY = ", magBlockViceY));
 
 // $fn = 180;
 
+threadableHoleDia = 6.3; // 1/4-20
+threadClearanceHoleDia = 6.7;
+
 module itemModule()
 {
     difference()
@@ -46,11 +49,25 @@ module itemModule()
             viceSection();
         }
 
+        // Vertical hole for clamp:
+        translate([0,magBlockViceY/2,magBlockZ-50])
+        {
+            tcy([0,0,0], d=threadableHoleDia, h=100);
+            tcy([0,0,0], d=threadClearanceHoleDia+0.2, h=35);
+        }
+        translate([0,magBlockViceY/2,magBlockZ-threadableHoleDia/2-1])
+        {
+            cylinder(d2=20, d1=0, h=10);
+        }
+
         // Horiz holes to sit on vice jaws:
         translate([0,magBlockViceY/2,40]) doubleY() translate([0,20,0]) rotate([0,90,0]) 
         {
             // Threads:
-            tcy([0,0,-100], d=6.3, h=200);
+            tcy([0,0,-100], d=threadableHoleDia, h=200);
+
+            // Chamfer:
+            doubleZ() translate([0,0,magBlockViceX/2-threadableHoleDia/2-0.6]) cylinder(d2=20, d1=0, h=10);
 
             // Just larger than threaded rod OD:
             x = magBlockViceX-12;
@@ -104,7 +121,7 @@ module mainViceSection()
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([0, -200, -200], 400);
+    // tcu([0, -200, -200], 400);
 }
 
 if(developmentRender)
