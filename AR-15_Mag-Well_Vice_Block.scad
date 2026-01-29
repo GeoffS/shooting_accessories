@@ -37,9 +37,24 @@ echo(str("magBlockViceY = ", magBlockViceY));
 
 module itemModule()
 {
-	magCore();
-    magCoreRib();
-    viceSection();
+    difference()
+    {
+	    union()
+        {
+            magCore();
+            magCoreRib();
+            viceSection();
+        }
+
+        // Horiz holes to sit on vice jaws:
+        translate([0,magBlockViceY/2,40]) doubleY() translate([0,20,0]) rotate([0,90,0]) 
+        {
+            tcy([0,0,-100], d=6.3, h=200);
+            x = magBlockViceX-12;
+            tcy([0,0,-x/2], d=6.7, h=x);
+        }
+
+    }
 }
 
 module magCore()
@@ -85,14 +100,15 @@ module mainViceSection()
 
 module clip(d=0)
 {
-	//tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
+    tcu([0, -200, -200], 400);
 }
 
 if(developmentRender)
 {
 	display() translate([0,0,nothing]) itemModule();
 
-    display() translate([100,0,0]) testModule();
+    // display() translate([100,0,0]) testModule();
 }
 else
 {
