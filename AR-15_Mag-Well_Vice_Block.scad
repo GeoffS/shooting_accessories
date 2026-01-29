@@ -13,7 +13,8 @@ magLength = 60.7;
 magRibLength = 64;
 magRibWidth = 11;
 magStopHeight = 50;
-magWellBottomAngle = 10;
+magWellBottomAngle = 10.1;
+// magWellBottomAngle = 10;
 
 magStopExtraXY = 8;
 
@@ -36,7 +37,7 @@ echo(str("magBlockViceY = ", magBlockViceY));
 
 // $fn = 180;
 
-threadableHoleDia = 6.3; // 1/4-20
+threadableHoleDia = 6.2; // 1/4-20
 threadClearanceHoleDia = 6.7;
 
 module top()
