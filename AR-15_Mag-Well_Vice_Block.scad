@@ -6,11 +6,12 @@ makeTest = false;
 
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
+
 magWidth = 22.2; // Slightly less that 7/8"
 magLength = 60.5;
 magRibLength = 64;
 magRibWidth = 11;
-magStopHeight = 70;
+magStopHeight = 50;
 magWellBottomAngle = 10;
 
 magCatchRampBottomZ = 60;
@@ -32,73 +33,20 @@ magBlockCZ = 1.5;
 magBlockViceDia = 8;
 magBlockViceCZ = 2.5;
 
-// From pre-MAGIC conversion:
-// ECHO: "magwellStopFactorY = 1.01543"
-// ECHO: "magBlockViceY = 76.5"
-// ECHO: "magwellStopY = 77.6804"
-// ECHO: "magwellStopFactorY * magStopExtraXY = 8.12344"
-// ECHO: "magwellStopExtraY = 6.12344"
-// ECHO: "mainMagWellAngledStop() dy = 9.8754"
-// ECHO: "mainMagWellAngledStop() dy = 9.8754"
-
-// MAGIC!!
-// Probably...
-//vvvvvvvvvvvvvvvv
-// magwellStopFactorY = 1/cos(magWellBottomAngle);
-// magwellStopFactorY = 1.01543;
-// echo(str("magwellStopFactorY = ", magwellStopFactorY));
-
-// MAGIC!!
-//  -----------vvvvvvv
-magwellStopY = 77.6804; //magwellStopFactorY * magBlockViceY;
-
 // MAGIC!!
 //  ----------------vvvvvvv
-magwellStopExtraY = 6.12344; //magwellStopFactorY * magStopExtraXY - 2;
+magwellStopExtraY = 6.12344;
 
 echo(str("magBlockViceY = ", magBlockViceY));
-echo(str("magwellStopY = ", magwellStopY));
-// echo(str("magwellStopFactorY * magStopExtraXY = ", magwellStopFactorY * magStopExtraXY));
 echo(str("magwellStopExtraY = ", magwellStopExtraY));
 
 $fn = 180;
 
 module itemModule()
 {
-	difference()
-    {
-        union()
-        {
-            // Core that goes into the mag-wall:
-            magCore();
-            magCoreRib();
-            magCatchRamp();
-            
-            // Angled piece that goes into the vice:
-            hull()
-            {
-                viceSection();
-                magWellAngledStop();
-            }
-        }
-
-        magCatchRecess();
-    }
-}
-
-module magCatchXform()
-{
-    children();
-}
-
-module magCatchRamp()
-{
-
-}
-
-module magCatchRecess()
-{
-
+	magCore();
+    magCoreRib();
+    viceSection();
 }
 
 module magCore()
@@ -122,24 +70,12 @@ module magCoreParams(x, y, dy)
                 simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
 }
 
-module angledStopXform()
-{
-    rotate([magWellBottomAngle,0,0]) children();
-}
-
-module angledStopTrimXform()
-{
-    // MAGIC!!
-    // -----------------------------------------vvvvv
-    translate([0,0,magBlockViceZ-magBlockViceCZ-0.573]) angledStopXform() children();
-}
-
 module viceSection()
 {
     difference()
     {
         mainViceSection();
-        angledStopTrimXform() tcu([-200,-200,0], 400);
+        translate([0,0,magBlockViceZ]) rotate([-magWellBottomAngle,0,0]) tcu([-200,-200,0], 400);
     }
 }
 
@@ -151,38 +87,7 @@ module mainViceSection()
     hull() translate([0,magBlockViceY/2,0]) 
         doubleX() doubleY() 
             translate([viceDX, vdy, 0]) 
-                simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
-}
-
-module magWellAngledStop()
-{
-    difference()
-    {
-        mainMagWellAngledStop();
-        #angledStopTrimXform() tcu([-200,-200,-400], 400);
-    }
-}
-
-module mainMagWellAngledStop()
-{
-    // // MAGIC!!!!!!!
-    // //   vvvvvvv
-    // fy = 0.16459;
-
-    // MAGIC!!!!!!!
-    //   vvvvvvv
-    dy = 10.3; //9.8754; //magBlockViceZ * fy;
-    echo(str("mainMagWellAngledStop() dy = ", dy));
-
-    // MAGIC!!
-    //  --vvvvvvv
-    vdy = 34.93; //35.3778; //(magwellStopY/2 - magBlockViceDia/2) * 1.01543; //magwellStopFactorY;
-    echo(str("mainMagWellAngledStop() vdy = ", vdy));
-
-    hull() translate([0, dy, 0]) angledStopXform() translate([0,magwellStopY/2,0]) 
-        doubleX() doubleY() 
-            translate([viceDX, vdy, 0]) 
-                #simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ, cz=magBlockViceCZ);
+                simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ+10, cz=magBlockViceCZ);
 }
 
 module clip(d=0)
@@ -194,7 +99,7 @@ if(developmentRender)
 {
 	display() translate([0,0,nothing]) itemModule();
 
-    // display() translate([100,0,0]) testModule();
+    display() translate([100,0,0]) testModule();
 }
 else
 {
@@ -207,7 +112,7 @@ module testModule()
     difference()
     {
         itemModule();
-        tcy([0,0,-400+55], d=400, h=400);
-        tcy([0,0,80], d=400, h=400);
+        tcy([0,0,-400+40], d=400, h=400);
+        tcy([0,0,75], d=400, h=400);
     }
 }
