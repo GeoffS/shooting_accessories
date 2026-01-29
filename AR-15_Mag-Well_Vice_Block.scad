@@ -2,6 +2,7 @@ include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 makeBlock = false;
+makeTop = false;
 makeTest = false;
 
 firstLayerHeight = 0.2;
@@ -37,6 +38,44 @@ echo(str("magBlockViceY = ", magBlockViceY));
 
 threadableHoleDia = 6.3; // 1/4-20
 threadClearanceHoleDia = 6.7;
+
+module top()
+{
+    z = 10;
+    difference()
+    {
+        union()
+        {
+            mwdx = magWidth/2 - magBlockDia/2;
+            mwdy = magLength/2 - magBlockDia/2;
+            translate([0, 0, 0]) 
+                hull() doubleX() doubleY() 
+                    translate([mwdx, mwdy, 0])
+                        simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=2*z, cz=magBlockCZ);
+
+            dx = 34/2 - magBlockViceDia/2;
+            dy = (magLength+magStopExtraXY)/2 - magBlockViceDia/2;
+            translate([0, magStopExtraXY/2, 0]) hull() 
+                doubleX() doubleY() 
+                    translate([dx, dy, 0]) 
+                        simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=z, cz=magBlockCZ);
+        }
+
+        // Vertical hole for clamp:
+        translate([0,0,-50])
+        {
+            tcy([0,0,0], d=threadClearanceHoleDia+0.2, h=100);
+        }
+        translate([0,0,2*z-threadableHoleDia/2-1])
+        {
+            cylinder(d2=20, d1=0, h=10);
+        }
+        translate([0,0,-10+threadableHoleDia/2+1])
+        {
+            cylinder(d1=20, d2=0, h=10);
+        }
+    }
+}
 
 module itemModule()
 {
@@ -108,13 +147,13 @@ module viceSection()
 }
 
 viceDX = magBlockViceX/2 - magBlockViceDia/2;
+viceDY = magBlockViceY/2 - magBlockViceDia/2;
 
 module mainViceSection()
 {
-    vdy = magBlockViceY/2 - magBlockViceDia/2;
     hull() translate([0,magBlockViceY/2,0]) 
         doubleX() doubleY() 
-            translate([viceDX, vdy, 0]) 
+            translate([viceDX, viceDY, 0]) 
                 simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=magBlockViceZ+10, cz=magBlockViceCZ);
 }
 
@@ -126,7 +165,8 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() translate([0,0,nothing]) itemModule();
+	display() translate([100,0,0]) itemModule();
+    display() translate([0,0,0]) top();
 
     // display() translate([100,0,0]) testModule();
 }
@@ -134,6 +174,7 @@ else
 {
 	if(makeBlock) itemModule();
     if(makeTest) testModule();
+    if(makeTop) top();
 }
 
 module testModule()
