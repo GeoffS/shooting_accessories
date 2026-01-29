@@ -8,8 +8,8 @@ makeTest = false;
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
-magWidth = 22.2; // Slightly less that 7/8"
-magLength = 60.5;
+magWidth = 22.4; // Slightly less that 7/8"
+magLength = 60.7;
 magRibLength = 64;
 magRibWidth = 11;
 magStopHeight = 50;
