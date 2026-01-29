@@ -49,7 +49,10 @@ module itemModule()
         // Horiz holes to sit on vice jaws:
         translate([0,magBlockViceY/2,40]) doubleY() translate([0,20,0]) rotate([0,90,0]) 
         {
+            // Threads:
             tcy([0,0,-100], d=6.3, h=200);
+
+            // Just larger than threaded rod OD:
             x = magBlockViceX-12;
             tcy([0,0,-x/2], d=6.7, h=x);
         }
