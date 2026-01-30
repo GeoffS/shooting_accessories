@@ -49,7 +49,7 @@ echo(str("magStopExtraXY-magwellStopExtraY = ", magStopExtraXY-magwellStopExtraY
 
 // $fn = 180;
 
-threadableHoleDia = 6.1; // 1/4-20
+threadableHoleDia = 6.25; // 1/4-20
 threadClearanceHoleDia = 6.7;
 
 module top()
@@ -80,15 +80,16 @@ module top()
         }
 
         // Vertical hole for clamp:
+        topHoleDia = threadClearanceHoleDia+0.5;
         translate([0,0,-50])
         {
-            tcy([0,0,0], d=threadClearanceHoleDia+0.5, h=100);
+            tcy([0,0,0], d=topHoleDia, h=100);
         }
-        translate([0,0,insertZ+topZ-threadableHoleDia/2-1])
+        translate([0,0,insertZ+topZ-topHoleDia/2-1])
         {
             cylinder(d2=20, d1=0, h=10);
         }
-        translate([0,0,-10+threadableHoleDia/2+1])
+        translate([0,0,-10+topHoleDia/2+1])
         {
             cylinder(d1=20, d2=0, h=10);
         }
@@ -113,14 +114,20 @@ module itemModule()
                 simpleChamferedCylinderDoubleEnded(d=mcDia, h=100, cz=mcDia/2-nothing);
 
         // Vertical hole for clamp:
-        translate([0, magBlockViceY/2, magBlockZ-50])
+        translate([0, magBlockViceY/2, 0])
         {
-            tcy([0,0,0], d=threadableHoleDia, h=100);
-            tcy([0,0,0], d=threadClearanceHoleDia+0.2, h=35);
-        }
-        translate([0,magBlockViceY/2,magBlockZ-threadableHoleDia/2-1])
-        {
-            cylinder(d2=20, d1=0, h=10);
+            threadableLengthZ = 20;
+            // Threadable section at top:
+            tcy([0,0,-10], d=threadableHoleDia, h=200);
+
+            // Clearance section in middle of mount:
+            translate([0,0,threadableLengthZ]) simpleChamferedCylinderDoubleEnded(d=threadClearanceHoleDia, h=magBlockZ-2*threadableLengthZ, cz=2);
+        
+            // Top Chamfer:
+            translate([0,0,magBlockZ-threadableHoleDia/2-1]) cylinder(d2=20, d1=0, h=10);
+        
+            // Bottom Chamfer:
+            translate([0,0,-10+threadableHoleDia/2+1]) cylinder(d1=20, d2=0, h=10);
         }
 
         // Horiz holes to sit on vice jaws:
