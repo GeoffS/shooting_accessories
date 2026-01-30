@@ -49,7 +49,7 @@ echo(str("magStopExtraXY-magwellStopExtraY = ", magStopExtraXY-magwellStopExtraY
 
 // $fn = 180;
 
-threadableHoleDia = 6.2; // 1/4-20
+threadableHoleDia = 6.1; // 1/4-20
 threadClearanceHoleDia = 6.7;
 
 module top()
