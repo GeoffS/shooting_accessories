@@ -106,8 +106,12 @@ module itemModule()
             viceSection();
         }
         
-        // Mag-catch clot:
-        tcu([magWidth/2-magCatchX, magLength/2-magCatchY2, magBlockZ-magCatchZ], [100, magCatchY, 100]);
+        // Mag-catch slot:
+        // tcu([magWidth/2-magCatchX, magLength/2-magCatchY2, magBlockZ-magCatchZ], [100, magCatchY, 100]);
+        mcDia = 4;
+        translate([10+magWidth/2-magCatchX, magLength/2-magCatchY2, magBlockZ-magCatchZ-mcDia/2]) 
+            hull() doubleX() doubleY() translate([10, magCatchY/2-mcDia/2, 0])
+                simpleChamferedCylinderDoubleEnded(d=mcDia, h=100, cz=mcDia/2-nothing);
 
         // Vertical hole for clamp:
         translate([0, magBlockViceY/2, magBlockZ-50])
