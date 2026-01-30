@@ -13,10 +13,10 @@ magLength = 60.7;
 magRibLength = 64;
 magRibWidth = 11;
 magStopHeight = 45;
-magWellBottomAngle = 10.1;
+magWellBottomAngle = 10.3;
 // magWellBottomAngle = 10;
 
-magCatchX = 3.5;
+magCatchX = 4;
 magCatchY1 = -6.6;
 magCatchY2 = -18.6;
 magCatchCtrY = (magCatchY1 + magCatchY2)/2;
@@ -107,9 +107,8 @@ module itemModule()
         }
         
         // Mag-catch slot:
-        // tcu([magWidth/2-magCatchX, magLength/2-magCatchY2, magBlockZ-magCatchZ], [100, magCatchY, 100]);
         mcDia = 4;
-        translate([10+magWidth/2-magCatchX, magLength/2-magCatchY2, magBlockZ-magCatchZ-mcDia/2]) 
+        translate([10+magWidth/2-magCatchX+mcDia/2, magBlockViceY/2-magCatchCtrY, magBlockZ-magCatchZ-mcDia/2]) 
             hull() doubleX() doubleY() translate([10, magCatchY/2-mcDia/2, 0])
                 simpleChamferedCylinderDoubleEnded(d=mcDia, h=100, cz=mcDia/2-nothing);
 
