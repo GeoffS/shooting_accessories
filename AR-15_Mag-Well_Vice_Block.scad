@@ -16,6 +16,16 @@ magStopHeight = 45;
 magWellBottomAngle = 10.1;
 // magWellBottomAngle = 10;
 
+magCatchX = 5;
+magCatchY1 = -6.6;
+magCatchY2 = -18.6;
+magCatchCtrY = (magCatchY1 + magCatchY2)/2;
+magCatchY = -(magCatchY2 - magCatchY1);
+magCatchZ = 19.5;
+
+echo(str("magCatchCtrY = ", magCatchCtrY));
+echo(str("magCatchY = ", magCatchY));
+
 magStopExtraXY = 8;
 
 magBlockViceX = magWidth + 2*magStopExtraXY;
@@ -47,6 +57,7 @@ module top()
     topZ = 10;
     insertZ = 6;
     CZ = firstLayerHeight + 2*layerHeight;
+
     difference()
     {
         // MAGIC!!
@@ -94,6 +105,9 @@ module itemModule()
             magCoreRib();
             viceSection();
         }
+        
+        // Mag-catch clot:
+        tcu([magWidth/2-magCatchX, magLength/2-magCatchY2, magBlockZ-magCatchZ], [100, magCatchY, 100]);
 
         // Vertical hole for clamp:
         translate([0, magBlockViceY/2, magBlockZ-50])
@@ -167,14 +181,16 @@ module mainViceSection()
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([0-d, -200, -200], 400);
+    // tcu([0-d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
-    display() rotate([0,0,180]) translate([0,-magBlockViceY/2,magBlockZ+20]) rotate([0,180,0]) itemModule();
-    display() translate([0,0,0]) top();
-    displayGhost() tcy([0,0,0], d=6.2, h=40);
+    // display() rotate([0,0,180]) translate([0,-magBlockViceY/2,magBlockZ+20]) rotate([0,180,0]) itemModule();
+    // display() translate([0,0,0]) top();
+    // displayGhost() tcy([0,0,0], d=6.2, h=40);
+
+    display() itemModule();
 
 	// display() translate([100,0,0]) itemModule();
     // display() translate([0,0,0]) top();
