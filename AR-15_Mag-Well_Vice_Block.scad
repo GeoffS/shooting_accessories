@@ -16,11 +16,11 @@ magStopHeight = 45;
 magWellBottomAngle = 10.1;
 // magWellBottomAngle = 10;
 
-magCatchX = 5;
+magCatchX = 3.5;
 magCatchY1 = -6.6;
 magCatchY2 = -18.6;
 magCatchCtrY = (magCatchY1 + magCatchY2)/2;
-magCatchY = -(magCatchY2 - magCatchY1);
+magCatchY = -(magCatchY2 - magCatchY1) + 1;
 magCatchZ = 19.5;
 
 echo(str("magCatchCtrY = ", magCatchCtrY));
