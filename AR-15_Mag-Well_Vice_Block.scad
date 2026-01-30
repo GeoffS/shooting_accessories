@@ -35,6 +35,8 @@ magwellStopExtraY = 6.12344;
 
 echo(str("magBlockViceY = ", magBlockViceY));
 
+echo(str("magStopExtraXY-magwellStopExtraY = ", magStopExtraXY-magwellStopExtraY));
+
 // $fn = 180;
 
 threadableHoleDia = 6.2; // 1/4-20
@@ -47,14 +49,16 @@ module top()
     CZ = firstLayerHeight + 2*layerHeight;
     difference()
     {
-        union()
+        // MAGIC!!
+        magicDY = magStopExtraXY-magwellStopExtraY;
+        echo(str("magicDY = ", magicDY));
+        translate([0, magicDY, 0]) union()
         {
             mwdx = magWidth/2 - magBlockDia/2;
-            mwdy = magLength/2 - magBlockDia/2;
-            translate([0, 0, 0]) 
-                hull() doubleX() doubleY() 
-                    translate([mwdx, mwdy, 0])
-                        simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=insertZ+topZ, cz=CZ);
+            mwdy = magLength/2 - magBlockDia/2 - 0.2;
+            hull() doubleX() doubleY() 
+                translate([mwdx, mwdy, 0])
+                    simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=insertZ+topZ, cz=CZ);
 
             dx = 34/2 - magBlockViceDia/2;
             dy = (magLength+magStopExtraXY)/2 - magBlockViceDia/2;
@@ -67,7 +71,7 @@ module top()
         // Vertical hole for clamp:
         translate([0,0,-50])
         {
-            tcy([0,0,0], d=threadClearanceHoleDia+0.2, h=100);
+            tcy([0,0,0], d=threadClearanceHoleDia+0.5, h=100);
         }
         translate([0,0,insertZ+topZ-threadableHoleDia/2-1])
         {
@@ -92,7 +96,7 @@ module itemModule()
         }
 
         // Vertical hole for clamp:
-        translate([0,magBlockViceY/2,magBlockZ-50])
+        translate([0, magBlockViceY/2, magBlockZ-50])
         {
             tcy([0,0,0], d=threadableHoleDia, h=100);
             tcy([0,0,0], d=threadClearanceHoleDia+0.2, h=35);
@@ -163,13 +167,17 @@ module mainViceSection()
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([0, -200, -200], 400);
+    tcu([0-d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
-	display() translate([100,0,0]) itemModule();
+    display() rotate([0,0,180]) translate([0,-magBlockViceY/2,magBlockZ+20]) rotate([0,180,0]) itemModule();
     display() translate([0,0,0]) top();
+    displayGhost() tcy([0,0,0], d=6.2, h=40);
+
+	// display() translate([100,0,0]) itemModule();
+    // display() translate([0,0,0]) top();
 
     // display() translate([100,0,0]) testModule();
 }
