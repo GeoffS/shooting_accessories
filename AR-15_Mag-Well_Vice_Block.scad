@@ -14,7 +14,6 @@ magRibLength = 64;
 magRibWidth = 11;
 magStopHeight = 45;
 magWellBottomAngle = 10.3;
-// magWellBottomAngle = 10;
 
 magCatchX = 4;
 magCatchY1 = -6.6;
@@ -49,7 +48,8 @@ echo(str("magStopExtraXY-magwellStopExtraY = ", magStopExtraXY-magwellStopExtraY
 
 // $fn = 180;
 
-threadableHoleDia = 6.25; // 1/4-20
+threadableHoleDiaVert = 5.8; // A bit larger than the 5.16mm recommended 1/4-20 tap.
+threadableHoleDiaHoriz = 6.25; // 1/4-20 just firm "self-tapping" thread dia.
 threadClearanceHoleDia = 6.7;
 
 module top()
@@ -118,26 +118,26 @@ module itemModule()
         {
             threadableLengthZ = 20;
             // Threadable section at top:
-            tcy([0,0,-10], d=threadableHoleDia, h=200);
+            tcy([0,0,-10], d=threadableHoleDiaVert, h=200);
 
             // Clearance section in middle of mount:
             translate([0,0,threadableLengthZ]) simpleChamferedCylinderDoubleEnded(d=threadClearanceHoleDia, h=magBlockZ-2*threadableLengthZ, cz=2);
         
             // Top Chamfer:
-            translate([0,0,magBlockZ-threadableHoleDia/2-1]) cylinder(d2=20, d1=0, h=10);
+            translate([0,0,magBlockZ-threadableHoleDiaVert/2-1]) cylinder(d2=20, d1=0, h=10);
         
             // Bottom Chamfer:
-            translate([0,0,-10+threadableHoleDia/2+1]) cylinder(d1=20, d2=0, h=10);
+            translate([0,0,-10+threadableHoleDiaVert/2+1]) cylinder(d1=20, d2=0, h=10);
         }
 
         // Horiz holes to sit on vice jaws:
         translate([0,magBlockViceY/2,40]) doubleY() translate([0,20,0]) rotate([0,90,0]) 
         {
             // Threads:
-            tcy([0,0,-100], d=threadableHoleDia, h=200);
+            tcy([0,0,-100], d=threadableHoleDiaHoriz, h=200);
 
             // Chamfer:
-            doubleZ() translate([0,0,magBlockViceX/2-threadableHoleDia/2-0.6]) cylinder(d2=20, d1=0, h=10);
+            doubleZ() translate([0,0,magBlockViceX/2-threadableHoleDiaHoriz/2-0.6]) cylinder(d2=20, d1=0, h=10);
 
             // Just larger than threaded rod OD:
             x = magBlockViceX-12;
