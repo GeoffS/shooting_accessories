@@ -12,8 +12,24 @@ magWidth = 22.4; // Slightly less that 7/8"
 magLength = 60.7;
 magRibLength = 64;
 magRibWidth = 11;
-magStopHeight = 45;
 magWellBottomAngle = 10.3;
+magStopHeight = 45;
+
+threadableHoleDiaVert = 5.8; // A bit larger than the 5.16mm recommended 1/4-20 tap.
+threadableHoleDiaHoriz = 6.25; // 1/4-20 just firm "self-tapping" thread dia.
+threadClearanceHoleDia = 6.7;
+
+// Original dimensions:
+// magBlockViceZ = 60;
+// horizontalHolesZ = 40;
+
+// Small blue vice dimensions:
+// 28mm from top of screw to top up jaws:
+// ----------------vv
+horizontalHolesZ = 28 + threadableHoleDiaHoriz/2;
+// 20mm to get holes below the mag-well stop:
+// Magic'ish for 10 deg -----------vv
+magBlockViceZ = horizontalHolesZ + 20;
 
 magCatchX = 4;
 magCatchY1 = -6.6;
@@ -29,7 +45,6 @@ magStopExtraXY = 8;
 
 magBlockViceX = magWidth + 2*magStopExtraXY;
 magBlockViceY = magLength + 2*magStopExtraXY;
-magBlockViceZ = 60;
 magBlockZ = magStopHeight + magBlockViceZ;
 
 magBlockDia = 4;
@@ -47,10 +62,6 @@ echo(str("magBlockViceY = ", magBlockViceY));
 echo(str("magStopExtraXY-magwellStopExtraY = ", magStopExtraXY-magwellStopExtraY));
 
 // $fn = 180;
-
-threadableHoleDiaVert = 5.8; // A bit larger than the 5.16mm recommended 1/4-20 tap.
-threadableHoleDiaHoriz = 6.25; // 1/4-20 just firm "self-tapping" thread dia.
-threadClearanceHoleDia = 6.7;
 
 module top()
 {
@@ -131,7 +142,7 @@ module itemModule()
         }
 
         // Horiz holes to sit on vice jaws:
-        translate([0,magBlockViceY/2,40]) doubleY() translate([0,20,0]) rotate([0,90,0]) 
+        translate([0,magBlockViceY/2,horizontalHolesZ]) doubleY() translate([0,20,0]) rotate([0,90,0]) 
         {
             // Threads:
             tcy([0,0,-100], d=threadableHoleDiaHoriz, h=200);
