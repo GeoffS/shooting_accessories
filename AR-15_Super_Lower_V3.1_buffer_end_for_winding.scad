@@ -1,5 +1,5 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
-include <../OpenSCAD_Lib/chamferedCylinders.scad>
+include <../OpenSCAD_Lib/threads.scad>
 
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
