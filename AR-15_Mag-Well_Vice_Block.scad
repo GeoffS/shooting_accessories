@@ -71,9 +71,19 @@ module top()
 
     difference()
     {
+        topLipXY = (34 - magWidth)/2;
+        topX = magWidth + 2*topLipXY;
+        topY = magLength + topLipXY;
+
+        echo(str("topLipXY = ", topLipXY));
+        echo(str("topX = ", topX));
+        echo(str("topY = ", topY));
+
         // MAGIC!!
-        magicDY = magStopExtraXY-magwellStopExtraY;
+        magicDY = topLipXY-magwellStopExtraY;
+        /// ECHO: "magicDY = 1.87656"
         echo(str("magicDY = ", magicDY));
+
         translate([0, magicDY, 0]) union()
         {
             mwdx = magWidth/2 - magBlockDia/2;
@@ -82,9 +92,9 @@ module top()
                 translate([mwdx, mwdy, 0])
                     simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=insertZ+topZ, cz=CZ);
 
-            dx = 34/2 - magBlockViceDia/2;
-            dy = (magLength+magStopExtraXY)/2 - magBlockViceDia/2;
-            translate([0, magStopExtraXY/2, 0]) hull() 
+            dx = topX/2 - magBlockViceDia/2;
+            dy = (magLength+topLipXY)/2 - magBlockViceDia/2;
+            translate([0, topLipXY/2, 0]) hull() 
                 doubleX() doubleY() 
                     translate([dx, dy, 0]) 
                         simpleChamferedCylinderDoubleEnded(d=magBlockViceDia, h=topZ, cz=CZ);
@@ -211,10 +221,10 @@ if(developmentRender)
     // display() translate([0,0,0]) top();
     // displayGhost() tcy([0,0,0], d=6.2, h=40);
 
-    display() itemModule();
+    // display() itemModule();
 
-	// display() translate([100,0,0]) itemModule();
-    // display() translate([0,0,0]) top();
+	display() translate([100,0,0]) itemModule();
+    display() translate([0,0,0]) top();
 
     // display() translate([100,0,0]) testModule();
 }
