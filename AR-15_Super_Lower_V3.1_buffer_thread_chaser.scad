@@ -13,6 +13,7 @@ tapOpeningY = 7;
 
 $fn=180;
 
+tapOpeningRouindingAngle = 35;
 module itemModule()
 {
 	difference()
@@ -24,19 +25,22 @@ module itemModule()
                 simpleChamferedCylinderDoubleEnded(d=guideOD, h=guideZ, cz=guideCZ);
 
                 // Tap opening trim:
-                tcu([tapRecessCtr, -tapOpeningY/2, -10], [100, tapOpeningY, 100]);
+                // tcu([tapRecessCtr, -tapOpeningY/2, -10], [100, tapOpeningY, 100]);
+                translate([tapRecessCtr, 0, -10]) 
+                {
+                    hull() doubleY() rotate([0,0,tapOpeningRouindingAngle]) tcu([0,-0.1,0], [30, 0.1, 100]);
+                }
             }
 
-            // Tap opening trim rounding:
-            tapOpeningRouindingDia = 2*1.125;
-            tapOpeningRouindingCZ = tapOpeningRouindingDia/2;
-            tapOpeningRouindingAngle = 14;
-            tapOpeningRouindingZ = guideZ - 2*guideCZ + 2*tapOpeningRouindingCZ;
-            tapOpeningRouindingOffsetZ = guideCZ - tapOpeningRouindingCZ;
-            doubleY() 
-                rotate([0,0,tapOpeningRouindingAngle]) 
-                    translate([guideOD/2-tapOpeningRouindingDia/2,0,tapOpeningRouindingOffsetZ])
-                        simpleChamferedCylinderDoubleEnded(d=tapOpeningRouindingDia, h=tapOpeningRouindingZ, cz=tapOpeningRouindingCZ);
+            // // Tap opening trim rounding:
+            // tapOpeningRouindingDia = 1; //2*1.125;
+            // tapOpeningRouindingCZ = tapOpeningRouindingDia/2;
+            // tapOpeningRouindingZ = guideZ - 2*guideCZ + 2*tapOpeningRouindingCZ;
+            // tapOpeningRouindingOffsetZ = guideCZ - tapOpeningRouindingCZ;
+            // translate([tapRecessCtr, 0, 0]) doubleY() 
+            //     rotate([0,0,tapOpeningRouindingAngle+3]) 
+            //         translate([tapOD/2-tapOpeningRouindingDia/2+0.72, 0, tapOpeningRouindingOffsetZ])
+            //             simpleChamferedCylinderDoubleEnded(d=tapOpeningRouindingDia, h=tapOpeningRouindingZ, cz=tapOpeningRouindingCZ);
         }
 
         // Tap recess:
