@@ -7,10 +7,13 @@ layerHeight = 0.2;
 
 makePlate = false;
 makeScrew = false;
+makeHexStop = false;
 
 plateZ = 3;
 nutZ = 6;
 bufferOD = 30.4;
+
+allenKeyDia = 11.3;
 
 module screw()
 {
@@ -18,8 +21,6 @@ module screw()
     TPI = 16;
     threadZ = 20 + nutZ;
     threadZ_inches = threadZ/25.4;
-
-    allenKeyDia = 11.3;
 
     difference()
     {
@@ -90,9 +91,45 @@ module plate()
     }
 }
 
+stopZ = 12;
+module hexStop()
+{
+    stopGap = 1;
+    difference()
+    {
+        simpleChamferedCylinderDoubleEnded(d=allenKeyDia+15, h=stopZ, cz=firstLayerHeight+7*layerHeight);
+        tcu([0, -stopGap/2, -1], [20, stopGap, 20]);
+        rotate([0,0,30]) tcy([0, 0, -1], d=allenKeyDia, h=20, $fn=6);
+
+        boltDia = 3.3;
+        translate([7+boltDia/2, 0, stopZ/2]) rotate([-90,0,0])
+        {
+            dy = 2.5;
+            // bolt:
+            tcy([0,0,-50], d=boltDia, h=100);
+            // socket head:
+            tcy([0,0,stopGap/2+dy], d=6, h=100);
+            rotate([0,0,30]) 
+            {
+                // nut:
+                tcy([0,0,-100-stopGap/2-dy], d=6.3, h=100, $fn=6);
+                // nut lead-in:
+                nutZ = 2.3;
+                translate([0,0,-stopGap/2-dy-nutZ]) hull()
+                {
+                    tcy([0,0,0], d=6.3, h=0.1, $fn=6);
+                    tcy([0,0,-7], d=6.3+1, h=0.1);
+                }
+            }
+
+        }
+    }
+}
+
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
+    // tcy([0,0,-20+stopZ/2], d=100, h=20);
 }
 
 if(developmentRender)
@@ -100,8 +137,13 @@ if(developmentRender)
 	// display() plate();
     // display() translate([-70,0,0]) screw();
 
-    display() screw();
-    displayGhost() translate([0,0,nutZ]) plate();
+    display() hexStop();
+
+    // translate([-70, 0, 0])
+    // {
+    //     display() screw();
+    //     displayGhost() translate([0,0,nutZ]) plate();
+    // }
     // display() translate([-70,0,0]) plate();
     
 }
@@ -109,4 +151,5 @@ else
 {
 	if(makePlate) plate();
     if(makeScrew) screw();
+    if(makeHexStop) hexStop();
 }
