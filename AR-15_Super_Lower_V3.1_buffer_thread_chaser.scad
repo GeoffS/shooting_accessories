@@ -11,7 +11,7 @@ guideZ = guideZBeforeMinkowski - md;
 // guideCZ = 0; //3 - md/2;
 tapODBeforeMinkowski = (3/8) * 25.4; // 3/8 inch in mm
 tapOD = tapODBeforeMinkowski + md;
-tapOffsetAdj = 0.0;
+tapOffsetAdj = 0.3;
 
 tapRecessCtr = guideOD/2 - tapODBeforeMinkowski/2 + tapOffsetAdj + md/2;
 
@@ -30,26 +30,14 @@ module itemModule()
             {
                 difference()
                 {
-                    // simpleChamferedCylinderDoubleEnded(d=guideOD, h=guideZ, cz=guideCZ);
                     cylinder(d=guideOD, h=guideZ);
 
-                    // Tap opening trim:
-                    // tcu([tapRecessCtr, -tapOpeningY/2, -10], [100, tapOpeningY, 100]);
+                    // Tap opening:
                     translate([tapRecessCtr, 0, -10]) 
                     {
                         hull() doubleY() rotate([0,0,tapOpeningAngle]) tcu([0,-0.1,0], [30, 0.1, 100]);
                     }
                 }
-
-                // // Tap opening trim rounding:
-                // tapOpeningRouindingDia = 1; //2*1.125;
-                // tapOpeningRouindingCZ = tapOpeningRouindingDia/2;
-                // tapOpeningRouindingZ = guideZ - 2*guideCZ + 2*tapOpeningRouindingCZ;
-                // tapOpeningRouindingOffsetZ = guideCZ - tapOpeningRouindingCZ;
-                // translate([tapRecessCtr, 0, 0]) doubleY() 
-                //     rotate([0,0,tapOpeningAngle+3]) 
-                //         translate([tapOD/2-tapOpeningRouindingDia/2+0.72, 0, tapOpeningRouindingOffsetZ])
-                //             simpleChamferedCylinderDoubleEnded(d=tapOpeningRouindingDia, h=tapOpeningRouindingZ, cz=tapOpeningRouindingCZ);
             }
 
             // Tap recess:
