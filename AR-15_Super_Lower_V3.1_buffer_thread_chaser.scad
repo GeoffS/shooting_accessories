@@ -1,66 +1,90 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
-guideOD = 29.5;
-guideZ = 50;
-guideCZ = 3;
-tapOD = (3/8) * 25.4; // 3/8 inch in mm
+md = 2; //2;
+
+guideODBeforeMinkowski = 29.5;
+guideOD = guideODBeforeMinkowski - md;
+guideZBeforeMinkowski = 50;
+
+guideZ = guideZBeforeMinkowski - md;
+// guideCZ = 0; //3 - md/2;
+tapODBeforeMinkowski = (3/8) * 25.4; // 3/8 inch in mm
+tapOD = tapODBeforeMinkowski + md;
 tapOffsetAdj = 0.0;
 
-tapRecessCtr = guideOD/2-tapOD/2+tapOffsetAdj;
+tapRecessCtr = guideOD/2 - tapODBeforeMinkowski/2 + tapOffsetAdj + md/2;
 
-tapOpeningY = 7;
+// $fn=180;
 
-$fn=180;
 
-tapOpeningRouindingAngle = 35;
+tapOpeningAngle = 60;
+
 module itemModule()
 {
-	difference()
+    translate([0, 0, md/2]) minkowski() 
     {
-        union()
+        difference()
         {
-            difference()
+            union()
             {
-                simpleChamferedCylinderDoubleEnded(d=guideOD, h=guideZ, cz=guideCZ);
-
-                // Tap opening trim:
-                // tcu([tapRecessCtr, -tapOpeningY/2, -10], [100, tapOpeningY, 100]);
-                translate([tapRecessCtr, 0, -10]) 
+                difference()
                 {
-                    hull() doubleY() rotate([0,0,tapOpeningRouindingAngle]) tcu([0,-0.1,0], [30, 0.1, 100]);
+                    // simpleChamferedCylinderDoubleEnded(d=guideOD, h=guideZ, cz=guideCZ);
+                    cylinder(d=guideOD, h=guideZ);
+
+                    // Tap opening trim:
+                    // tcu([tapRecessCtr, -tapOpeningY/2, -10], [100, tapOpeningY, 100]);
+                    translate([tapRecessCtr, 0, -10]) 
+                    {
+                        hull() doubleY() rotate([0,0,tapOpeningAngle]) tcu([0,-0.1,0], [30, 0.1, 100]);
+                    }
                 }
+
+                // // Tap opening trim rounding:
+                // tapOpeningRouindingDia = 1; //2*1.125;
+                // tapOpeningRouindingCZ = tapOpeningRouindingDia/2;
+                // tapOpeningRouindingZ = guideZ - 2*guideCZ + 2*tapOpeningRouindingCZ;
+                // tapOpeningRouindingOffsetZ = guideCZ - tapOpeningRouindingCZ;
+                // translate([tapRecessCtr, 0, 0]) doubleY() 
+                //     rotate([0,0,tapOpeningAngle+3]) 
+                //         translate([tapOD/2-tapOpeningRouindingDia/2+0.72, 0, tapOpeningRouindingOffsetZ])
+                //             simpleChamferedCylinderDoubleEnded(d=tapOpeningRouindingDia, h=tapOpeningRouindingZ, cz=tapOpeningRouindingCZ);
             }
 
-            // // Tap opening trim rounding:
-            // tapOpeningRouindingDia = 1; //2*1.125;
-            // tapOpeningRouindingCZ = tapOpeningRouindingDia/2;
-            // tapOpeningRouindingZ = guideZ - 2*guideCZ + 2*tapOpeningRouindingCZ;
-            // tapOpeningRouindingOffsetZ = guideCZ - tapOpeningRouindingCZ;
-            // translate([tapRecessCtr, 0, 0]) doubleY() 
-            //     rotate([0,0,tapOpeningRouindingAngle+3]) 
-            //         translate([tapOD/2-tapOpeningRouindingDia/2+0.72, 0, tapOpeningRouindingOffsetZ])
-            //             simpleChamferedCylinderDoubleEnded(d=tapOpeningRouindingDia, h=tapOpeningRouindingZ, cz=tapOpeningRouindingCZ);
+            // Tap recess:
+            translate([tapRecessCtr, 0, -10])
+            {
+                tcy([0,0,-10], d=tapOD, h=100);
+            }
         }
 
-        // Tap recess:
-        translate([tapRecessCtr, 0, -10])
-        {
-            tcy([0,0,-10], d=tapOD, h=100);
-        }
+        minkowskiShape();
     }
+}
 
-    
+module minkowskiShape()
+{
+    doubleZ() cylinder(d1=md, d2=0, h=md/2);
 }
 
 module clip(d=0)
 {
-	//tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
 }
 
 if(developmentRender)
 {
 	display() itemModule();
+
+    displayGhost() tcy([tapRecessCtr,0,0], d=3/8*25.4, h=100);
+    displayGhost() difference()
+    {
+        tcy([0,0,-5], d=guideODBeforeMinkowski+10, h=guideZBeforeMinkowski+10);
+        tcy([0,0,-50], d=guideODBeforeMinkowski, h=200);
+    }
+
+    // display() minkowskiShape();
 }
 else
 {
