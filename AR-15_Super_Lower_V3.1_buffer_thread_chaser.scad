@@ -8,16 +8,20 @@ guideOD = guideODBeforeMinkowski - md;
 guideZBeforeMinkowski = 50;
 
 guideZ = guideZBeforeMinkowski - md;
-// guideCZ = 0; //3 - md/2;
-tapODBeforeMinkowski = (3/8) * 25.4; // 3/8 inch in mm
+tapODBeforeMinkowski = 9.75; // (3/8) * 25.4; // 3/8 inch in mm
+echo(str("tapODBeforeMinkowski = ", tapODBeforeMinkowski));
 tapOD = tapODBeforeMinkowski + md;
-tapOffsetAdj = 0.3;
+tapOffsetAdj = 0.1;
 
 tapRecessCtr = guideOD/2 - tapODBeforeMinkowski/2 + tapOffsetAdj + md/2;
 
 // $fn=180;
 
 tapOpeningAngle = 0;
+
+// Bumps to index into the tap:
+bumpDia = 4.0;
+bumpsID = 4.7;
 
 module itemModule()
 {
@@ -50,12 +54,12 @@ module itemModule()
     }
 
     // Bumps to index into the tap:
-    bumpDia = 4.5;
-    bumpAdh = 0.5;
     translate([tapRecessCtr, 0, 0]) 
-        for (a = [45, -45]) 
-        rotate([0,0,a]) translate([-tapODBeforeMinkowski/2-bumpAdh, 0, 0]) 
-            simpleChamferedCylinderDoubleEnded(d = bumpDia, h = guideZBeforeMinkowski, cz = md/2);
+        for (a = [45, -45]) rotate([0,0,a]) hull()
+        {
+            translate([-bumpsID/2-bumpDia/2, 0, 0]) simpleChamferedCylinderDoubleEnded(d=bumpDia, h=guideZBeforeMinkowski, cz=md/2);
+            translate([-10, 0, 0]) simpleChamferedCylinderDoubleEnded(d=bumpDia, h=guideZBeforeMinkowski, cz=md/2);
+        }
 }
 
 module minkowskiShape()
@@ -72,12 +76,13 @@ if(developmentRender)
 {
 	display() itemModule();
 
-    displayGhost() tcy([tapRecessCtr,0,0], d=3/8*25.4, h=100);
-    displayGhost() difference()
-    {
-        tcy([0,0,-5], d=guideODBeforeMinkowski+10, h=guideZBeforeMinkowski+10);
-        tcy([0,0,-50], d=guideODBeforeMinkowski, h=200);
-    }
+    // displayGhost() tcy([tapRecessCtr,0,0], d=3/8*25.4, h=100);
+    displayGhost() tcy([tapRecessCtr,0,0], d=bumpsID, h=100);
+    // displayGhost() difference()
+    // {
+    //     tcy([0,0,-5], d=guideODBeforeMinkowski+10, h=guideZBeforeMinkowski+10);
+    //     tcy([0,0,-50], d=guideODBeforeMinkowski, h=200);
+    // }
 
     // display() minkowskiShape();
 }
