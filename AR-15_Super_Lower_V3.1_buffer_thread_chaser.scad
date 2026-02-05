@@ -3,15 +3,15 @@ include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
 md = 2;
 
-guideODBeforeMinkowski = 28.7; //29.5;
+guideODBeforeMinkowski = 28.8; //28.7; //29.5;
 guideOD = guideODBeforeMinkowski - md;
-guideZBeforeMinkowski = 10;
+guideZBeforeMinkowski = 28;
 
 guideZ = guideZBeforeMinkowski - md;
 tapODBeforeMinkowski = 10; // (3/8) * 25.4; // 3/8 inch in mm
 echo(str("tapODBeforeMinkowski = ", tapODBeforeMinkowski));
 tapOD = tapODBeforeMinkowski + md;
-tapOffsetAdj = 0.1;
+tapOffsetAdj = 0.3; //0.1;
 
 tapRecessCtr = guideOD/2 - tapODBeforeMinkowski/2 + tapOffsetAdj + md/2;
 
@@ -20,8 +20,8 @@ tapRecessCtr = guideOD/2 - tapODBeforeMinkowski/2 + tapOffsetAdj + md/2;
 tapOpeningAngle = 0;
 
 // Bumps to index into the tap:
-bumpDia = 3.8; //4.0;
-bumpsID = 5.3; //4.7;
+bumpDia = 3.6; //3.8; //4.0;
+bumpsID = 5.1; //5.3; //4.7;
 
 module itemModule()
 {
