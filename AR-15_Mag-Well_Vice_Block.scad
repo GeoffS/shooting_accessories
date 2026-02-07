@@ -48,8 +48,6 @@ magStopExtraXY = 8;
 
 magBlockViceX = magWidth + 2*magStopExtraXY;
 magBlockViceY = magLength + 2*magStopExtraXY;
-magBlockZ = magStopHeight + magBlockViceZ;
-echo(str("magBlockZ = ", magBlockZ));
 
 magBlockDia = 4;
 magBlockCZ = 1.5;
@@ -135,24 +133,26 @@ module magCoreComplete(z)
         mcDia = 4;
         translate([10+magWidth/2-magCatchX+mcDia/2, magBlockViceY/2-magCatchCtrY, z-magCatchZ-mcDia/2]) 
             hull() doubleX() doubleY() translate([10, magCatchY/2-mcDia/2, 0])
-                simpleChamferedCylinderDoubleEnded(d=mcDia, h=100, cz=mcDia/2-nothing);
+                simpleChamferedCylinderDoubleEnded(d=mcDia, h=100, cz=mcDia/2-nothing);        
+    }
+}
 
-        // Vertical hole for clamp:
-        translate([0, magBlockViceY/2, 0])
-        {
-            threadableLengthZ = 20;
-            // Threadable section at top:
-            tcy([0,0,-10], d=threadableHoleDiaVert, h=200);
+module vericalHoleForThreadedRod(z)
+{
+    translate([0, magBlockViceY/2, 0])
+    {
+        threadableLengthZ = 20;
+        // Threadable section at top:
+        tcy([0,0,-10], d=threadableHoleDiaVert, h=200);
 
-            // Clearance section in middle of mount:
-            translate([0,0,threadableLengthZ]) simpleChamferedCylinderDoubleEnded(d=threadClearanceHoleDia, h=z-2*threadableLengthZ, cz=2);
-        
-            // Top Chamfer:
-            translate([0,0,z-threadableHoleDiaVert/2-1]) cylinder(d2=20, d1=0, h=10);
-        
-            // Bottom Chamfer:
-            translate([0,0,-10+threadableHoleDiaVert/2+1]) cylinder(d1=20, d2=0, h=10);
-        }
+        // Clearance section in middle of mount:
+        translate([0,0,threadableLengthZ]) simpleChamferedCylinderDoubleEnded(d=threadClearanceHoleDia, h=z-2*threadableLengthZ, cz=2);
+    
+        // Top Chamfer:
+        translate([0,0,z-threadableHoleDiaVert/2-1]) cylinder(d2=20, d1=0, h=10);
+    
+        // Bottom Chamfer:
+        translate([0,0,-10+threadableHoleDiaVert/2+1]) cylinder(d1=20, d2=0, h=10);
     }
 }
 
@@ -177,6 +177,8 @@ module workbenchStand()
             magCoreComplete(z=z);
             magwellSupportSection(magBlockViceZ=supportRiserZ);
         }
+
+        vericalHoleForThreadedRod(z);
     }
 }
 
@@ -195,13 +197,16 @@ module workbenchBase(x, y, z, dy)
 
 module viceMount()
 {
+    z = magStopHeight + magBlockViceZ;
     difference()
     {
 	    union()
         {
-            magCoreComplete(z=magBlockZ);
+            magCoreComplete(z=z);
             magwellSupportSection(magBlockViceZ=magBlockViceZ);
         }
+
+        vericalHoleForThreadedRod(z);
 
         // Horiz holes to sit on vice jaws:
         translate([0,magBlockViceY/2,horizontalHolesZ]) doubleY() translate([0,20,0]) rotate([0,90,0]) 
@@ -268,17 +273,9 @@ module clip(d=0)
 
 if(developmentRender)
 {
-    // display() rotate([0,0,180]) translate([0,-magBlockViceY/2,magBlockZ+20]) rotate([0,180,0]) viceMount();
-    // display() translate([0,0,0]) top();
-    // displayGhost() tcy([0,0,0], d=6.2, h=40);
-
-    // display() viceMount();
-
     display() workbenchStand();
 	display() translate([100,0,0]) viceMount();
     display() translate([-100,0,0]) top();
-
-    // display() translate([100,0,0]) testModule();
 }
 else
 {
