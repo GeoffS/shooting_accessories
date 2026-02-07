@@ -11,7 +11,7 @@ guideCZ = firstLayerHeight + 5*layerHeight;
 echo(str("guideCZ = ", guideCZ));
 
 tapOD = 10;
-tapOffsetAdj = 0.5;
+tapOffsetAdj = 0.7;
 tapRecessCtr = guideOD/2 - tapOD/2 + tapOffsetAdj;
 
 tapFlutesID = 5.1;
