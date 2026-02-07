@@ -158,16 +158,39 @@ module magCoreComplete(z)
 
 module workbenchStand()
 {
-    baseZ = 100;
-    z = magStopHeight + baseZ;
+    baseOffsetY = -20;
+
+    baseX = 100;
+    baseY = 190 - baseOffsetY;
+    baseZ = 10;
+
+    // Approzimate height to clear a pistol grip:
+    //   -------------------vv
+    supportRiserZ = baseZ + 90;
+    z = magStopHeight + supportRiserZ;
+
     difference()
     {
 	    union()
         {
+            workbenchBase(baseX, baseY, baseZ, baseOffsetY);
             magCoreComplete(z=z);
-            magwellSupportSection(magBlockViceZ=baseZ);
+            magwellSupportSection(magBlockViceZ=supportRiserZ);
         }
     }
+}
+
+module workbenchBase(x, y, z, dy)
+{
+    baseCornerDia = 20;
+    baseCZ = 2;
+
+    mwdx = x/2 - baseCornerDia/2;
+    mwdy = y/2 - baseCornerDia/2;
+    translate([0, y/2+dy, 0]) 
+        hull() doubleX() doubleY() 
+            translate([mwdx, mwdy, 0])
+                simpleChamferedCylinderDoubleEnded(d=baseCornerDia, h=z, cz=baseCZ);
 }
 
 module viceMount()
@@ -193,7 +216,6 @@ module viceMount()
             x = magBlockViceX-12;
             tcy([0,0,-x/2], d=6.7, h=x);
         }
-
     }
 }
 
