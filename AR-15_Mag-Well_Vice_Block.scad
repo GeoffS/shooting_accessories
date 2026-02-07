@@ -165,7 +165,7 @@ module workbenchStand()
 	    union()
         {
             magCoreComplete(z=z);
-            viceSection(magBlockViceZ=baseZ);
+            magwellSupportSection(magBlockViceZ=baseZ);
         }
     }
 }
@@ -177,7 +177,7 @@ module viceMount()
 	    union()
         {
             magCoreComplete(z=magBlockZ);
-            viceSection(magBlockViceZ=magBlockViceZ);
+            magwellSupportSection(magBlockViceZ=magBlockViceZ);
         }
 
         // Horiz holes to sit on vice jaws:
@@ -218,7 +218,7 @@ module magCoreParams(x, y, z, dy)
                 simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=z, cz=magBlockCZ);
 }
 
-module viceSection(magBlockViceZ)
+module magwellSupportSection(magBlockViceZ)
 {
     difference()
     {
