@@ -27,6 +27,8 @@ tapFlutesOuterDia = tapFlutesInnerDia;
 tapFlutesOuterOffset = tapFlutesInnerOffset + tapFlutesInnerDia/2;
 tapFlutesOuterAngle = 0;
 
+stopZ = 25;
+
 $fn=180;
 
 module tap()
@@ -54,10 +56,13 @@ module itemModule()
     {
         union()
         {
+            // Guide inside the threads:
             translate([0,0,guideZ+1]) mirror([0,0,1]) simpleChamferedCylinder(d=guideOD, h=guideZ+1, cz=guideCZ);
+
+            // Stop to prevent going past the threaded part of the tap:
             difference()
             {
-                translate([0,0,guideZ]) simpleChamferedCylinderDoubleEnded(d=guideOD+8, h=guideZ+10, cz=guideCZ);
+                translate([0,0,guideZ]) simpleChamferedCylinderDoubleEnded(d=guideOD+8, h=stopZ, cz=guideCZ);
                 tcu([guideOD/2-0.099, -200, -200], 400);
                 translate([0,0,guideZ+1+5]) hull()
                 {
@@ -70,9 +75,17 @@ module itemModule()
             }
         }
 
+        // Tap section:
         translate([tapRecessCtr,0,tapOffsetZ]) tap();
 
-        translate([tapRecessCtr,0,guideZ+1]) simpleChamferedCylinderDoubleEnded(d=tapOD+0.6, h=300, cz=5);
+        // Top shaft section:
+        translate([tapRecessCtr,0,0])
+        {
+            d = tapOD + 0.6;
+            translate([0,0,guideZ+1]) simpleChamferedCylinderDoubleEnded(d=d, h=300, cz=5);
+            // Chamfer:
+            translate([0,0,guideZ+stopZ-d/2-guideCZ]) cylinder(d2=20, d1=0, h=10);
+        }
     }
 }
 
@@ -91,5 +104,5 @@ if(developmentRender)
 }
 else
 {
-	itemModule();
+	mirror([0,0,1]) itemModule();
 }
