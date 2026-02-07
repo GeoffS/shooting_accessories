@@ -158,12 +158,14 @@ module magCoreComplete(z)
 
 module workbenchStand()
 {
+    baseZ = 100;
+    z = magStopHeight + baseZ;
     difference()
     {
 	    union()
         {
-            magCoreComplete(z=magBlockZ);
-            viceSection(magBlockViceZ=magBlockViceZ);
+            magCoreComplete(z=z);
+            viceSection(magBlockViceZ=baseZ);
         }
     }
 }
