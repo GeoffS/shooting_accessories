@@ -174,29 +174,6 @@ module viceMount()
             magCoreComplete();
             viceSection(magBlockBaseZ=magBlockViceZ);
         }
-        
-        // // Mag-catch slot:
-        // mcDia = 4;
-        // translate([10+magWidth/2-magCatchX+mcDia/2, magBlockViceY/2-magCatchCtrY, magBlockZ-magCatchZ-mcDia/2]) 
-        //     hull() doubleX() doubleY() translate([10, magCatchY/2-mcDia/2, 0])
-        //         simpleChamferedCylinderDoubleEnded(d=mcDia, h=100, cz=mcDia/2-nothing);
-
-        // // Vertical hole for clamp:
-        // translate([0, magBlockViceY/2, 0])
-        // {
-        //     threadableLengthZ = 20;
-        //     // Threadable section at top:
-        //     tcy([0,0,-10], d=threadableHoleDiaVert, h=200);
-
-        //     // Clearance section in middle of mount:
-        //     translate([0,0,threadableLengthZ]) simpleChamferedCylinderDoubleEnded(d=threadClearanceHoleDia, h=magBlockZ-2*threadableLengthZ, cz=2);
-        
-        //     // Top Chamfer:
-        //     translate([0,0,magBlockZ-threadableHoleDiaVert/2-1]) cylinder(d2=20, d1=0, h=10);
-        
-        //     // Bottom Chamfer:
-        //     translate([0,0,-10+threadableHoleDiaVert/2+1]) cylinder(d1=20, d2=0, h=10);
-        // }
 
         // Horiz holes to sit on vice jaws:
         translate([0,magBlockViceY/2,horizontalHolesZ]) doubleY() translate([0,20,0]) rotate([0,90,0]) 
