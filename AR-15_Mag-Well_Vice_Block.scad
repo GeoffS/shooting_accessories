@@ -174,6 +174,7 @@ module workbenchStand()
 	    union()
         {
             workbenchBase(baseX, baseY, baseZ, baseOffsetY);
+            workbenchCoreChamfer(baseZ);
             magCoreComplete(z=z);
             magwellSupportSection(magBlockViceZ=supportRiserZ);
         }
@@ -182,17 +183,39 @@ module workbenchStand()
     }
 }
 
+module workbenchCoreChamfer(baseZ)
+{
+    cz = 10;
+    // MAGIC!!
+    // ------v
+    z = cz + 5;
+    d = 2*z;
+    hull() translate([0 ,magBlockViceY/2, baseZ-1]) 
+        doubleX() doubleY() 
+            translate([viceDX, viceDY, 0]) 
+                cylinder(d1=d, d2=0, h=z);
+}
+
 module workbenchBase(x, y, z, dy)
 {
     baseCornerDia = 20;
     baseCZ = 2;
 
-    mwdx = x/2 - baseCornerDia/2;
-    mwdy = y/2 - baseCornerDia/2;
+    // Base:
+    hull() workbenchBaseXform(baseCornerDia, x, y, dy) simpleChamferedCylinderDoubleEnded(d=baseCornerDia, h=z, cz=baseCZ);
+
+    // Brims:
+    brimDia = baseCornerDia + 15;
+    workbenchBaseXform(baseCornerDia, x, y, dy) cylinder(d=brimDia, h=firstLayerHeight);
+}
+
+module workbenchBaseXform(dia, x, y, dy)
+{
+    mwdx = x/2 - dia/2;
+    mwdy = y/2 - dia/2;
     translate([0, y/2+dy, 0]) 
-        hull() doubleX() doubleY() 
-            translate([mwdx, mwdy, 0])
-                simpleChamferedCylinderDoubleEnded(d=baseCornerDia, h=z, cz=baseCZ);
+        doubleX() doubleY() 
+            translate([mwdx, mwdy, 0]) children();
 }
 
 module viceMount()
@@ -249,7 +272,7 @@ module magwellSupportSection(magBlockViceZ)
 {
     difference()
     {
-        mainViceSection(magBlockViceZ);
+        mainMagwellSupportSection(magBlockViceZ);
         translate([0,0,magBlockViceZ]) rotate([-magWellBottomAngle,0,0]) tcu([-200,-200,0], 400);
     }
 }
@@ -257,7 +280,7 @@ module magwellSupportSection(magBlockViceZ)
 viceDX = magBlockViceX/2 - magBlockViceDia/2;
 viceDY = magBlockViceY/2 - magBlockViceDia/2;
 
-module mainViceSection(magBlockViceZ)
+module mainMagwellSupportSection(magBlockViceZ)
 {
     hull() translate([0,magBlockViceY/2,0]) 
         doubleX() doubleY() 
