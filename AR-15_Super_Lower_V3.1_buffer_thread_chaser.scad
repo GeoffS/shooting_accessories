@@ -1,6 +1,11 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
+makeOffset0R8 = false;
+makeOffset0R9 = false;
+makeOffset1R0 = false;
+makeOffset1R1 = false;
+
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
@@ -16,8 +21,8 @@ guideCZ = firstLayerHeight + 10*layerHeight;
 echo(str("guideCZ = ", guideCZ));
 
 tapOD = 10;
-tapOffsetAdj = 0.8;
-tapRecessCtr = guideOD/2 - tapOD/2 + tapOffsetAdj;
+// tapOffsetAdj = 0.8;
+// tapRecessCtr = guideOD/2 - tapOD/2 + tapOffsetAdj;
 
 tapFlutesID = 5.1;
 
@@ -50,8 +55,10 @@ module tap()
     }
 }
 
-module itemModule()
+module tapHolder(tapOffsetAdj)
 {
+    tapRecessCtr = guideOD/2 - tapOD/2 + tapOffsetAdj;
+
     difference()
     {
         union()
@@ -86,6 +93,13 @@ module itemModule()
             // Chamfer:
             translate([0,0,guideZ+stopZ-d/2-guideCZ]) cylinder(d2=20, d1=0, h=10);
         }
+
+        // rotate180degressAroundTheCenter() translate([4.8, magBodyExteriorY/2, wallZ-layerHeight]) rotate([0,0,90])
+        translate([-4.5, 0, guideZ+stopZ-2*layerHeight])rotate([0,0,-90]) linear_extrude(height = 10, convexity = 10) 
+            text(str(tapOffsetAdj), 
+                font="Calibri:style=Bold",
+                size=10, 
+                valign="center", halign="center");
     }
 }
 
@@ -97,12 +111,18 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() itemModule();
+    display() translate([ 50,0,0]) tapHolder(0.8);
+	display() tapHolder(0.9);
+    display() translate([-50,0,0]) tapHolder(1.1);
 
     // displayGhost() tcy([tapRecessCtr,0,0], d=3/8*25.4, h=100);
     // displayGhost() tcy([tapRecessCtr,0,0], d=tapFlutesID, h=guideZ);
 }
 else
 {
-	mirror([0,0,1]) itemModule();
+	mirror([0,0,1]) itemModule(0.9);
+    if(makeOffset0R8) mirror([0,0,1]) itemModule(0.8);
+    if(makeOffset0R9) mirror([0,0,1]) itemModule(0.9);
+    if(makeOffset1R0) mirror([0,0,1]) itemModule(1.0);
+    if(makeOffset1R1) mirror([0,0,1]) itemModule(1.1);
 }
