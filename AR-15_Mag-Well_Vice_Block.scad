@@ -296,7 +296,8 @@ module clip(d=0)
 
 if(developmentRender)
 {
-    display() workbenchStand();
+    display() testModule();
+    // display() workbenchStand();
 	display() translate([100,0,0]) viceMount();
     display() translate([-100,0,0]) top();
 }
@@ -310,10 +311,20 @@ else
 
 module testModule()
 {
-    difference()
-    {
-        viceMount();
-        tcy([0,0,-400+40], d=400, h=400);
-        tcy([0,0,75], d=400, h=400);
-    }
+    x = 50;
+    y = 70;
+    z = 10;
+    dy = 0;
+    baseCornerDia = 20;
+    baseCZ = 2;
+
+    // Base:
+    hull() workbenchBaseXform(baseCornerDia, x, y, dy) simpleChamferedCylinderDoubleEnded(d=baseCornerDia, h=z, cz=baseCZ);
+
+    // difference()
+    // {
+    //     viceMount();
+    //     tcy([0,0,-400+40], d=400, h=400);
+    //     tcy([0,0,75], d=400, h=400);
+    // }
 }
