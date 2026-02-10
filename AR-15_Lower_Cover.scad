@@ -19,6 +19,8 @@ rearLugHoleCtrZ = 0.250 * mm; // [1]
 rearLugFrontY = 6.151 * mm; // [1]
 rearLugHoleDia = 0.25 * mm; // TBD
 
+echo(str("rearLugHoleCtrY = ", rearLugHoleCtrY));
+
 frontLugX = 0.5 * mm; // TBD
 frontLugY = 0.431 * mm; // [1]
 
@@ -118,12 +120,17 @@ module rearLugHoleCtrXform()
 
 module clip(d=0)
 {
-	//tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
+    // tcu([-400+d, -20, -50], 400);
+    // tcu([-200, -20, 0.25*mm-d], 400);
 }
 
 if(developmentRender)
 {
 	display() itemModule();
+
+    displayGhost() translate([0, frontLubHoleCtrY, 0.25*mm]) rotate([0,90,0]) tcy([0,0,-20], d=1, h=40);
+    displayGhost() translate([0, rearLugHoleCtrY, 0.25*mm]) rotate([0,90,0]) tcy([0,0,-20], d=1, h=40);
 }
 else
 {
