@@ -9,13 +9,13 @@ mm = 25.4;
 // Reference [1] = [Y] Front lug hole center is 0.250"
 //               = [X] Base of lugs (= Z direction in design)
 
-reaLugX = 0.5 * mm; // TBD
+rearLugX = 0.5 * mm; // TBD
 rearLugY = 0.450 * mm; // [1]
 rearLugZ = 0.468 * mm; // [1]
 
 rearLugCtrX = 0; // TBD
 rearLugHoleCtrY = 6.375 * mm; // [1]
-rearLubHoleCtrZ = 0.250 * mm; // [1]
+rearLugHoleCtrZ = 0.250 * mm; // [1]
 rearLugFrontY = 6.151 * mm; // [1]
 rearLugHoleDia = 0.25 * mm; // TBD
 
@@ -30,10 +30,10 @@ frontLugHoleDia = 0.25 * mm; // TBD
 
 // X & Y need to come from additional drawings.
 coverX = 1.0 * mm;
-coverY = 7.0 * mm;
+coverY = 8.0 * mm;
 coverZ = 4;
 
-coverOffsetY = -1.0 * mm; // TBD
+coverOffsetY = -0.75 * mm; // TBD
 
 lugsCZ = 0.8;
 
@@ -76,6 +76,30 @@ module itemModule()
                     doubleZ() translate([0,0,frontLugX/2-frontLugHoleDia/2-0.5]) cylinder(d2=20, d1=0, h=10);
                 }
             }
+
+            // Rear Lug:
+            difference()
+            {
+                rearLugHoleCtrXform()
+                {
+                    // The rear lug is defined by the position of its center (rearLugHoleCtrY) and its width (rearLugY).
+                    translate([0,0,0]) hull() rotate([0,90,0]) 
+                    {
+                        d = 1;
+                        doubleY() #translate([0, rearLugY/2-d/2, -frontLugX/2]) simpleChamferedCylinderDoubleEnded(d=d, h=rearLugX, cz=lugsCZ);
+                        translate([10,          0,     -frontLugX/2]) simpleChamferedCylinderDoubleEnded(d=rearLugY, h=rearLugX, cz=lugsCZ);
+                    }
+                }
+                // Trim just below the base:
+                tcu([-200, -200, -400-nothing], 400);
+
+                // The hole for the pin:
+                rearLugHoleCtrXform() rotate([0,90,0]) 
+                {
+                    tcy([0,0,-100], d=rearLugHoleDia, h=200);
+                    doubleZ() translate([0,0,rearLugX/2-rearLugHoleDia/2-0.5]) cylinder(d2=20, d1=0, h=10);
+                }
+            }
         }
     }
 }
@@ -83,6 +107,11 @@ module itemModule()
 module frontLugHoleCtrXform()
 {
     translate([frontLugCtrX, frontLubHoleCtrY, frontLugHoleCtrZ]) children();
+}
+
+module rearLugHoleCtrXform()
+{
+    translate([rearLugCtrX, rearLugHoleCtrY, rearLugHoleCtrZ]) children();
 }
 
 module clip(d=0)
