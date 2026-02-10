@@ -63,7 +63,7 @@ module itemModule()
                     translate([0,frontLugFrontY,0]) hull() rotate([0,90,0]) 
                     {
                         translate([0,frontLugY/2,-frontLugX/2]) simpleChamferedCylinderDoubleEnded(d=frontLugY, h=frontLugX, cz=lugsCZ);
-                        translate([10,frontLugY/2,-frontLugX/2]) simpleChamferedCylinderDoubleEnded(d=frontLugY, h=frontLugX, cz=lugsCZ);
+                        translate([20,frontLugY/2,-frontLugX/2]) simpleChamferedCylinderDoubleEnded(d=frontLugY, h=frontLugX, cz=lugsCZ);
                     }
                 }
                 // Trim just below the base:
@@ -83,11 +83,11 @@ module itemModule()
                 rearLugHoleCtrXform()
                 {
                     // The rear lug is defined by the position of its center (rearLugHoleCtrY) and its width (rearLugY).
-                    translate([0,0,0]) hull() rotate([0,90,0]) 
+                    translate([0,0,-rearLugHoleCtrZ+rearLugZ]) hull() rotate([0,90,0]) 
                     {
-                        d = 1;
-                        doubleY() #translate([0, rearLugY/2-d/2, -frontLugX/2]) simpleChamferedCylinderDoubleEnded(d=d, h=rearLugX, cz=lugsCZ);
-                        translate([10,          0,     -frontLugX/2]) simpleChamferedCylinderDoubleEnded(d=rearLugY, h=rearLugX, cz=lugsCZ);
+                        d = 2*lugsCZ + nothing;
+                        doubleY() translate([0, rearLugY/2-d/2, -rearLugX/2]) simpleChamferedCylinderDoubleEnded(d=d, h=rearLugX, cz=lugsCZ);
+                        translate([20,          0,     -rearLugX/2]) simpleChamferedCylinderDoubleEnded(d=rearLugY, h=rearLugX, cz=lugsCZ);
                     }
                 }
                 // Trim just below the base:
@@ -103,6 +103,8 @@ module itemModule()
         }
     }
 }
+
+$fn=180;
 
 module frontLugHoleCtrXform()
 {
