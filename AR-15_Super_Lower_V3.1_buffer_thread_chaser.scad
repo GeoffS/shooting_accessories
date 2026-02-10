@@ -94,9 +94,10 @@ module tapHolder(tapOffsetAdj)
             translate([0,0,guideZ+stopZ-d/2-guideCZ]) cylinder(d2=20, d1=0, h=10);
         }
 
-        // rotate180degressAroundTheCenter() translate([4.8, magBodyExteriorY/2, wallZ-layerHeight]) rotate([0,0,90])
+        // Add the offset to the tap-end of the tool:
+        offsetStr = (tapOffsetAdj==1.0) ? "1.0" : str(tapOffsetAdj);
         translate([-4.5, 0, guideZ+stopZ-2*layerHeight])rotate([0,0,-90]) linear_extrude(height = 10, convexity = 10) 
-            text(str(tapOffsetAdj), 
+            text(offsetStr, 
                 font="Calibri:style=Bold",
                 size=10, 
                 valign="center", halign="center");
@@ -113,7 +114,8 @@ if(developmentRender)
 {
     display() translate([ 50,0,0]) tapHolder(0.8);
 	display() tapHolder(0.9);
-    display() translate([-50,0,0]) tapHolder(1.1);
+    display() translate([-50,0,0]) tapHolder(1.0);
+    display() translate([-100,0,0]) tapHolder(1.1);
 
     // displayGhost() tcy([tapRecessCtr,0,0], d=3/8*25.4, h=100);
     // displayGhost() tcy([tapRecessCtr,0,0], d=tapFlutesID, h=guideZ);
