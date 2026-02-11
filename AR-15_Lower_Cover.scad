@@ -6,10 +6,17 @@ layerHeight = 0.2;
 
 mm = 25.4;
 
-// Reference [1] = [Y] Front lug hole center is 0.250"
-//               = [X] Base of lugs (= Z direction in design)
+// Reference [1] = 12972670 RECEIVER, UPPER0001
+//    [Y] Front lug hole center is 0.250"
+//    [X] Base of lugs (= Z direction in design)
 
-rearLugX = 0.5 * mm; // TBD
+// Reference [2] = 12972670 RECEIVER, UPPER0002
+
+// Reference [3] = 8448608 RECEIVER, LOWER0001
+
+// Reference [4] = 8448641 LOWER RECEIVER FORGING0001
+
+rearLugX = 0.496 * mm; // [1]
 rearLugY = 0.450 * mm; // [1]
 rearLugZ = 0.468 * mm; // [1]
 
@@ -17,11 +24,12 @@ rearLugCtrX = 0; // TBD
 rearLugHoleCtrY = 6.375 * mm; // [1]
 rearLugHoleCtrZ = 0.250 * mm; // [1]
 rearLugFrontY = 6.151 * mm; // [1]
-rearLugHoleDia = 0.25 * mm; // TBD
+rearLugHoleDia = 0.25 * mm; // [1]
+rearReceiverRadius = 0.750 * mm; // [2]
 
 echo(str("rearLugHoleCtrY = ", rearLugHoleCtrY));
 
-frontLugX = 0.5 * mm; // TBD
+frontLugX = 0.496 * mm; // [1]
 frontLugY = 0.431 * mm; // [1]
 
 frontLugCtrX = 0; // TBD
@@ -30,10 +38,12 @@ frontLugFrontY = -0.219 * mm; // [1]
 frontLugHoleCtrZ = 0.250 * mm; // [1]
 frontLugHoleDia = 0.25 * mm; // TBD
 
+rearOfUpperReceiverY = 6.999 * mm; // [2]
+
 // X & Y need to come from additional drawings.
-coverX = 1.0 * mm;
-coverY = 8.0 * mm;
-coverZ = 4;
+coverX = 1.0 * mm; // [2]
+coverY = 8.0 * mm; // [TBD]
+coverZ = 4; // Local dimension
 
 coverOffsetY = -0.75 * mm; // TBD
 
@@ -54,6 +64,9 @@ module itemModule()
             {
                 simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverZ, cz=coverCZ);
             }
+
+            // Upward curve into the buffer-tube support at rear:
+            %translate([0, rearOfUpperReceiverY-rearReceiverRadius, -rearReceiverRadius]) rotate([0,90,0]) tcy([0,0,-50], d=2*rearReceiverRadius, h=100);
 
             // Front Lug:
             difference()
