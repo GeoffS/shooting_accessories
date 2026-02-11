@@ -43,28 +43,32 @@ rearOfUpperReceiverY = 6.999 * mm; // [2]
 // MAGIC!!
 //   Match the top of the cover chamfer to the front of the lug
 //   --------------------------vvvvvv
-coverOffsetY = -(frontLugX/2 - 0.7358); //0.465); //-0.75 * mm; // TBD
+coverOffsetY = -(frontLugX/2 - 0.7358);
 
 coverCornerDia = 8;
 coverCZ = firstLayerHeight + 5*layerHeight;
 echo(str("coverCZ = ", coverCZ));
 
-// X & Y need to come from additional drawings.
-// coverX = 1.0 * mm; // [2]
+// MAGIC!!
+// Match coverCZ with rearLugHoleCtrY+trimY at rear of cover
+//  -----vvvv
+coverZ = 5.61;
+
+coverTransitionDX = 0.5;
+
 coverForwardX = 29; // local dimension (from measuring Mil-Spec and FDM lowers)
 coverRearX = 22.5; // local dimension (from measuring Mil-Spec and FDM lowers)
 coverForwardEndY = 88.5; // local dimension (from measuring Mil-Spec and FDM lowers)
-// coverY = 180; // local dimension. Trimmed to curve. // 8.0 * mm; // [TBD]
-// coverZ = 6.5; // Local dimension
+
 ccd2 = coverCornerDia/2;
 fwdX = coverForwardX/2 - ccd2;
 fwdY1 = coverOffsetY + ccd2;
-fwdY2  = coverForwardEndY-1 - ccd2;
-coverFwdZ = 4;
+fwdY2  = coverForwardEndY - 1 - ccd2;
+coverFwdZ = coverZ;
 rearX = coverRearX/2 - ccd2;
-rearY1 = coverForwardEndY+1 + ccd2;
+rearY1 = coverForwardEndY - 5 + ccd2;
 rearY2 = 180; // Not critical. Trimmed later.
-coverRearZ = 6.5;
+coverRearZ = coverZ;
 
 lugsCZ = 0.8;
 
@@ -75,13 +79,8 @@ module itemModule()
         union()
         {
             // Cover:
-            
             difference()
             {
-                // hull() translate([0, coverY/2+coverOffsetY, 0]) doubleX() translate([coverForwardX/2-coverCornerDia/2, coverForwardEndY/2-coverCornerDia/2, -coverZ])
-                // {
-                //     simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverZ, cz=coverCZ);
-                // }
                 union()
                 {
                     // Forward cover:
@@ -132,7 +131,7 @@ module itemModule()
                     }
                 }
                 // Trim just below the base:
-                tcu([-200, -200, -400-coverFwdZ], 400);
+                tcu([-200, -200, -400-coverFwdZ/2], 400);
 
                 // The hole for the pin:
                 frontLugHoleCtrXform() rotate([0,90,0]) 
