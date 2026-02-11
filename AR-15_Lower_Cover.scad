@@ -42,8 +42,8 @@ rearOfUpperReceiverY = 6.999 * mm; // [2]
 
 // MAGIC!!
 //   Match the top of the cover chamfer to the front of the lug
-//   --------------------------vvvvv 
-coverOffsetY = -(frontLugX/2 + 0.465); //-0.75 * mm; // TBD
+//   --------------------------vvvvvv
+coverOffsetY = -(frontLugX/2 - 0.7358); //0.465); //-0.75 * mm; // TBD
 
 coverCornerDia = 8;
 coverCZ = firstLayerHeight + 5*layerHeight;
