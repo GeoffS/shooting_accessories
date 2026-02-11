@@ -73,7 +73,12 @@ lugsCZ = 0.8;
 
 module coverCorner()
 {
-    simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverZ, cz=coverCZ);
+    z2 = coverZ/2;
+    receiverSideCZ = firstLayerHeight + 5*layerHeight;
+    outsideCZ = 12*layerHeight;
+
+    translate([0,0,z2]) simpleChamferedCylinder(d=coverCornerDia, h=z2, cz=receiverSideCZ);
+    translate([0,0,z2]) mirror([0,0,1]) simpleChamferedCylinder(d=coverCornerDia, h=z2+nothing, cz=outsideCZ);
 }
 
 module itemModule()
