@@ -40,18 +40,33 @@ frontLugHoleDia = 0.25 * mm; // TBD
 
 rearOfUpperReceiverY = 6.999 * mm; // [2]
 
-// X & Y need to come from additional drawings.
-coverX = 1.0 * mm; // [2]
-coverY = 8.0 * mm; // [TBD]
-coverZ = 6.5; // Local dimension
-
-coverOffsetY = -0.75 * mm; // TBD
-
-lugsCZ = 0.8;
+// MAGIC!!
+//   Match the top of the cover chamfer to the front of the lug
+//   --------------------------vvvvv 
+coverOffsetY = -(frontLugX/2 + 0.465); //-0.75 * mm; // TBD
 
 coverCornerDia = 8;
 coverCZ = firstLayerHeight + 5*layerHeight;
 echo(str("coverCZ = ", coverCZ));
+
+// X & Y need to come from additional drawings.
+// coverX = 1.0 * mm; // [2]
+coverForwardX = 29; // local dimension (from measuring Mil-Spec and FDM lowers)
+coverRearX = 22.5; // local dimension (from measuring Mil-Spec and FDM lowers)
+coverForwardEndY = 88.5; // local dimension (from measuring Mil-Spec and FDM lowers)
+// coverY = 180; // local dimension. Trimmed to curve. // 8.0 * mm; // [TBD]
+// coverZ = 6.5; // Local dimension
+ccd2 = coverCornerDia/2;
+fwdX = coverForwardX/2 - ccd2;
+fwdY1 = coverOffsetY + ccd2;
+fwdY2  = coverForwardEndY-1 - ccd2;
+coverFwdZ = 4;
+rearX = coverRearX/2 - ccd2;
+rearY1 = coverForwardEndY+1 + ccd2;
+rearY2 = 180; // Not critical. Trimmed later.
+coverRearZ = 6.5;
+
+lugsCZ = 0.8;
 
 module itemModule()
 {
@@ -60,11 +75,33 @@ module itemModule()
         union()
         {
             // Cover:
+            
             difference()
             {
-                hull() translate([0, coverY/2+coverOffsetY, 0]) doubleX() doubleY() translate([coverX/2-coverCornerDia/2, coverY/2-coverCornerDia/2, -coverZ])
+                // hull() translate([0, coverY/2+coverOffsetY, 0]) doubleX() translate([coverForwardX/2-coverCornerDia/2, coverForwardEndY/2-coverCornerDia/2, -coverZ])
+                // {
+                //     simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverZ, cz=coverCZ);
+                // }
+                union()
                 {
-                    simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverZ, cz=coverCZ);
+                    // Forward cover:
+                    translate([0,0,-coverFwdZ]) hull() doubleX()
+                    {
+                        translate([fwdX, fwdY1, 0]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverFwdZ, cz=coverCZ);
+                        translate([fwdX, fwdY2, 0]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverFwdZ, cz=coverCZ);
+                    }
+                    // Transition cover:
+                    hull() doubleX()
+                    {
+                        translate([fwdX, fwdY2, -coverFwdZ]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverFwdZ, cz=coverCZ);
+                        translate([rearX, rearY1, -coverRearZ]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverRearZ, cz=coverCZ);
+                    }
+                    // Rear cover:
+                    translate([0,0,-coverRearZ]) hull() doubleX()
+                    {
+                        translate([rearX, rearY1, 0]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverRearZ, cz=coverCZ);
+                        translate([rearX, rearY2, 0]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverRearZ, cz=coverCZ);
+                    }
                 }
 
                 // Upward curve of cover into the buffer-tube support at rear:
@@ -95,7 +132,7 @@ module itemModule()
                     }
                 }
                 // Trim just below the base:
-                tcu([-200, -200, -400-nothing], 400);
+                tcu([-200, -200, -400-coverFwdZ], 400);
 
                 // The hole for the pin:
                 frontLugHoleCtrXform() rotate([0,90,0]) 
@@ -119,7 +156,7 @@ module itemModule()
                     }
                 }
                 // Trim just below the base:
-                tcu([-200, -200, -400-coverZ], 400);
+                tcu([-200, -200, -400-coverRearZ], 400);
 
                 // The hole for the pin:
                 rearLugHoleCtrXform() rotate([0,90,0]) 
