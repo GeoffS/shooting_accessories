@@ -40,19 +40,19 @@ frontLugHoleDia = 0.25 * mm; // TBD
 
 rearOfUpperReceiverY = 6.999 * mm; // [2]
 
+frontLugHoleDiaPrinted = frontLugHoleDia + 0.2; // Printing a bit tight.
+rearLugHoleDiaPrinted = rearLugHoleDia + 0.2; // Printing a bit tight.
+
 // MAGIC!!
 //   Match the top of the cover chamfer to the front of the lug
 //   --------------------------vvvvvv
 coverOffsetY = -(frontLugX/2 - 0.7358);
 
-coverCornerDia = 8;
+coverCornerDia = 12;
 coverCZ = firstLayerHeight + 5*layerHeight;
 echo(str("coverCZ = ", coverCZ));
 
-// MAGIC!!
-// Match coverCZ with rearLugHoleCtrY+trimY at rear of cover
-//  -----vvvv
-coverZ = 5.61;
+coverZ = 8; // local dimension
 
 coverTransitionDX = 0.5;
 
@@ -104,7 +104,8 @@ module itemModule()
                 }
 
                 // Upward curve of cover into the buffer-tube support at rear:
-                translate([0, rearOfUpperReceiverY-rearReceiverRadius, -rearReceiverRadius]) difference() 
+                rearReceiverRadiusCorrYZ = 0.3; // Print a little forward.
+                translate([0, rearOfUpperReceiverY-rearReceiverRadius-rearReceiverRadiusCorrYZ, -rearReceiverRadius]) difference() 
                 {
                     {
                         tcu([-100,0,-100], 200);
@@ -136,8 +137,8 @@ module itemModule()
                 // The hole for the pin:
                 frontLugHoleCtrXform() rotate([0,90,0]) 
                 {
-                    tcy([0,0,-100], d=frontLugHoleDia, h=200);
-                    doubleZ() translate([0,0,frontLugX/2-frontLugHoleDia/2-0.5]) cylinder(d2=20, d1=0, h=10);
+                    tcy([0,0,-100], d=frontLugHoleDiaPrinted, h=200);
+                    doubleZ() translate([0,0,frontLugX/2-frontLugHoleDiaPrinted/2-0.5]) cylinder(d2=20, d1=0, h=10);
                 }
             }
 
@@ -160,8 +161,8 @@ module itemModule()
                 // The hole for the pin:
                 rearLugHoleCtrXform() rotate([0,90,0]) 
                 {
-                    tcy([0,0,-100], d=rearLugHoleDia, h=200);
-                    doubleZ() translate([0,0,rearLugX/2-rearLugHoleDia/2-0.5]) cylinder(d2=20, d1=0, h=10);
+                    tcy([0,0,-100], d=rearLugHoleDiaPrinted, h=200);
+                    doubleZ() translate([0,0,rearLugX/2-rearLugHoleDiaPrinted/2-0.5]) cylinder(d2=20, d1=0, h=10);
                 }
             }
         }
