@@ -41,7 +41,7 @@ frontLugHoleDia = 0.25 * mm; // TBD
 rearOfUpperReceiverY = 6.999 * mm; // [2]
 
 frontLugHoleDiaPrinted = frontLugHoleDia + 0.2; // Printing a bit tight.
-rearLugHoleDiaPrinted = rearLugHoleDia + 0.2; // Printing a bit tight.
+rearLugHoleDiaPrinted = rearLugHoleDia + 0.3; // Printing a bit tight.
 
 // MAGIC!!
 //   Match the top of the cover chamfer to the front of the lug
@@ -64,13 +64,17 @@ ccd2 = coverCornerDia/2;
 fwdX = coverForwardX/2 - ccd2;
 fwdY1 = coverOffsetY + ccd2;
 fwdY2  = coverForwardEndY - 1 - ccd2;
-coverFwdZ = coverZ;
+
 rearX = coverRearX/2 - ccd2;
 rearY1 = coverForwardEndY - 5 + ccd2;
 rearY2 = 180; // Not critical. Trimmed later.
-coverRearZ = coverZ;
 
 lugsCZ = 0.8;
+
+module coverCorner()
+{
+    simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverZ, cz=coverCZ);
+}
 
 module itemModule()
 {
@@ -84,22 +88,22 @@ module itemModule()
                 union()
                 {
                     // Forward cover:
-                    translate([0,0,-coverFwdZ]) hull() doubleX()
+                    translate([0,0,-coverZ]) hull() doubleX()
                     {
-                        translate([fwdX, fwdY1, 0]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverFwdZ, cz=coverCZ);
-                        translate([fwdX, fwdY2, 0]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverFwdZ, cz=coverCZ);
+                        translate([fwdX, fwdY1, 0]) coverCorner();
+                        translate([fwdX, fwdY2, 0]) coverCorner();
                     }
                     // Transition cover:
                     hull() doubleX()
                     {
-                        translate([fwdX, fwdY2, -coverFwdZ]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverFwdZ, cz=coverCZ);
-                        translate([rearX, rearY1, -coverRearZ]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverRearZ, cz=coverCZ);
+                        translate([fwdX, fwdY2, -coverZ]) coverCorner();
+                        translate([rearX, rearY1, -coverZ]) coverCorner();
                     }
                     // Rear cover:
-                    translate([0,0,-coverRearZ]) hull() doubleX()
+                    translate([0,0,-coverZ]) hull() doubleX()
                     {
-                        translate([rearX, rearY1, 0]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverRearZ, cz=coverCZ);
-                        translate([rearX, rearY2, 0]) simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverRearZ, cz=coverCZ);
+                        translate([rearX, rearY1, 0]) coverCorner();
+                        translate([rearX, rearY2, 0]) coverCorner();
                     }
                 }
 
@@ -132,7 +136,7 @@ module itemModule()
                     }
                 }
                 // Trim just below the base:
-                tcu([-200, -200, -400-coverFwdZ/2], 400);
+                tcu([-200, -200, -400-coverZ/2], 400);
 
                 // The hole for the pin:
                 frontLugHoleCtrXform() rotate([0,90,0]) 
@@ -156,7 +160,7 @@ module itemModule()
                     }
                 }
                 // Trim just below the base:
-                tcu([-200, -200, -400-coverRearZ], 400);
+                tcu([-200, -200, -400-coverZ], 400);
 
                 // The hole for the pin:
                 rearLugHoleCtrXform() rotate([0,90,0]) 
