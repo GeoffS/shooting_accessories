@@ -43,7 +43,7 @@ rearOfUpperReceiverY = 6.999 * mm; // [2]
 // X & Y need to come from additional drawings.
 coverX = 1.0 * mm; // [2]
 coverY = 8.0 * mm; // [TBD]
-coverZ = 4; // Local dimension
+coverZ = 6.5; // Local dimension
 
 coverOffsetY = -0.75 * mm; // TBD
 
@@ -60,13 +60,26 @@ module itemModule()
         union()
         {
             // Cover:
-            hull() translate([0, coverY/2+coverOffsetY, 0]) doubleX() doubleY() translate([coverX/2-coverCornerDia/2, coverY/2-coverCornerDia/2, -coverZ])
+            difference()
             {
-                simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverZ, cz=coverCZ);
-            }
+                hull() translate([0, coverY/2+coverOffsetY, 0]) doubleX() doubleY() translate([coverX/2-coverCornerDia/2, coverY/2-coverCornerDia/2, -coverZ])
+                {
+                    simpleChamferedCylinderDoubleEnded(d=coverCornerDia, h=coverZ, cz=coverCZ);
+                }
 
-            // Upward curve into the buffer-tube support at rear:
-            %translate([0, rearOfUpperReceiverY-rearReceiverRadius, -rearReceiverRadius]) rotate([0,90,0]) tcy([0,0,-50], d=2*rearReceiverRadius, h=100);
+                // Upward curve of cover into the buffer-tube support at rear:
+                translate([0, rearOfUpperReceiverY-rearReceiverRadius, -rearReceiverRadius]) difference() 
+                {
+                    {
+                        tcu([-100,0,-100], 200);
+                        rotate([0,90,0]) tcy([0,0,-150], d=2*rearReceiverRadius, h=300);
+                    }
+                }
+
+                // Trim the sharp tail end 9mm behind rear of the lug:
+                trimY = 9; // rearLugY/2
+                tcu([-100, rearLugHoleCtrY+trimY, -100], 200);
+            }
 
             // Front Lug:
             difference()
@@ -106,7 +119,7 @@ module itemModule()
                     }
                 }
                 // Trim just below the base:
-                tcu([-200, -200, -400-nothing], 400);
+                tcu([-200, -200, -400-coverZ], 400);
 
                 // The hole for the pin:
                 rearLugHoleCtrXform() rotate([0,90,0]) 
