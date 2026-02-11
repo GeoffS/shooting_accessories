@@ -202,11 +202,26 @@ module workbenchBase(x, y, z, dy)
     baseCZ = 2;
 
     // Base:
-    hull() workbenchBaseXform(baseCornerDia, x, y, dy) simpleChamferedCylinderDoubleEnded(d=baseCornerDia, h=z, cz=baseCZ);
+    workbenchBasePlate(x, y, z, dy, baseCornerDia, baseCZ);
 
     // Brims:
-    brimDia = baseCornerDia + 15;
-    workbenchBaseXform(baseCornerDia, x, y, dy) cylinder(d=brimDia, h=firstLayerHeight);
+    difference()
+    {
+        brimDia = baseCornerDia + 15;
+        workbenchBaseXform(baseCornerDia, x, y, dy) cylinder(d=brimDia, h=firstLayerHeight);
+
+        // hull() workbenchBaseXform(baseCornerDia, x, y, dy) tcy([0,0,-1], d=baseCornerDia-2*baseCZ+0.42, h=z);
+        minkowski()
+        {
+            hull() workbenchBaseXform(baseCornerDia, x, y, dy) simpleChamferedCylinderDoubleEnded(d=baseCornerDia, h=z, cz=baseCZ);
+            tcy([], d=0.42, h=2*first)
+        }
+    }
+}
+
+module workbenchBasePlate(x, y, z, dy, baseCornerDia, baseCZ)
+{
+    hull() workbenchBaseXform(baseCornerDia, x, y, dy) simpleChamferedCylinderDoubleEnded(d=baseCornerDia, h=z, cz=baseCZ);
 }
 
 module workbenchBaseXform(dia, x, y, dy)
@@ -291,15 +306,15 @@ module mainMagwellSupportSection(magBlockViceZ)
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([0-d, -200, -200], 400);
+    tcu([0-d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
-    display() testModule();
-    // display() workbenchStand();
-	display() translate([100,0,0]) viceMount();
-    display() translate([-100,0,0]) top();
+    // display() testModule();
+    display() workbenchStand();
+	// display() translate([100,0,0]) viceMount();
+    // display() translate([-100,0,0]) top();
 }
 else
 {
