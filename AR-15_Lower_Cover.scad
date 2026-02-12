@@ -21,8 +21,8 @@ rearLugY = 0.450 * mm; // [1]
 rearLugZ = 0.468 * mm; // [1]
 
 rearLugCtrX = 0; // TBD
-rearLugHoleCtrY = 6.375 * mm; // [1]
-rearLugHoleCtrZ = 0.250 * mm; // [1]
+rearLugHoleCtrY = 6.365 * mm; // [1]
+rearLugHoleCtrZ = 0.2525 * mm; // [1]
 rearLugFrontY = 6.151 * mm; // [1]
 rearLugHoleDia = 0.25 * mm; // [1]
 rearReceiverRadius = 0.750 * mm; // [2]
@@ -35,7 +35,7 @@ frontLugY = 0.431 * mm; // [1]
 frontLugCtrX = 0; // TBD
 frontLubHoleCtrY = 0; // [definition of 1]
 frontLugFrontY = -0.219 * mm; // [1]
-frontLugHoleCtrZ = 0.250 * mm; // [1]
+frontLugHoleCtrZ = 0.2525 * mm; // [1]
 frontLugHoleDia = 0.25 * mm; // TBD
 
 rearOfUpperReceiverY = 6.999 * mm; // [2]
@@ -178,6 +178,14 @@ module itemModule()
                 }
             }
         }
+
+        // Hole for pull-string:
+        translate([0, rearLugHoleCtrY-13, -coverZ/2])
+        {
+            dCord = 5.5;
+            tcy([0, 0, -30], d=dCord, h=100);
+            doubleZ() translate([0,0,coverZ/2-dCord/2-2.8]) cylinder(d2=14, d1=0, h=7);
+        }
     }
 }
 
@@ -196,7 +204,7 @@ module rearLugHoleCtrXform()
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([-400+d, -20, -50], 400);
+    tcu([-400+d, -20, -50], 400);
     // tcu([-200, -20, 0.25*mm-d], 400);
 }
 
