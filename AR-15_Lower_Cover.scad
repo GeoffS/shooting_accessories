@@ -63,10 +63,10 @@ coverForwardEndY = 88.5; // local dimension (from measuring Mil-Spec and FDM low
 ccd2 = coverCornerDia/2;
 fwdX = coverForwardX/2 - ccd2;
 fwdY1 = coverOffsetY + ccd2;
-fwdY2  = coverForwardEndY - 1 - ccd2;
+fwdY2  = coverForwardEndY - 1 - ccd2; // MAGIC!!
 
 rearX = coverRearX/2 - ccd2;
-rearY1 = coverForwardEndY - 5 + ccd2;
+rearY1 = coverForwardEndY - 6.5 + ccd2; // MAGIC!!
 rearY2 = rearLugHoleCtrY + 4;
 //  -----------------------^
 //  Make a nice tail-section.
