@@ -67,7 +67,10 @@ fwdY2  = coverForwardEndY - 1 - ccd2;
 
 rearX = coverRearX/2 - ccd2;
 rearY1 = coverForwardEndY - 5 + ccd2;
-rearY2 = 180; // Not critical. Trimmed later.
+rearY2 = rearLugHoleCtrY + 4;
+//  -----------------------^
+//  Make a nice tail-section.
+// MAGIC!!
 
 lugsCZ = 0.8;
 
