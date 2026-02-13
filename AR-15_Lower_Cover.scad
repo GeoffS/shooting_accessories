@@ -150,7 +150,7 @@ module itemModule()
                 frontLugHoleCtrXform() rotate([0,90,0]) 
                 {
                     tcy([0,0,-100], d=frontLugHoleDiaPrinted, h=200);
-                    doubleZ() translate([0,0,frontLugX/2-frontLugHoleDiaPrinted/2-0.5]) cylinder(d2=20, d1=0, h=10);
+                    doubleZ() translate([0,0,frontLugX/2-frontLugHoleDiaPrinted/2-0.9]) cylinder(d2=20, d1=0, h=10);
                 }
             }
 
@@ -174,13 +174,13 @@ module itemModule()
                 rearLugHoleCtrXform() rotate([0,90,0]) 
                 {
                     tcy([0,0,-100], d=rearLugHoleDiaPrinted, h=200);
-                    doubleZ() translate([0,0,rearLugX/2-rearLugHoleDiaPrinted/2-0.5]) cylinder(d2=20, d1=0, h=10);
+                    doubleZ() translate([0,0,rearLugX/2-rearLugHoleDiaPrinted/2-0.9]) cylinder(d2=20, d1=0, h=10);
                 }
             }
         }
 
         // Hole for pull-string:
-        translate([0, rearLugHoleCtrY-13, -coverZ/2])
+        translate([0, rearLugHoleCtrY-13, -coverZ/2+1])
         {
             dCord = 4.2;
             tcy([0, 0, -30], d=dCord, h=100);
@@ -204,7 +204,7 @@ module rearLugHoleCtrXform()
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([-400+d, -20, -50], 400);
+    // tcu([-400+d, -20, -50], 400);
     // tcu([-200, -20, 0.25*mm-d], 400);
 }
 
