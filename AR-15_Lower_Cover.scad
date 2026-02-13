@@ -41,7 +41,7 @@ frontLugHoleDia = 0.25 * mm; // TBD
 rearOfUpperReceiverY = 6.999 * mm; // [2]
 
 frontLugHoleDiaPrinted = frontLugHoleDia + 0.2; // Printing a bit tight.
-rearLugHoleDiaPrinted = rearLugHoleDia + 0.3; // Printing a bit tight.
+rearLugHoleDiaPrinted = rearLugHoleDia + 0.5; // Printing a bit tight.
 
 // MAGIC!!
 //   Match the top of the cover chamfer to the front of the lug
