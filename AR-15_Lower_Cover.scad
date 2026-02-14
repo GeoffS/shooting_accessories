@@ -230,7 +230,7 @@ module itemModule()
         // Hole for pull-string:
         translate([0, rearLugHoleCtrY-13, -coverZ/2-1])
         {
-            dCord = 4.2;
+            dCord = 5;
             tcy([0, 0, -30], d=dCord, h=100);
             doubleZ() translate([0,0,coverZ/2-dCord/2-2.8]) cylinder(d2=14, d1=0, h=7);
         }
