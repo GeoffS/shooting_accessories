@@ -6,15 +6,18 @@ layerHeight = 0.2;
 
 mm = 25.4;
 
-// Reference [1] = 12972670 RECEIVER, UPPER0001
-//    [Y] Front lug hole center is 0.250"
-//    [X] Base of lugs (= Z direction in design)
+// [1] = 12972670 RECEIVER, UPPER0001
+//   [Y] Front lug hole center is 0.250"
+//   [X] Base of lugs (= Z direction in design)
 
-// Reference [2] = 12972670 RECEIVER, UPPER0002
-
-// Reference [3] = 8448608 RECEIVER, LOWER0001
-
-// Reference [4] = 8448641 LOWER RECEIVER FORGING0001
+// [2] = 12972670 RECEIVER, UPPER0002
+// [3] = 8448608 RECEIVER, LOWER0001
+// [7] = 8448608 RECEIVER, LOWER0002
+// [4] = 8448641 LOWER RECEIVER FORGING0001
+// [5] = 8448613 HAMMER0001
+// [6] = 8448613 HAMMER0002
+// [7] above, after [3]
+// [8] = 8448628 CATCH,BOLT0001
 
 rearLugX = 0.496 * mm; // [1]
 rearLugY = 0.450 * mm; // [1]
@@ -40,6 +43,13 @@ frontLugHoleDia = 0.25 * mm; // TBD
 
 rearOfUpperReceiverY = 6.999 * mm; // [2]
 
+magReleaseCatchPinY = 3.084 * mm; // [3]
+
+boltHoldOpenSlotFrontY = 3.000 * mm; // [7]
+boltHoldOpenSlotY = 0.155 * mm; // [7]
+
+hammerWidth = 0.190 * mm; // [6]
+
 frontLugHoleDiaPrinted = frontLugHoleDia + 0.2; // Printing a bit tight.
 rearLugHoleDiaPrinted = rearLugHoleDia + 0.5; // Printing a bit tight.
 
@@ -52,7 +62,20 @@ coverCornerDia = 12;
 coverCZ = firstLayerHeight + 5*layerHeight;
 echo(str("coverCZ = ", coverCZ));
 
-coverZ = 8; // local dimension
+hammerRecessX = hammerWidth + 4; // ??
+hammerRecessY = 35;
+hammerRecessZ = 12; // above top of lower
+hammerRecessFrontY = magReleaseCatchPinY + 18;
+
+boltHoldOpenRecessX = 0.400*mm + 5; // approx. from [8]
+boltHoldOpenRecessY = (0.270+0.150+0.025)*mm + 6; // approx. from [8]
+boltHoldOpenRecessZ = 0.220*mm + 3; // approx. from [8]
+boltHoldOpenRecessOffsetY = 0.150/2 * mm; // approx. from [8]
+
+boltHoldOpenSlotCtrY = boltHoldOpenSlotFrontY + boltHoldOpenSlotY/2;
+boltHoldOpenRecessFrontY = boltHoldOpenSlotCtrY - boltHoldOpenRecessY + boltHoldOpenRecessOffsetY;
+
+coverZ = hammerRecessZ + 3; // local dimension
 
 coverTransitionDX = 0.5;
 
@@ -179,6 +202,15 @@ module itemModule()
             }
         }
 
+        // Hammer Recess:
+        tcu([-hammerRecessX/2, hammerRecessFrontY, -hammerRecessZ], [hammerRecessX, hammerRecessY, hammerRecessZ+1]);
+
+        // Bolt Hold-Open Recess:
+        echo(str("boltHoldOpenRecessX/2 = ", boltHoldOpenRecessX/2));
+        tcu(
+            [-boltHoldOpenRecessX/2, boltHoldOpenRecessFrontY, -boltHoldOpenRecessZ], 
+            [boltHoldOpenRecessX, boltHoldOpenRecessY, boltHoldOpenRecessZ+1]);
+
         // Hole for pull-string:
         translate([0, rearLugHoleCtrY-13, -coverZ/2+1])
         {
@@ -204,7 +236,7 @@ module rearLugHoleCtrXform()
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([-400+d, -20, -50], 400);
+    tcu([-400+d, -20, -50], 400);
     // tcu([-200, -20, 0.25*mm-d], 400);
 }
 
