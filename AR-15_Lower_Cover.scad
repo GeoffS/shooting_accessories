@@ -215,22 +215,22 @@ module itemModule()
         }
 
         // Hammer Recess:
-        tcu([-hammerRecessX/2, hammerRecessFrontY, -hammerRecessZ+1], [hammerRecessX, hammerRecessY, hammerRecessZ+1]);
+        tcu([-hammerRecessX/2, hammerRecessFrontY, -hammerRecessZ], [hammerRecessX, hammerRecessY, hammerRecessZ+1]);
 
         // Bolt Hold-Open Recess:
         tcu(
-            [-boltHoldOpenRecessX/2, boltHoldOpenRecessFrontY, -boltHoldOpenRecessZ+1], 
+            [-boltHoldOpenRecessX/2, boltHoldOpenRecessFrontY, -boltHoldOpenRecessZ], 
             [boltHoldOpenRecessX, boltHoldOpenRecessY, boltHoldOpenRecessZ+1]);
         // extra when engaged:
         slotX = magazineRecessX/2;
         slotZ = 5;
         tcu(
-            [0, boltHoldOpenSlotFrontY-3, -slotZ+1], 
+            [0, boltHoldOpenSlotFrontY-3, -slotZ], 
             [slotX, boltHoldOpenSlotY+3+1, slotZ+1]);
 
         // Magazine Recess:
         tcu(
-            [-magazineRecessX/2, magazineRecessFrontY, -magazineRecessZ+1], 
+            [-magazineRecessX/2, magazineRecessFrontY, -magazineRecessZ], 
             [magazineRecessX, magazineRecessY, magazineRecessZ+1]);
 
         // Hole for pull-string:
@@ -240,10 +240,30 @@ module itemModule()
             tcy([0, 0, -30], d=dCord, h=100);
             doubleZ() translate([0,0,coverZ/2-dCord/2-2.8]) cylinder(d2=14, d1=0, h=7);
         }
+
+        // HRC logo:
+        hrxCtrY = hammerRecessFrontY + hammerRecessY/2;
+        hrxCtrY = hammerRecessFrontY + hammerRecessY/2;
+        fXY = 0.8;
+        translate([0, hrxCtrY, -hammerRecessZ-layerHeight]) scale([fXY, fXY, 1]) HRC();
     }
 }
 
-$fn=180;
+module HRC()
+{
+    #difference() 
+    {
+        // Outer square:
+        tcu([-5,-5,0], 10);
+        barX = 2;
+        barY = 8;
+        barOffsetX = 1;
+        doubleX() tcu([barOffsetX,-barY/2,-1], [barX, barY, 12]);
+    }
+
+}
+
+// $fn=180;
 
 module frontLugHoleCtrXform()
 {
