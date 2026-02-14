@@ -75,7 +75,13 @@ boltHoldOpenRecessOffsetY = 0.150/2 * mm; // approx. from [8]
 boltHoldOpenSlotCtrY = boltHoldOpenSlotFrontY + boltHoldOpenSlotY/2;
 boltHoldOpenRecessFrontY = boltHoldOpenSlotCtrY - boltHoldOpenRecessY + boltHoldOpenRecessOffsetY;
 
-coverZ = hammerRecessZ + 3; // local dimension
+// All QnD measurements...
+magazineRecessX = 24;
+magazineRecessY = 66;
+magazineRecessZ = 15;
+magazineRecessFrontY = 8;
+
+coverZ = max(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ) + 3; // local dimension
 
 coverTransitionDX = 0.5;
 
@@ -203,13 +209,17 @@ module itemModule()
         }
 
         // Hammer Recess:
-        tcu([-hammerRecessX/2, hammerRecessFrontY, -hammerRecessZ], [hammerRecessX, hammerRecessY, hammerRecessZ+1]);
+        tcu([-hammerRecessX/2, hammerRecessFrontY, -hammerRecessZ+1], [hammerRecessX, hammerRecessY, hammerRecessZ+1]);
 
         // Bolt Hold-Open Recess:
-        echo(str("boltHoldOpenRecessX/2 = ", boltHoldOpenRecessX/2));
         tcu(
-            [-boltHoldOpenRecessX/2, boltHoldOpenRecessFrontY, -boltHoldOpenRecessZ], 
+            [-boltHoldOpenRecessX/2, boltHoldOpenRecessFrontY, -boltHoldOpenRecessZ+1], 
             [boltHoldOpenRecessX, boltHoldOpenRecessY, boltHoldOpenRecessZ+1]);
+
+        // Magazine Recess:
+        tcu(
+            [-magazineRecessX/2, magazineRecessFrontY, -magazineRecessZ+1], 
+            [magazineRecessX, magazineRecessY, magazineRecessZ+1]);
 
         // Hole for pull-string:
         translate([0, rearLugHoleCtrY-13, -coverZ/2+1])
