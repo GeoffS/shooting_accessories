@@ -62,18 +62,24 @@ coverCornerDia = 12;
 coverCZ = firstLayerHeight + 5*layerHeight;
 echo(str("coverCZ = ", coverCZ));
 
-hammerRecessX = hammerWidth + 4; // ??
+hammerRecessX = hammerWidth + 5; // ??
 hammerRecessY = 35;
 hammerRecessZ = 12; // above top of lower
-hammerRecessFrontY = magReleaseCatchPinY + 18;
+hammerRecessFrontY = magReleaseCatchPinY + 20;
 
-boltHoldOpenRecessX = 0.400*mm + 5; // approx. from [8]
+echo(str("hammerRecessFrontY = ", hammerRecessFrontY));
+
+boltHoldOpenRecessX = 0.400*mm + 7; // approx. from [8]
 boltHoldOpenRecessY = (0.270+0.150+0.025)*mm + 6; // approx. from [8]
-boltHoldOpenRecessZ = 0.220*mm + 3; // approx. from [8]
-boltHoldOpenRecessOffsetY = 0.150/2 * mm; // approx. from [8]
+boltHoldOpenRecessZ = 0.220*mm + 7; // approx. from [8]
+boltHoldOpenRecessOffsetY = 0.150/2 * mm + 5; // approx. from [8]
 
 boltHoldOpenSlotCtrY = boltHoldOpenSlotFrontY + boltHoldOpenSlotY/2;
 boltHoldOpenRecessFrontY = boltHoldOpenSlotCtrY - boltHoldOpenRecessY + boltHoldOpenRecessOffsetY;
+
+echo(str("boltHoldOpenSlotCtrY = ", boltHoldOpenSlotCtrY));
+echo(str("boltHoldOpenRecessFrontY = ", boltHoldOpenRecessFrontY));
+echo(str("boltHoldOpenRecessZ = ", boltHoldOpenRecessZ));
 
 // All QnD measurements...
 magazineRecessX = 24;
@@ -246,7 +252,7 @@ module rearLugHoleCtrXform()
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    tcu([-400+d, -20, -50], 400);
+    // tcu([-400+d, -20, -50], 400);
     // tcu([-200, -20, 0.25*mm-d], 400);
 }
 
