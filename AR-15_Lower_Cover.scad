@@ -225,7 +225,7 @@ module itemModule()
         slotX = magazineRecessX/2;
         slotZ = 5;
         tcu(
-            [0, boltHoldOpenSlotFrontY-3, -slotZ], 
+            [-slotX, boltHoldOpenSlotFrontY-3, -slotZ], 
             [slotX, boltHoldOpenSlotY+3+1, slotZ+1]);
 
         // Magazine Recess:
