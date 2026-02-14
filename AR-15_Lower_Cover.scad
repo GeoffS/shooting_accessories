@@ -241,14 +241,14 @@ module itemModule()
             doubleZ() translate([0,0,coverZ/2-dCord/2-2.8]) cylinder(d2=14, d1=0, h=7);
         }
 
-        // Text:
-        hammerRecessCtrY = hammerRecessFrontY + hammerRecessY/2;
-        translate([0, hammerRecessCtrY, -hammerRecessZ-layerHeight]) rotate([0,0,90])
-            linear_extrude(height = 10, convexity = 10) 
-                text("Defend Equality", 
-                    font="Calibri:style=Bold",
-                    size=3.0, 
-                    valign="center", halign="center");
+        // // Text:
+        // hammerRecessCtrY = hammerRecessFrontY + hammerRecessY/2;
+        // translate([0, hammerRecessCtrY, -hammerRecessZ-layerHeight]) rotate([0,0,90])
+        //     linear_extrude(height = 10, convexity = 10) 
+        //         text("Defend Equality", 
+        //             font="Calibri:style=Bold",
+        //             size=3.0, 
+        //             valign="center", halign="center");
     }
 }
 
