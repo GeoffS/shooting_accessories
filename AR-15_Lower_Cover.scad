@@ -222,7 +222,7 @@ module itemModule()
             [magazineRecessX, magazineRecessY, magazineRecessZ+1]);
 
         // Hole for pull-string:
-        translate([0, rearLugHoleCtrY-13, -coverZ/2+1])
+        translate([0, rearLugHoleCtrY-13, -coverZ/2-1])
         {
             dCord = 4.2;
             tcy([0, 0, -30], d=dCord, h=100);
