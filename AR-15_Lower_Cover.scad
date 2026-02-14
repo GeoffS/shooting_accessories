@@ -241,26 +241,15 @@ module itemModule()
             doubleZ() translate([0,0,coverZ/2-dCord/2-2.8]) cylinder(d2=14, d1=0, h=7);
         }
 
-        // HRC logo:
-        hrxCtrY = hammerRecessFrontY + hammerRecessY/2;
-        hrxCtrY = hammerRecessFrontY + hammerRecessY/2;
-        fXY = 0.8;
-        translate([0, hrxCtrY, -hammerRecessZ-layerHeight]) scale([fXY, fXY, 1]) HRC();
+        // Text:
+        hammerRecessCtrY = hammerRecessFrontY + hammerRecessY/2;
+        translate([0, hammerRecessCtrY, -hammerRecessZ-layerHeight]) rotate([0,0,90])
+            linear_extrude(height = 10, convexity = 10) 
+                text("Defend Equality", 
+                    font="Calibri:style=Bold",
+                    size=3.0, 
+                    valign="center", halign="center");
     }
-}
-
-module HRC()
-{
-    #difference() 
-    {
-        // Outer square:
-        tcu([-5,-5,0], 10);
-        barX = 2;
-        barY = 8;
-        barOffsetX = 1;
-        doubleX() tcu([barOffsetX,-barY/2,-1], [barX, barY, 12]);
-    }
-
 }
 
 // $fn=180;
