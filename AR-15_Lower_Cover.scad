@@ -221,6 +221,12 @@ module itemModule()
         tcu(
             [-boltHoldOpenRecessX/2, boltHoldOpenRecessFrontY, -boltHoldOpenRecessZ+1], 
             [boltHoldOpenRecessX, boltHoldOpenRecessY, boltHoldOpenRecessZ+1]);
+        // extra when engaged:
+        slotX = magazineRecessX/2;
+        slotZ = 5;
+        tcu(
+            [0, boltHoldOpenSlotFrontY-3, -slotZ+1], 
+            [slotX, boltHoldOpenSlotY+3+1, slotZ+1]);
 
         // Magazine Recess:
         tcu(
