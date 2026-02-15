@@ -7,6 +7,7 @@ layerHeight = 0.2;
 
 makePlate = false;
 makeScrew = false;
+makeScrewShort = false;
 makeHexStop = false;
 
 plateZ = 3;
@@ -15,7 +16,17 @@ bufferOD = 30.4;
 
 allenKeyDia = 11.3;
 
+module screwShort() 
+{
+    screwCode(threadGuideZ=3);
+}
+
 module screw()
+{
+    screwCode(threadGuideZ=14);
+}
+
+module screwCode(threadGuideZ)
 {
     OD_inch = 1 + 3/16;
     TPI = 16;
@@ -39,7 +50,7 @@ module screw()
             }
 
             // Guide:
-            simpleChamferedCylinder(d=27.8, h=threadZ+14, cz=3);
+            simpleChamferedCylinder(d=27.8, h=threadZ+threadGuideZ, cz=3);
 
             // Something to press on the plate:
             simpleChamferedCylinderDoubleEnded(d=60, h=nutZ, cz=1);
@@ -137,7 +148,11 @@ if(developmentRender)
 	// display() plate();
     // display() translate([-70,0,0]) screw();
 
-    display() hexStop();
+    display() screwShort();
+    display() translate([ 70,0,0]) screw();
+	display() translate([-70,0,0]) plate();
+
+    // display() hexStop();
 
     // translate([-70, 0, 0])
     // {
@@ -151,5 +166,6 @@ else
 {
 	if(makePlate) plate();
     if(makeScrew) screw();
+    if(makeScrewShort) screwShort();
     if(makeHexStop) hexStop();
 }
