@@ -106,17 +106,16 @@ module maglockXform()
 
 module magCore()
 {
-    x=magWidth;
-	y=magLength;
-	d = 12;
+    frontDia = 12;
 
-	mwdx = x/2 - magBlockDia/2;
-    mwdy = y - magBlockDia/2;
+	mwdx = magWidth/2 - magBlockDia/2;
+    mwdy = magLength - magBlockDia/2;
+
     hull() doubleX()
 	{
-		translate([3,d/2,0]) simpleChamferedCylinderDoubleEnded(d=d, h=magBlockZ, cz=magBlockCZ);
+		translate([3.5,frontDia/2,0]) simpleChamferedCylinderDoubleEnded(d=frontDia, h=magBlockZ, cz=magBlockCZ);
 
-		translate([mwdx, 8, 0])
+		translate([mwdx, 11, 0])
             simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
 		translate([mwdx, mwdy, 0])
             simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
@@ -127,7 +126,7 @@ module magCoreRib()
 {
     mwdx = magRibWidth/2 - magBlockDia/2;
     mwdy = magRibLength - magBlockDia/2;
-	
+
 	hull() doubleX() 
 	{
 		translate([mwdx, 40, 0])
