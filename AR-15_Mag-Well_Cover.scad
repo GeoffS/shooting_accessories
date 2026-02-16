@@ -126,11 +126,9 @@ module magCore()
 module magCoreRib()
 {
     dy = (magRibLength-magLength)/2;
-    magCoreParams(x=magRibWidth, y=magRibLength, dy=dy);
-}
+	x=magRibWidth; 
+	y=magRibLength;
 
-module magCoreParams(x, y, dy)
-{
     mwdx = x/2 - magBlockDia/2;
     mwdy = y - magBlockDia/2;
 	translate([0, 0, 0]) 
