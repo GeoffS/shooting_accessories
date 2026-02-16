@@ -19,8 +19,6 @@ echo(str("magCatchY = ", magCatchY));
 
 magStopExtraXY = 8;
 
-magBlockViceX = magWidth + 2*magStopExtraXY;
-magBlockViceY = magLength + 2*magStopExtraXY;
 magBlockZ = 50;
 
 magBlockDia = 4;
@@ -33,14 +31,6 @@ magLockRecessY = 13.4;
 magLockRecessZ = 6.6;
 
 magStopX = 1.6;
-
-// MAGIC!!
-//  ----------------vvvvvvv
-magwellStopExtraY = 0; //6.12344;
-
-echo(str("magBlockViceY = ", magBlockViceY));
-
-echo(str("magStopExtraXY-magwellStopExtraY = ", magStopExtraXY-magwellStopExtraY));
 
 module itemModule()
 {
@@ -55,6 +45,14 @@ module itemModule()
         
         maglockRecess();
 		
+		// M3 Removal screw (handle):
+		translate([0,magLength/2,0])
+		{
+			d = 2.9;
+			cz = firstLayerHeight + 2*layerHeight;
+			translate([0,0,-1]) simpleChamferedCylinder(d=d, h=10, cz=d/2);
+			translate([0,0,-5+d/2+cz]) cylinder(d1=10, d2=0, h=5);
+		}
 	}
 }
 module maglockRecess()
@@ -102,12 +100,12 @@ module maglockXform()
 
 module magCore()
 {
-    magCoreParams(x=magWidth, y=magLength, dy=magwellStopExtraY);
+    magCoreParams(x=magWidth, y=magLength, dy=0);
 }
 
 module magCoreRib()
 {
-    dy = (magRibLength-magLength)/2 + magwellStopExtraY;
+    dy = (magRibLength-magLength)/2;
     magCoreParams(x=magRibWidth, y=magRibLength, dy=dy);
 }
 
@@ -123,7 +121,8 @@ module magCoreParams(x, y, dy)
 
 module clip(d=0)
 {
-	//tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
+	// tcu([-200, magLength/2, -20], 400);
 	// tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
 }
 
