@@ -1,8 +1,16 @@
 include <../OpenSCAD_Lib/MakeInclude.scad>
 include <../OpenSCAD_Lib/chamferedCylinders.scad>
 
+mm = 25.4;
+
 firstLayerHeight = 0.2;
-layerHeight = 0.2;magWidth = 22.4; // Slightly less that 7/8"
+layerHeight = 0.2;
+
+// [9] = 8448639 PLATE, MAGAZINE CATCH0001
+
+magCatchProtrusionIntoMagWell = 0.050 * mm; // [9]
+
+magWidth = 22.4; // Slightly less that 7/8"
 magLength = 60.7;
 magRibLength = 64;
 magRibWidth = 11;
@@ -38,9 +46,11 @@ module itemModule()
 		// Ramp for mag-lock:
 		translate([0, magLockRecessOffsetY, magBlockZ]) hull()
 		{
-			dx = 4.5;
+			dx = max(magBlockCZ, magCatchProtrusionIntoMagWell + 1); //4.5;
 			dy = 2;
 			dz = 9;
+
+			echo(str("Mag-Lock dx = ", dx));
 
 			dx2 = dx*2;
 			dy2 = dy*2;
@@ -140,7 +150,7 @@ module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
 	// tcu([-200, magLength/2, -20], 400);
-	// tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
+	tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
 }
 
 if(developmentRender)
