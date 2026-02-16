@@ -53,12 +53,7 @@ module itemModule()
 			magStop();
         }
         
-        // Mag-catch slot:
-        // mcDia = 4;
-        // translate([10+magWidth/2-magCatchX+mcDia/2, magBlockViceY/2-magCatchCtrY, magBlockZ-magCatchZ-mcDia/2]) 
-        //     hull() doubleX() doubleY() translate([10, magCatchY/2-mcDia/2, 0])
-        //         simpleChamferedCylinderDoubleEnded(d=mcDia, h=100, cz=mcDia/2-nothing);
-		maglockRecess();
+        maglockRecess();
 		
 	}
 }
@@ -67,7 +62,6 @@ module maglockRecess()
 	maglockXform() hull()
 	{
 		x2 = magLockRecessX*2;
-		// %tcu([magWidth/2-magLockRecessX,0,0], [10, magLockRecessY, magLockRecessZ]);
 		dx = 0.8; // ca. 2X wall-thickness
 		tcu([magWidth/2,               0, magLockRecessZ+dx], [10,    magLockRecessY, 0.1]);
 		tcu([magWidth/2-dx,               -magLockRecessX, magLockRecessZ-0.01], [dx,    magLockRecessY+x2, 0.01]);
@@ -75,20 +69,7 @@ module maglockRecess()
 
 	maglockXform() hull()
 	{
-		// union()// hull()
-		// {
-		// 	x2 = magLockRecessX*2;
-		// 	// %tcu([magWidth/2-magLockRecessX,0,0], [10, magLockRecessY, magLockRecessZ]);
-		// 	dx = 0.8; // ca. 2X wall-thickness
-		// 	#tcu([magWidth/2,               0, magLockRecessZ+dx], [10,    magLockRecessY, 0.1]);
-		// 	#tcu([magWidth/2-dx,               0, magLockRecessZ], [dx,    magLockRecessY, 0.1]);
-		// }
-		
 		x2 = magLockRecessX*2;
-		// // %tcu([magWidth/2-magLockRecessX,0,0], [10, magLockRecessY, magLockRecessZ]);
-		// dx = 0.8; // ca. 2X wall-thickness
-		// #tcu([magWidth/2,               0, magLockRecessZ+dx], [10,    magLockRecessY, 0.1]);
-		// #tcu([magWidth/2-magLockRecessX,               0, magLockRecessZ], [dx,    magLockRecessY, 0.1]);
 
 		tcu([magWidth/2-magLockRecessX,               0, magLockRecessZ-0.1], [10,    magLockRecessY, 0.1]);
 		tcu([magWidth/2,                -magLockRecessX, magLockRecessZ-0.1], [10, magLockRecessY+x2, 0.1]);
@@ -143,7 +124,7 @@ module magCoreParams(x, y, dy)
 module clip(d=0)
 {
 	//tc([-200, -400-d, -10], 400);
-	tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
+	// tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
 }
 
 if(developmentRender)
