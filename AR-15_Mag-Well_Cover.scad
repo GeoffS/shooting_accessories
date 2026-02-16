@@ -64,9 +64,37 @@ module itemModule()
 }
 module maglockRecess()
 {
-	maglockXform()
+	maglockXform() hull()
 	{
-		tcu([magWidth/2-magLockRecessX,0,0], [10, magLockRecessY, magLockRecessZ]);
+		x2 = magLockRecessX*2;
+		// %tcu([magWidth/2-magLockRecessX,0,0], [10, magLockRecessY, magLockRecessZ]);
+		dx = 0.8; // ca. 2X wall-thickness
+		tcu([magWidth/2,               0, magLockRecessZ+dx], [10,    magLockRecessY, 0.1]);
+		tcu([magWidth/2-dx,               -magLockRecessX, magLockRecessZ-0.01], [dx,    magLockRecessY+x2, 0.01]);
+	}
+
+	maglockXform() hull()
+	{
+		// union()// hull()
+		// {
+		// 	x2 = magLockRecessX*2;
+		// 	// %tcu([magWidth/2-magLockRecessX,0,0], [10, magLockRecessY, magLockRecessZ]);
+		// 	dx = 0.8; // ca. 2X wall-thickness
+		// 	#tcu([magWidth/2,               0, magLockRecessZ+dx], [10,    magLockRecessY, 0.1]);
+		// 	#tcu([magWidth/2-dx,               0, magLockRecessZ], [dx,    magLockRecessY, 0.1]);
+		// }
+		
+		x2 = magLockRecessX*2;
+		// // %tcu([magWidth/2-magLockRecessX,0,0], [10, magLockRecessY, magLockRecessZ]);
+		// dx = 0.8; // ca. 2X wall-thickness
+		// #tcu([magWidth/2,               0, magLockRecessZ+dx], [10,    magLockRecessY, 0.1]);
+		// #tcu([magWidth/2-magLockRecessX,               0, magLockRecessZ], [dx,    magLockRecessY, 0.1]);
+
+		tcu([magWidth/2-magLockRecessX,               0, magLockRecessZ-0.1], [10,    magLockRecessY, 0.1]);
+		tcu([magWidth/2,                -magLockRecessX, magLockRecessZ-0.1], [10, magLockRecessY+x2, 0.1]);
+
+		tcu([magWidth/2-magLockRecessX,               0, 0], [10,    magLockRecessY, 0.1]);
+		tcu([magWidth/2, -magLockRecessX, 0], [10, magLockRecessY+x2, 0.1]);
 	}
 }
 
