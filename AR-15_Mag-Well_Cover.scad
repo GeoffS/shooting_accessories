@@ -36,12 +36,25 @@ module itemModule()
         maglockRecess();
 
 		// Ramp for mag-lock:
-		translate([0, magLockRecessOffsetY, magLockRecessOffsetZ])
+		translate([0, magLockRecessOffsetY, magBlockZ]) hull()
+		{
+			dx = 4.5;
+			dy = 2;
+			dz = 9;
+
+			dx2 = dx*2;
+			dy2 = dy*2;
+
+			tcu([magWidth/2-dx,   0, 0], [10,     magLockRecessY, 0.1]);
+			tcu([magWidth/2,    -dy, 0], [10, magLockRecessY+dy2, 0.1]);
+
+			tcu([magWidth/2, 0, -dz-0.01], [dx, magLockRecessY, 0.01]);
+		}
 		
 		// M3 Removal screw (handle):
 		translate([0,magLength/2,0])
 		{
-			d = 2.9;
+			d = 3.0;
 			cz = firstLayerHeight + 2*layerHeight;
 			translate([0,0,-1]) simpleChamferedCylinder(d=d, h=10, cz=d/2);
 			translate([0,0,-5+d/2+cz]) cylinder(d1=10, d2=0, h=5);
