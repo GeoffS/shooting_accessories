@@ -17,7 +17,7 @@ magBlockCZ = 2.2;
 magLockRecessOffsetY = 39.2; //37.8;
 magLockRecessOffsetZ = 31.5;
 magLockRecessX = 1.7;
-magLockRecessY = 8.5; //13.4;
+magLockRecessY = 9.5; //8.5; //13.4;
 magLockRecessZ = 6.6;
 
 magStopX = 1.6;
