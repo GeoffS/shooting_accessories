@@ -6,6 +6,9 @@ mm = 25.4;
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
+makeScrewHandle = false;
+makeCordHandle = false;
+
 // [9] = 8448639 PLATE, MAGAZINE CATCH0001
 
 magCatchProtrusionIntoMagWell = 0.050 * mm; // [9]
@@ -30,7 +33,41 @@ magLockRecessZ = 6.6;
 
 magStopX = 1.6;
 
-module itemModule()
+module screwHandle()
+{
+	difference()
+	{
+		magwellFiller();
+
+		// M3 Removal screw (handle):
+		translate([0,magLength/2,0])
+		{
+			d = 3.0;
+			cz = firstLayerHeight + 2*layerHeight;
+			translate([0,0,-1]) simpleChamferedCylinder(d=d, h=10, cz=d/2);
+			translate([0,0,-5+d/2+cz]) cylinder(d1=10, d2=0, h=5);
+		}
+	}
+}
+
+module cordHandle()
+{
+	difference()
+	{
+		magwellFiller();
+
+		// Paracord handle:
+		translate([0,magLength/2,0])
+		{
+			dCord = 5;
+			cz = firstLayerHeight + 10*layerHeight;
+			translate([0,0,-1]) simpleChamferedCylinder(d=dCord, h=15, cz=dCord/2);
+			translate([0,0,-6+dCord/2+cz]) cylinder(d1=12, d2=0, h=6);
+		}
+	}
+}
+
+module magwellFiller()
 {
 	difference()
     {
@@ -60,15 +97,10 @@ module itemModule()
 
 			tcu([magWidth/2, 0, -dz-0.01], [dx, magLockRecessY, 0.01]);
 		}
-		
-		// M3 Removal screw (handle):
-		translate([0,magLength/2,0])
-		{
-			d = 3.0;
-			cz = firstLayerHeight + 2*layerHeight;
-			translate([0,0,-1]) simpleChamferedCylinder(d=d, h=10, cz=d/2);
-			translate([0,0,-5+d/2+cz]) cylinder(d1=10, d2=0, h=5);
-		}
+
+		// Cartridge outline on top:
+        translate([0,57,magBlockZ-layerHeight]) rotate([0,0,180]) scale(0.25) translate([-34.8,0,0]) 
+            linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 	}
 }
 module maglockRecess()
@@ -150,14 +182,19 @@ module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
 	// tcu([-200, magLength/2, -20], 400);
-	tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
+	// tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
 }
 
 if(developmentRender)
 {
-	display() itemModule();
+	// display() screwHandle();
+	// display() translate([-30,0,0]) cordHandle();
+
+	display() cordHandle();
+	display() translate([-30,0,0]) screwHandle();
 }
 else
 {
-	itemModule();
+	if(makeScrewHandle) screwHandle();
+	if(makeCordHandle) cordHandle();
 }
