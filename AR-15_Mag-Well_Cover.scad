@@ -106,7 +106,22 @@ module maglockXform()
 
 module magCore()
 {
-    magCoreParams(x=magWidth, y=magLength, dy=0);
+    // magCoreParams(x=magWidth, y=magLength, dy=0);
+	x=magWidth;
+	y=magLength;
+	d = 12;
+
+	mwdx = x/2 - magBlockDia/2;
+    mwdy = y - magBlockDia/2;
+    hull() doubleX()
+	{
+		translate([3,d/2,0]) simpleChamferedCylinderDoubleEnded(d=d, h=magBlockZ, cz=magBlockCZ);
+
+		translate([mwdx, 8, 0])
+            simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
+		translate([mwdx, mwdy, 0])
+            simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
+	}
 }
 
 module magCoreRib()
@@ -118,11 +133,20 @@ module magCoreRib()
 module magCoreParams(x, y, dy)
 {
     mwdx = x/2 - magBlockDia/2;
-    mwdy = y/2 - magBlockDia/2;
-    translate([0, magLength/2+dy, 0]) 
-        hull() doubleX() doubleY() 
-            translate([mwdx, mwdy, 0])
+    mwdy = y - magBlockDia/2;
+    // translate([0, magLength/2+dy, 0]) 
+    //     hull() doubleX() doubleY() 
+    //         translate([mwdx, mwdy, 0])
+    //             simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
+	translate([0, 0, 0]) 
+        hull() doubleX() 
+		{
+			translate([mwdx, 40, 0])
                 simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
+			translate([mwdx, mwdy, 0])
+                simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
+		}
+            
 }
 
 module clip(d=0)
