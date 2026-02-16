@@ -14,10 +14,10 @@ magBlockZ = 50;
 magBlockDia = 4;
 magBlockCZ = 1.5;
 
-magLockRecessOffsetY = 37.8;
+magLockRecessOffsetY = 39.2; //37.8;
 magLockRecessOffsetZ = 31.5;
 magLockRecessX = 1.7;
-magLockRecessY = 13.4;
+magLockRecessY = 8.5; //13.4;
 magLockRecessZ = 6.6;
 
 magStopX = 1.6;
