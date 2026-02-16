@@ -125,21 +125,16 @@ module magCore()
 
 module magCoreRib()
 {
-    dy = (magRibLength-magLength)/2;
-	x=magRibWidth; 
-	y=magRibLength;
-
-    mwdx = x/2 - magBlockDia/2;
-    mwdy = y - magBlockDia/2;
-	translate([0, 0, 0]) 
-        hull() doubleX() 
-		{
-			translate([mwdx, 40, 0])
-                simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
-			translate([mwdx, mwdy, 0])
-                simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
-		}
-            
+    mwdx = magRibWidth/2 - magBlockDia/2;
+    mwdy = magRibLength - magBlockDia/2;
+	
+	hull() doubleX() 
+	{
+		translate([mwdx, 40, 0])
+            simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
+		translate([mwdx, mwdy, 0])
+            simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
+	}   
 }
 
 module clip(d=0)
