@@ -18,6 +18,7 @@ mm = 25.4;
 // [6] = 8448613 HAMMER0002
 // [7] above, after [3]
 // [8] = 8448628 CATCH,BOLT0001
+// [9] = 8448639 PLATE, MAGAZINE CATCH0001
 
 rearLugX = 0.496 * mm; // [1]
 rearLugY = 0.450 * mm; // [1]
