@@ -106,8 +106,7 @@ module maglockXform()
 
 module magCore()
 {
-    // magCoreParams(x=magWidth, y=magLength, dy=0);
-	x=magWidth;
+    x=magWidth;
 	y=magLength;
 	d = 12;
 
@@ -134,10 +133,6 @@ module magCoreParams(x, y, dy)
 {
     mwdx = x/2 - magBlockDia/2;
     mwdy = y - magBlockDia/2;
-    // translate([0, magLength/2+dy, 0]) 
-    //     hull() doubleX() doubleY() 
-    //         translate([mwdx, mwdy, 0])
-    //             simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockZ, cz=magBlockCZ);
 	translate([0, 0, 0]) 
         hull() doubleX() 
 		{
