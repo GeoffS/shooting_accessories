@@ -34,6 +34,9 @@ module itemModule()
         }
         
         maglockRecess();
+
+		// Ramp for mag-lock:
+		translate([0, magLockRecessOffsetY, magLockRecessOffsetZ])
 		
 		// M3 Removal screw (handle):
 		translate([0,magLength/2,0])
@@ -51,8 +54,8 @@ module maglockRecess()
 	{
 		x2 = magLockRecessX*2;
 		dx = 0.8; // ca. 2X wall-thickness
-		tcu([magWidth/2,               0, magLockRecessZ+dx], [10,    magLockRecessY, 0.1]);
-		tcu([magWidth/2-dx,               -magLockRecessX, magLockRecessZ-0.01], [dx,    magLockRecessY+x2, 0.01]);
+		tcu([magWidth/2,                  0,   magLockRecessZ+dx], [10,    magLockRecessY,    0.1]);
+		tcu([magWidth/2-dx, -magLockRecessX, magLockRecessZ-0.01], [dx,    magLockRecessY+x2, 0.01]);
 	}
 
 	maglockXform() hull()
@@ -63,7 +66,7 @@ module maglockRecess()
 		tcu([magWidth/2,                -magLockRecessX, magLockRecessZ-0.1], [10, magLockRecessY+x2, 0.1]);
 
 		tcu([magWidth/2-magLockRecessX,               0, 0], [10,    magLockRecessY, 0.1]);
-		tcu([magWidth/2, -magLockRecessX, 0], [10, magLockRecessY+x2, 0.1]);
+		tcu([               magWidth/2, -magLockRecessX, 0], [10, magLockRecessY+x2, 0.1]);
 	}
 }
 
