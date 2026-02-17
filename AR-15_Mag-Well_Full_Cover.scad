@@ -6,7 +6,7 @@ mm = 25.4;
 firstLayerHeight = 0.2;
 layerHeight = 0.2;
 
-makeScrewHandle = false;
+makeNoHandle = false;
 makeCordHandle = false;
 
 // [9] = 8448639 PLATE, MAGAZINE CATCH0001
@@ -27,9 +27,14 @@ magBlockCZ = 2.2;
 
 magBlockFrontZ = 50;
 
+magBlockCylindersZ = 100;
+magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
+
+echo(str("magBlockCylindersOffsetZ = ", magBlockCylindersOffsetZ));
+
 // MAGIC!!
 //  -----------------------------vvvv
-frontAngleOffsetY = magBlockCZ + 9.84;
+frontAngleOffsetY = 0; //magBlockCZ + 9.84;
 
 magBlockDeltaZ = tan(magWellBottomAngle)*(magLength-(frontAngleOffsetY+magBlockCZ)); //6.5;
 magBlockRearZ = magBlockFrontZ + magBlockDeltaZ;
@@ -41,26 +46,20 @@ echo(str("magBlockDeltaZ = ", magBlockDeltaZ));
 echo(str("magBlockRibDeltaZ = ", magBlockRibDeltaZ));
 
 magLockRecessOffsetY = 39.2;
-magLockRecessOffsetZ = 31.5;
+magLockRecessOffsetZ = magBlockFrontZ - 18.5; //31.5;
 magLockRecessX = 1.7;
 magLockRecessY = 10.5;
 magLockRecessZ = 6.6;
 
+echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
+
 magStopX = 1.6;
 
-module screwHandle()
+module noHandle()
 {
 	difference()
 	{
 		magwellFiller();
-
-		// M3 Removal screw (handle):
-		translate([0,magLength/2,0])
-		{
-			d = 3.0;
-			cz = firstLayerHeight + 2*layerHeight;
-			translate([0,0,-10]) simpleChamferedCylinder(d=d, h=20, cz=d/2);
-		}
 	}
 }
 
@@ -172,12 +171,12 @@ module magCore()
     hull() doubleX()
 	{
 		// Nose:
-		translate([3.5,frontDia/2,0]) simpleChamferedCylinderDoubleEnded(d=frontDia, h=magBlockFrontZ, cz=magBlockCZ+0.6);
+		translate([3.5,frontDia/2,magBlockCylindersOffsetZ]) simpleChamferedCylinder(d=frontDia, h=magBlockCylindersZ, cz=magBlockCZ+0.6);
 
-		translate([mwdx, 11, 0])
-            simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockFrontZ, cz=magBlockCZ);
-		translate([mwdx, mwdy, -magBlockDeltaZ])
-            simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockRearZ, cz=magBlockCZ);
+		translate([mwdx, 11, magBlockCylindersOffsetZ])
+            simpleChamferedCylinder(d=magBlockDia, h=magBlockCylindersZ, cz=magBlockCZ);
+		translate([mwdx, mwdy, magBlockCylindersOffsetZ])
+            simpleChamferedCylinder(d=magBlockDia, h=magBlockCylindersZ, cz=magBlockCZ);
 	}
 }
 
@@ -193,14 +192,14 @@ module magCoreRib()
 	{
 		hull() doubleX() 
 		{
-			translate([mwdx, magBlockDia/2, 0])
-				simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockFrontZ, cz=magBlockCZ);
+			translate([mwdx, magBlockDia/2, magBlockCylindersOffsetZ])
+				simpleChamferedCylinder(d=magBlockDia, h=magBlockCylindersZ, cz=magBlockCZ);
 			// MAGIC!!
 			//  --vvvvvv match bottom of cylinder.
 			//          ----vvvvv match bottom of surface.
 			// dCZ = 0.2218; //0.445;
-			translate([mwdx, mwdy, -magBlockRibDeltaZ])
-				simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockRibRearZ, cz=magBlockCZ);
+			translate([mwdx, mwdy, magBlockCylindersOffsetZ])
+				simpleChamferedCylinder(d=magBlockDia, h=magBlockCylindersZ, cz=magBlockCZ);
 		}    
 
 		// Trim front:
@@ -219,11 +218,11 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	// display() screwHandle();
+	display() noHandle();
 	// display() translate([-30,0,0]) cordHandle();
 
-	display() cordHandle();
-	display() translate([-30,0,0]) screwHandle();
+	// display() cordHandle();
+	// display() translate([-30,0,0]) noHandle();
 }
 else
 {
