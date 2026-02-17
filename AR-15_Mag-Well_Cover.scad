@@ -60,7 +60,6 @@ module screwHandle()
 			d = 3.0;
 			cz = firstLayerHeight + 2*layerHeight;
 			translate([0,0,-10]) simpleChamferedCylinder(d=d, h=20, cz=d/2);
-			// translate([0,0,-5+d/2+cz]) cylinder(d1=10, d2=0, h=5);
 		}
 	}
 }
@@ -77,7 +76,6 @@ module cordHandle()
 			dCord = 5;
 			cz = firstLayerHeight + 10*layerHeight;
 			doubleY() translate([0,dCord*0.7,-10]) simpleChamferedCylinder(d=dCord, h=25, cz=dCord/2);
-			// #translate([0,0,-6+dCord/2+cz]) cylinder(d1=12, d2=0, h=6);
 		}
 	}
 }
@@ -190,19 +188,6 @@ module magCoreRib()
 	f = magRibLength/magLength;
 	echo(str("magCoreRib() f = ", f));
 
-	// fZ = 1.0;
-	// fCZ = 1.0;
-
-	// mbdZ = magBlockDeltaZ * fZ;
-	// mbZ = magBlockRearZ + mbdZ;
-
-	// hull() doubleX() 
-	// {
-	// 	translate([mwdx, magBlockDia/2, 0])
-    //         simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockFrontZ, cz=magBlockCZ);
-	// 	translate([mwdx, mwdy, -mbdZ])
-    //         simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=mbZ, cz=magBlockCZ*fCZ);
-	// }  
 	hull() doubleX() 
 	{
 		translate([mwdx, magBlockDia/2, 0])
