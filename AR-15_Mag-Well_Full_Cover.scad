@@ -47,7 +47,7 @@ echo(str("magBlockRibDeltaZ = ", magBlockRibDeltaZ));
 
 magLockRecessOffsetY = 39.2;
 magLockRecessOffsetZ = magBlockFrontZ - 18.5; //31.5;
-magLockRecessX = 1.7;
+magLockRecessX = 1.9;
 magLockRecessY = 10.5;
 magLockRecessZ = 6.6;
 
@@ -170,14 +170,24 @@ module magStop()
 {
 	maglockXform() hull()
 	{
+        // MAGIC!!
+        //  Depends on recess depth.
+        //  -vvv
+        dy = 0.6;
+
 		x2 = magStopX*2;
-		tcu([0,        0, -0.1], [magWidth/2+magStopX, magLockRecessY,    0.1]);
-		tcu([0,-magStopX, -0.1], [         magWidth/2, magLockRecessY+x2, 0.1]);
+        y = magLockRecessY + dy;
 
-		tcu([0,         0,-3.0], [magWidth/2+magStopX, magLockRecessY,    0.1]);
-		tcu([0,-magStopX, -3.0], [         magWidth/2, magLockRecessY+x2, 0.1]);
+        translate([0,-dy/2,0])
+        {
+            tcu([0,        0, -0.1], [magWidth/2+magStopX, y,    0.1]);
+            tcu([0,-magStopX, -0.1], [         magWidth/2, y+x2, 0.1]);
 
-		tcu([0,0,-6.0], [magWidth/2, magLockRecessY, 0.1]);
+            tcu([0,         0,-3.0], [magWidth/2+magStopX, y,    0.1]);
+            tcu([0,-magStopX, -3.0], [         magWidth/2, y+x2, 0.1]);
+
+            tcu([0,0,-6.0], [magWidth/2, magLockRecessY, 0.1]);
+        }
 	}
 }
 
