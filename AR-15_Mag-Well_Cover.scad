@@ -117,7 +117,7 @@ module magwellFiller()
 		}
 
 		// Cartridge outline on top:
-        translate([0,57,magBlockFrontZ-layerHeight]) rotate([0,0,180]) scale(0.25) translate([-34.8,0,0]) 
+        translate([0,57,magBlockFrontZ-3*layerHeight]) rotate([0,0,180]) scale(0.25) translate([-34.8,0,0]) 
             linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 	}
 }
