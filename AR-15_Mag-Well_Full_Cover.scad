@@ -25,7 +25,7 @@ magWellBottomAngle = 10.3;
 magBlockDia = 6;
 magBlockCZ = 2.2;
 
-magBlockFrontZ = 50;
+magBlockFrontZ = 52; //50;
 
 magBlockCylindersZ = 100;
 magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
@@ -70,11 +70,16 @@ module cordHandle()
 		magwellFiller();
 
 		// Paracord handle:
-		translate([0,magLength/2,0])
+        // MAGIC!!
+        // See below.
+        //  ---------------------vvv
+		translate([0,magLength/2+2.7,0])
 		{
 			dCord = 5;
-			cz = firstLayerHeight + 10*layerHeight;
-			doubleY() translate([0,dCord*0.7,-10]) simpleChamferedCylinder(d=dCord, h=25, cz=dCord/2);
+            // MAGIC!!
+            // Should be relative to the bottom surface of the base at mid-length (Y):
+            //   --------------------------------------------------------------vvv--------------------------------------vv
+			rotate([-magWellBottomAngle,0,0]) doubleY() translate([0,dCord*0.7,-22]) simpleChamferedCylinder(d=dCord, h=25, cz=dCord/2);
 		}
 	}
 }
@@ -117,6 +122,27 @@ module magwellFiller()
         translate([0,57,magBlockFrontZ-3*layerHeight]) rotate([0,0,180]) scale(0.25) translate([-34.8,0,0]) 
             linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 	}
+
+    // Add the base:
+    rotate([-magWellBottomAngle,0,0])
+    {
+        extraXY = 5;
+
+        baseX = magWidth + 2*extraXY;
+        baseY = magRibLength/cos(magWellBottomAngle) + 2*extraXY;
+        baseZ = 6;
+        basseCZ = 2;
+        baseCoiornerDia = 20;
+
+        mwdx = baseX/2 - baseCoiornerDia/2;
+        mwdy = baseY/2 - baseCoiornerDia/2;
+
+        translate([0,baseY/2-extraXY,nothing])
+        {
+            %tcy([0,0,-30], d=1, h=50);
+            hull() doubleY() doubleX() translate([mwdx, mwdy, -baseZ]) simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+        }
+    }
 }
 module maglockRecess()
 {
@@ -219,10 +245,10 @@ module clip(d=0)
 if(developmentRender)
 {
 	display() noHandle();
-	// display() translate([-30,0,0]) cordHandle();
+	display() translate([-60,0,0]) cordHandle();
 
 	// display() cordHandle();
-	// display() translate([-30,0,0]) noHandle();
+	// display() translate([-60,0,0]) noHandle();
 }
 else
 {
