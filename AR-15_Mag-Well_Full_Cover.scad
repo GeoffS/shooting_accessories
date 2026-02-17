@@ -207,12 +207,37 @@ module magCore()
     hull() doubleX()
 	{
 		// Nose:
-		translate([3.5,frontDia/2,magBlockCylindersOffsetZ]) simpleChamferedCylinder(d=frontDia, h=magBlockCylindersZ, cz=magBlockCZ+0.6);
+		translate([2.6,frontDia/2,magBlockCylindersOffsetZ]) simpleChamferedCylinder(d=frontDia, h=magBlockCylindersZ, cz=magBlockCZ+0.6);
 
-		translate([mwdx, 11, magBlockCylindersOffsetZ])
+		translate([mwdx, 25, magBlockCylindersOffsetZ])
             simpleChamferedCylinder(d=magBlockDia, h=magBlockCylindersZ, cz=magBlockCZ);
 		translate([mwdx, mwdy, magBlockCylindersOffsetZ])
             simpleChamferedCylinder(d=magBlockDia, h=magBlockCylindersZ, cz=magBlockCZ);
+	}
+
+    noseStrake(posZ=6);
+    // MAGIC!!
+    //  Match the nose-strake top to the top chamfer.
+    //   --------------------------vvvv
+    noseStrake(posZ=magBlockFrontZ-12.3);
+}
+
+module noseStrake(posZ)
+{
+    translate([0,0,posZ]) hull() doubleX()
+	{
+        flatZ = 3;
+        dia = 6.5;
+        cz = dia/2;
+        Z = flatZ + 2*cz;
+
+        mwdx = magWidth/2 - dia/2;
+        mwdy = magLength - dia/2;
+
+		translate([mwdx, dia/2, 0])
+            simpleChamferedCylinderDoubleEnded(d=dia, h=Z, cz=cz);
+		translate([mwdx, mwdy, 0])
+            simpleChamferedCylinderDoubleEnded(d=dia, h=Z, cz=cz);
 	}
 }
 
