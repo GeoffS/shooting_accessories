@@ -171,7 +171,8 @@ module magCore()
 
     hull() doubleX()
 	{
-		translate([3.5,frontDia/2,0]) simpleChamferedCylinderDoubleEnded(d=frontDia, h=magBlockFrontZ, cz=magBlockCZ);
+		// Nose:
+		translate([3.5,frontDia/2,0]) simpleChamferedCylinderDoubleEnded(d=frontDia, h=magBlockFrontZ, cz=magBlockCZ+0.6);
 
 		translate([mwdx, 11, 0])
             simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockFrontZ, cz=magBlockCZ);
@@ -188,17 +189,23 @@ module magCoreRib()
 	f = magRibLength/magLength;
 	echo(str("magCoreRib() f = ", f));
 
-	hull() doubleX() 
+	difference()
 	{
-		translate([mwdx, magBlockDia/2, 0])
-            simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockFrontZ, cz=magBlockCZ);
-		// MAGIC!!
-		//  --vvvvvv match bottom of cylinder.
-		//          ----vvvvv match bottom of surface.
-		// dCZ = 0.2218; //0.445;
-		translate([mwdx, mwdy, -magBlockRibDeltaZ])
-            simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockRibRearZ, cz=magBlockCZ);
-	}    
+		hull() doubleX() 
+		{
+			translate([mwdx, magBlockDia/2, 0])
+				simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockFrontZ, cz=magBlockCZ);
+			// MAGIC!!
+			//  --vvvvvv match bottom of cylinder.
+			//          ----vvvvv match bottom of surface.
+			// dCZ = 0.2218; //0.445;
+			translate([mwdx, mwdy, -magBlockRibDeltaZ])
+				simpleChamferedCylinderDoubleEnded(d=magBlockDia, h=magBlockRibRearZ, cz=magBlockCZ);
+		}    
+
+		// Trim front:
+		tcu([-200, -400+40, -50], 400);
+	}
 }
 
 $fn=180;
