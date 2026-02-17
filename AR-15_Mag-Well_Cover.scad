@@ -76,7 +76,7 @@ module cordHandle()
 		{
 			dCord = 5;
 			cz = firstLayerHeight + 10*layerHeight;
-			translate([0,0,-10]) simpleChamferedCylinder(d=dCord, h=25, cz=dCord/2);
+			doubleY() translate([0,dCord*0.7,-10]) simpleChamferedCylinder(d=dCord, h=25, cz=dCord/2);
 			// #translate([0,0,-6+dCord/2+cz]) cylinder(d1=12, d2=0, h=6);
 		}
 	}
