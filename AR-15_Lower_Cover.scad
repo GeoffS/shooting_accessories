@@ -88,8 +88,6 @@ magazineRecessY = 66;
 magazineRecessZ = 15;
 magazineRecessFrontY = 8;
 
-// coverZ = max(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ) + 3; // local dimension
-
 coverTransitionDX = 0.5;
 
 coverForwardX = 29; // local dimension (from measuring Mil-Spec and FDM lowers)
