@@ -88,7 +88,7 @@ magazineRecessY = 66;
 magazineRecessZ = 15;
 magazineRecessFrontY = 8;
 
-coverZ = max(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ) + 3; // local dimension
+// coverZ = max(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ) + 3; // local dimension
 
 coverTransitionDX = 0.5;
 
@@ -110,7 +110,7 @@ rearY2 = rearLugHoleCtrY + 4;
 
 lugsCZ = 0.8;
 
-module coverCorner()
+module coverCorner(coverZ)
 {
     z2 = coverZ/2;
     receiverSideCZ = firstLayerHeight + 5*layerHeight;
@@ -120,8 +120,10 @@ module coverCorner()
     translate([0,0,z2]) mirror([0,0,1]) simpleChamferedCylinder(d=coverCornerDia, h=z2+nothing, cz=outsideCZ);
 }
 
-module itemModule()
+module itemModule(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ)
 {
+    coverZ = max(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ) + 3; // local dimension
+
 	difference()
     {
         union()
@@ -134,20 +136,20 @@ module itemModule()
                     // Forward cover:
                     translate([0,0,-coverZ]) hull() doubleX()
                     {
-                        translate([fwdX, fwdY1, 0]) coverCorner();
-                        translate([fwdX, fwdY2, 0]) coverCorner();
+                        translate([fwdX, fwdY1, 0]) coverCorner(coverZ);
+                        translate([fwdX, fwdY2, 0]) coverCorner(coverZ);
                     }
                     // Transition cover:
                     hull() doubleX()
                     {
-                        translate([fwdX, fwdY2, -coverZ]) coverCorner();
-                        translate([rearX, rearY1, -coverZ]) coverCorner();
+                        translate([fwdX, fwdY2, -coverZ]) coverCorner(coverZ);
+                        translate([rearX, rearY1, -coverZ]) coverCorner(coverZ);
                     }
                     // Rear cover:
                     translate([0,0,-coverZ]) hull() doubleX()
                     {
-                        translate([rearX, rearY1, 0]) coverCorner();
-                        translate([rearX, rearY2, 0]) coverCorner();
+                        translate([rearX, rearY1, 0]) coverCorner(coverZ);
+                        translate([rearX, rearY2, 0]) coverCorner(coverZ);
                     }
                 }
 
@@ -274,12 +276,12 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() itemModule();
+	display() itemModule(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ);
 
     displayGhost() translate([0, frontLubHoleCtrY, 0.25*mm]) rotate([0,90,0]) tcy([0,0,-20], d=1, h=40);
     displayGhost() translate([0, rearLugHoleCtrY, 0.25*mm]) rotate([0,90,0]) tcy([0,0,-20], d=1, h=40);
 }
 else
 {
-	itemModule();
+	itemModule(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ);
 }
