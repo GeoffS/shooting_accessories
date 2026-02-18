@@ -25,7 +25,7 @@ magWellBottomAngle = 10.3;
 magBlockDia = 6;
 magBlockCZ = 2.2;
 
-magBlockFrontZ = 52; //50;
+magBlockFrontZ = 50;
 
 magBlockCylindersZ = 100;
 magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
