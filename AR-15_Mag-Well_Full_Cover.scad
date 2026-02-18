@@ -32,21 +32,8 @@ magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
 
 echo(str("magBlockCylindersOffsetZ = ", magBlockCylindersOffsetZ));
 
-// MAGIC!!
-//  -----------------------------vvvv
-frontAngleOffsetY = 0; //magBlockCZ + 9.84;
-
-magBlockDeltaZ = tan(magWellBottomAngle)*(magLength-(frontAngleOffsetY+magBlockCZ)); //6.5;
-magBlockRearZ = magBlockFrontZ + magBlockDeltaZ;
-
-magBlockRibDeltaZ = tan(magWellBottomAngle)*(magRibLength-(frontAngleOffsetY+magBlockCZ)); //6.5;
-magBlockRibRearZ = magBlockFrontZ + magBlockRibDeltaZ;
-
-echo(str("magBlockDeltaZ = ", magBlockDeltaZ));
-echo(str("magBlockRibDeltaZ = ", magBlockRibDeltaZ));
-
 magLockRecessOffsetY = 39.2;
-magLockRecessOffsetZ = magBlockFrontZ - 18.5; //31.5;
+magLockRecessOffsetZ = magBlockFrontZ - 18.5;
 magLockRecessX = 1.9;
 magLockRecessY = 10.5;
 magLockRecessZ = 6.6;
@@ -96,7 +83,7 @@ module magwellFiller()
         }
 
 		// Trim the bottom angle:
-		translate([0,frontAngleOffsetY,0]) rotate([-magWellBottomAngle,0,0]) tcu([-200,-20,-400], 400);
+		translate([0,0,0]) rotate([-magWellBottomAngle,0,0]) tcu([-200,-20,-400], 400);
         
         maglockRecess();
 
