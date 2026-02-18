@@ -113,13 +113,13 @@ module magwellFiller()
     // Add the base:
     rotate([-magWellBottomAngle,0,0])
     {
-        extraXY = 5;
+        extraXY = 7;
 
         baseX = magWidth + 2*extraXY;
         baseY = magRibLength/cos(magWellBottomAngle) + 2*extraXY;
-        baseZ = 6;
+        baseZ = 7;
         basseCZ = 2;
-        baseCoiornerDia = 20;
+        baseCoiornerDia = 22;
 
         mwdx = baseX/2 - baseCoiornerDia/2;
         mwdy = baseY/2 - baseCoiornerDia/2;
