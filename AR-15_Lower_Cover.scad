@@ -120,7 +120,7 @@ module coverCorner(coverZ)
 
 module itemModule(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ)
 {
-    coverZ = max(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ) + 3; // local dimension
+    coverZ = max(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ, 3) + 3; // local dimension
 
 	difference()
     {
@@ -224,7 +224,7 @@ module itemModule(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ)
             [boltHoldOpenRecessX, boltHoldOpenRecessY, boltHoldOpenRecessZ+1]);
         // extra when engaged:
         slotX = magazineRecessX/2;
-        slotZ = 5;
+        slotZ = (boltHoldOpenRecessZ==0) ? 0 : 5;
         tcu(
             [-slotX, boltHoldOpenSlotFrontY-3, -slotZ], 
             [slotX, boltHoldOpenSlotY+3+1, slotZ+1]);
@@ -235,11 +235,13 @@ module itemModule(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ)
             [magazineRecessX, magazineRecessY, magazineRecessZ+1]);
 
         // Hole for pull-string:
-        translate([0, rearLugHoleCtrY-13, -coverZ/2-1])
+        cordCZ = 2.8;
+        cordCZOffset = 1;
+        translate([0, rearLugHoleCtrY-13, -coverZ/2-cordCZOffset])
         {
             dCord = 5;
             tcy([0, 0, -30], d=dCord, h=100);
-            doubleZ() translate([0,0,coverZ/2-dCord/2-2.8]) cylinder(d2=14, d1=0, h=7);
+            #doubleZ() translate([0,0,coverZ/2-dCord/2-cordCZ]) cylinder(d2=14, d1=0, h=7);
         }
 
         // // Text:
@@ -265,16 +267,44 @@ module rearLugHoleCtrXform()
     translate([rearLugCtrX, rearLugHoleCtrY, rearLugHoleCtrZ]) children();
 }
 
+module plainCover()
+{
+    itemModule(
+        hammerRecessZ=0, 
+        boltHoldOpenRecessZ=0, 
+        magazineRecessZ=0);
+}
+
+module FcgCover()
+{
+    itemModule(
+        hammerRecessZ=hammerRecessZ, 
+        boltHoldOpenRecessZ=boltHoldOpenRecessZ, 
+        magazineRecessZ=0);
+}
+
+module magazineCover()
+{
+    itemModule(
+        hammerRecessZ=hammerRecessZ, 
+        boltHoldOpenRecessZ=boltHoldOpenRecessZ, 
+        magazineRecessZ=magazineRecessZ);
+}
+
 module clip(d=0)
 {
 	// tc([-200, -400-d, -10], 400);
-    // tcu([-400+d, -20, -50], 400);
+    tcu([-400+d, -20, -50], 400);
     // tcu([-200, -20, 0.25*mm-d], 400);
 }
 
 if(developmentRender)
 {
-	display() itemModule(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ);
+	// display() itemModule(hammerRecessZ, boltHoldOpenRecessZ, magazineRecessZ);
+
+    display() translate([-50, 0, 0]) plainCover();
+    display() translate([  0, 0, 0]) magazineCover();
+    display() translate([ 50, 0, 0]) FcgCover();
 
     displayGhost() translate([0, frontLubHoleCtrY, 0.25*mm]) rotate([0,90,0]) tcy([0,0,-20], d=1, h=40);
     displayGhost() translate([0, rearLugHoleCtrY, 0.25*mm]) rotate([0,90,0]) tcy([0,0,-20], d=1, h=40);
