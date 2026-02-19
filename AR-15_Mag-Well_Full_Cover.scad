@@ -8,6 +8,7 @@ layerHeight = 0.2;
 
 makeNoHandle = false;
 makeCordHandle = false;
+makeBoltCatch = false;
 
 // [9] = 8448639 PLATE, MAGAZINE CATCH0001
 
@@ -44,17 +45,37 @@ magStopX = 1.6;
 
 module noHandle()
 {
-	difference()
+    echo("--- noHandle() --------------------------------------");
+	magwellFiller(magBlockFrontZ=magBlockFrontZ);
+}
+
+module boltCatch()
+{
+    echo("--- boltCatch() --------------------------------------");
+    topOfMagwellZ = 55;
+    BoltCatchZ = 5;
+
+    // Put the top of the straight part of the filler
+    // BoltCatchZ mm above the top of the lower, with 
+    // the chamfer above that:
+    magBlockFrontZ = topOfMagwellZ + BoltCatchZ + magBlockCZ;
+
+    echo(str("boltCatch() magBlockFrontZ = ", magBlockFrontZ));
+
+    // magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
+
+    difference()
 	{
-		magwellFiller();
+		magwellFiller(magBlockFrontZ=magBlockFrontZ);
 	}
 }
 
 module cordHandle()
 {
+    echo("--- cordHandle() --------------------------------------");
 	difference()
 	{
-		magwellFiller();
+		magwellFiller(magBlockFrontZ=magBlockFrontZ);
 
 		// Paracord handle:
         // MAGIC!!
@@ -71,14 +92,16 @@ module cordHandle()
 	}
 }
 
-module magwellFiller()
+module magwellFiller(magBlockFrontZ)
 {
+    magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
+
 	difference()
     {
 	    union()
         {
-            magCore();
-            magCoreRib();
+            magCore(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
+            magCoreRib(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
 			magStop();
         }
 
@@ -184,7 +207,7 @@ module maglockXform()
 	translate([0, magLockRecessOffsetY, magLockRecessOffsetZ]) children();
 }
 
-module magCore()
+module magCore(magBlockCylindersOffsetZ)
 {
     frontDia = 12;
 
@@ -228,7 +251,7 @@ module noseStrake(posZ)
 	}
 }
 
-module magCoreRib()
+module magCoreRib(magBlockCylindersOffsetZ)
 {
     mwdx = magRibWidth/2 - magBlockDia/2;
     mwdy = magRibLength - magBlockDia/2;
@@ -266,7 +289,8 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() noHandle();
+	display() translate([ 60,0,0]) noHandle();
+    display() boltCatch();
 	display() translate([-60,0,0]) cordHandle();
 
 	// display() cordHandle();
@@ -276,4 +300,5 @@ else
 {
 	if(makeNoHandle) noHandle();
 	if(makeCordHandle) cordHandle();
+    if(makeBoltCatch) boltCatch();
 }
