@@ -8,7 +8,8 @@ layerHeight = 0.2;
 
 makeNoHandle = false;
 makeCordHandle = false;
-makeBoltCatch = false;
+makeBoltCatchNoRingTab = false;
+makeBoltCatchWithRingTab = false;
 
 // [9] = 8448639 PLATE, MAGAZINE CATCH0001
 
@@ -26,7 +27,8 @@ magWellBottomAngle = 10.3;
 magBlockDia = 6;
 magBlockCZ = 2.2;
 
-magBlockFrontZ = 50;
+topOfMagwellZ = 55;
+magBlockFrontZ = topOfMagwellZ - 5;
 
 magBlockCylindersZ = 100;
 magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
@@ -49,20 +51,30 @@ module noHandle()
 	magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false, addFrontRingTab=false);
 }
 
-module boltCatch()
+module boltCatch(addFrontRingTab)
 {
-    echo("--- boltCatch() --------------------------------------");
-    topOfMagwellZ = 55;
-    BoltCatchZ = 6;
+    boltCatchZ = 6;
 
     // Put the top of the straight part of the filler
-    // BoltCatchZ mm above the top of the lower, with 
+    // boltCatchZ mm above the top of the lower, with 
     // the chamfer above that:
-    magBlockFrontZ = topOfMagwellZ + BoltCatchZ + magBlockCZ;
+    magBlockFrontZ = topOfMagwellZ + boltCatchZ + magBlockCZ;
 
     echo(str("boltCatch() magBlockFrontZ = ", magBlockFrontZ));
 
-    magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=true, addFrontRingTab=true);
+    magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=true, addFrontRingTab=addFrontRingTab);
+}
+
+module boltCatchNoRingTab()
+{
+    echo("--- boltCatchNoRingTab() --------------------------------------");
+    boltCatch(addFrontRingTab=false);
+}
+
+module boltCatchWithRingTab()
+{
+    echo("--- boltCatchWithRingTab() --------------------------------------");
+    boltCatch(addFrontRingTab=true);
 }
 
 module cordHandle()
@@ -87,9 +99,13 @@ module cordHandle()
 	}
 }
 
-module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab=false)
+module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
 {
     magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
+
+    echo(str("magwellFiller() topOfMagwellZ = ", topOfMagwellZ));
+    echo(str("magwellFiller() magBlockFrontZ-magBlockCZ-2 = ", magBlockFrontZ-magBlockCZ-2, " (old)"));
+    echo(str("magwellFiller() topOfMagwellZ+4 = ", topOfMagwellZ+4, " (new)"));
 
 	difference()
     {
@@ -99,7 +115,7 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab=false)
             difference()
             {
                 magCoreRib(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
-                if(trimRib) tcu([-200,-20,magBlockFrontZ-magBlockCZ], 400);
+                if(trimRib) tcu([-200,-20,topOfMagwellZ+4], 400);
             }
 			magStop();
         }
@@ -324,9 +340,11 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	// display() translate([ 60,0,0]) noHandle();
-    display() boltCatch();
-	// display() translate([-60,0,0]) cordHandle();
+    
+	display() translate([-105,0,0]) cordHandle();
+	display() translate([-60,0,0]) noHandle();
+    display() boltCatchNoRingTab();
+    display() translate([ 60,0,0]) boltCatchWithRingTab();
 
 	// display() cordHandle();
 	// display() translate([-60,0,0]) noHandle();
@@ -335,5 +353,6 @@ else
 {
 	if(makeNoHandle) noHandle();
 	if(makeCordHandle) cordHandle();
-    if(makeBoltCatch) boltCatch();
+    if(makeBoltCatchNoRingTab) boltCatchNoRingTab();
+    if(makeBoltCatchWithRingTab) boltCatchWithRingTab();
 }
