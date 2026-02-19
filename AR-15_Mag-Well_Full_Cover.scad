@@ -166,7 +166,12 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab=false)
                     dX2 = 0;
                     hull()
                     {
-                        ringXform(dx=0) simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+                        ringXform(dx=0) 
+                        {
+                            // simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+                            translate([0,0,baseZ/2]) simpleChamferedCylinder(d=21.2, h=baseZ/2, cz=1.6);
+                            translate([0,0,baseZ/2]) mirror([0,0,1]) simpleChamferedCylinder(d=22.5, h=baseZ/2, cz=2.26);
+                        }
                         ringXform(dx=ringDX) simpleChamferedCylinderDoubleEnded(d=10, h=2.5, cz=0.8);
                     }
                 }
@@ -175,7 +180,7 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab=false)
                 {
                     d = 3.5;
                     tcy([0,0,-10], d=d, h=20);
-                    translate([0,0,baseZ/2-d/2-1]) rotate([0,15,0]) cylinder(d2=20, d1=0, h=10);
+                    translate([0,0,baseZ/2-d/2-1]) rotate([0,13.5,0]) cylinder(d2=20, d1=0, h=10);
                     translate([0,0,-10+d/2+1.5]) cylinder(d2=0, d1=20, h=10);
                 }
             }
@@ -319,9 +324,9 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() translate([ 60,0,0]) noHandle();
+	// display() translate([ 60,0,0]) noHandle();
     display() boltCatch();
-	display() translate([-60,0,0]) cordHandle();
+	// display() translate([-60,0,0]) cordHandle();
 
 	// display() cordHandle();
 	// display() translate([-60,0,0]) noHandle();
