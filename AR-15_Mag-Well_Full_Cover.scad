@@ -46,14 +46,14 @@ magStopX = 1.6;
 module noHandle()
 {
     echo("--- noHandle() --------------------------------------");
-	magwellFiller(magBlockFrontZ=magBlockFrontZ);
+	magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false);
 }
 
 module boltCatch()
 {
     echo("--- boltCatch() --------------------------------------");
     topOfMagwellZ = 55;
-    BoltCatchZ = 5;
+    BoltCatchZ = 6;
 
     // Put the top of the straight part of the filler
     // BoltCatchZ mm above the top of the lower, with 
@@ -64,7 +64,7 @@ module boltCatch()
 
     difference()
 	{
-		magwellFiller(magBlockFrontZ=magBlockFrontZ);
+		magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=true);
 	}
 }
 
@@ -73,7 +73,7 @@ module cordHandle()
     echo("--- cordHandle() --------------------------------------");
 	difference()
 	{
-		magwellFiller(magBlockFrontZ=magBlockFrontZ);
+		magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false);
 
 		// Paracord handle:
         // MAGIC!!
@@ -90,7 +90,7 @@ module cordHandle()
 	}
 }
 
-module magwellFiller(magBlockFrontZ)
+module magwellFiller(magBlockFrontZ, trimRib)
 {
     magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
 
@@ -99,7 +99,11 @@ module magwellFiller(magBlockFrontZ)
 	    union()
         {
             magCore(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
-            magCoreRib(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
+            difference()
+            {
+                magCoreRib(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
+                if(trimRib) tcu([-200,-20,magBlockFrontZ-magBlockCZ], 400);
+            }
 			magStop();
         }
 
