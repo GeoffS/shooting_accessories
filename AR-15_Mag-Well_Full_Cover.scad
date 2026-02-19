@@ -62,8 +62,6 @@ module boltCatch()
 
     echo(str("boltCatch() magBlockFrontZ = ", magBlockFrontZ));
 
-    // magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
-
     difference()
 	{
 		magwellFiller(magBlockFrontZ=magBlockFrontZ);
@@ -265,10 +263,6 @@ module magCoreRib(magBlockCylindersOffsetZ)
 		{
 			translate([mwdx, magBlockDia/2, magBlockCylindersOffsetZ])
 				simpleChamferedCylinder(d=magBlockDia, h=magBlockCylindersZ, cz=magBlockCZ);
-			// MAGIC!!
-			//  --vvvvvv match bottom of cylinder.
-			//          ----vvvvv match bottom of surface.
-			// dCZ = 0.2218; //0.445;
 			translate([mwdx, mwdy, magBlockCylindersOffsetZ])
 				simpleChamferedCylinder(d=magBlockDia, h=magBlockCylindersZ, cz=magBlockCZ);
 		}    
