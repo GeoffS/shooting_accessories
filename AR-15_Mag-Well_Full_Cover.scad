@@ -62,10 +62,7 @@ module boltCatch()
 
     echo(str("boltCatch() magBlockFrontZ = ", magBlockFrontZ));
 
-    difference()
-	{
-		magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=true);
-	}
+    magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=true);
 }
 
 module cordHandle()
