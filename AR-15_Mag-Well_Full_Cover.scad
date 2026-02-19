@@ -46,7 +46,7 @@ magStopX = 1.6;
 module noHandle()
 {
     echo("--- noHandle() --------------------------------------");
-	magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false);
+	magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false, addFrontRingTab=false);
 }
 
 module boltCatch()
@@ -62,7 +62,7 @@ module boltCatch()
 
     echo(str("boltCatch() magBlockFrontZ = ", magBlockFrontZ));
 
-    magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=true);
+    magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=true, addFrontRingTab=true);
 }
 
 module cordHandle()
@@ -70,7 +70,7 @@ module cordHandle()
     echo("--- cordHandle() --------------------------------------");
 	difference()
 	{
-		magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false);
+		magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false, addFrontRingTab=false);
 
 		// Paracord handle:
         // MAGIC!!
@@ -87,7 +87,7 @@ module cordHandle()
 	}
 }
 
-module magwellFiller(magBlockFrontZ, trimRib)
+module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab=false)
 {
     magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
 
@@ -149,10 +149,45 @@ module magwellFiller(magBlockFrontZ, trimRib)
         translate([0,baseY/2-extraXY,nothing])
         {
             %tcy([0,0,-30], d=1, h=50);
-            hull() doubleY() doubleX() translate([mwdx, mwdy, -baseZ]) simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+            hull() doubleY() doubleX() translate([mwdx, mwdy, -baseZ]) 
+                simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+        }
+        
+        // Front ring tab:
+        if(addFrontRingTab)
+        {
+            ringDX = 16;
+
+            translate([mwdx, baseCoiornerDia/2-extraXY, -baseZ+nothing]) difference()
+            {
+                union()
+                {
+                    dX1 = -6;
+                    dX2 = 0;
+                    hull()
+                    {
+                        ringXform(dx=0) simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+                        ringXform(dx=ringDX) simpleChamferedCylinderDoubleEnded(d=10, h=2.5, cz=0.8);
+                    }
+                }
+
+                ringXform(dx=ringDX)
+                {
+                    d = 3.5;
+                    tcy([0,0,-10], d=d, h=20);
+                    translate([0,0,baseZ/2-d/2-1]) rotate([0,15,0]) cylinder(d2=20, d1=0, h=10);
+                    translate([0,0,-10+d/2+1.5]) cylinder(d2=0, d1=20, h=10);
+                }
+            }
         }
     }
 }
+
+module ringXform(dx)
+{
+    rotate([0,0,-45]) translate([dx,0,0]) children();
+}
+
 module maglockRecess()
 {
 	maglockXform() hull()
