@@ -170,6 +170,7 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
         }
         
         // Front ring tab:
+        // This whole thjing is MAGIC!!
         if(addFrontRingTab)
         {
             ringDX = 16;
@@ -184,7 +185,6 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
                     {
                         ringXform(dx=0) 
                         {
-                            // simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
                             translate([0,0,baseZ/2]) simpleChamferedCylinder(d=21.2, h=baseZ/2, cz=1.6);
                             translate([0,0,baseZ/2]) mirror([0,0,1]) simpleChamferedCylinder(d=22.5, h=baseZ/2, cz=2.26);
                         }
