@@ -38,7 +38,7 @@ echo(str("magBlockCylindersOffsetZ = ", magBlockCylindersOffsetZ));
 magLockRecessOffsetY = 39.2;
 magLockRecessOffsetZ = magBlockFrontZ - 18.5;
 magLockRecessX = 1.9;
-magLockRecessY = 10.5;
+magLockRecessY = 11; //10.5;
 magLockRecessZ = 6.6;
 
 echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
@@ -109,13 +109,33 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
 
 	difference()
     {
+        topOfMagCatch = topOfMagwellZ+4;
+
 	    union()
         {
-            magCore(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
+            difference()
+            {
+                magCore(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
+            
+                // Trim a bit of the magazine body away to avoid binding
+                // on the front of the catch:
+                if(trimRib) translate([0,magLength,0])
+                {
+                    d = magRibWidth;
+                    tcy([0,0,topOfMagCatch], d=d, h=100);
+                    translate([0,0,magBlockFrontZ-d/2-magBlockCZ]) cylinder(d1=0, d2=20, h=10);
+                }
+            }
+
             difference()
             {
                 magCoreRib(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
-                if(trimRib) tcu([-200,-20,topOfMagwellZ+4], 400);
+                if(trimRib) translate([0,0,topOfMagCatch])
+                {
+                    // Trim the top of the rib to be at the correct height to 
+                    // engage the bolt hold-open catch:
+                    tcu([-200,-20,0], 400);
+                }
             }
 			magStop();
         }
@@ -144,7 +164,7 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
 		}
 
 		// Cartridge outline on top:
-        translate([0,57,magBlockFrontZ-3*layerHeight]) rotate([0,0,180]) scale(0.25) translate([-34.8,0,0]) 
+        translate([0,51.5,magBlockFrontZ-3*layerHeight]) rotate([0,0,180]) scale(0.23) translate([-34.8,0,0]) 
             linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 	}
 
@@ -333,18 +353,19 @@ $fn=180;
 
 module clip(d=0)
 {
-	// tc([-200, -400-d, -10], 400);
+	// tcu([-200, -400-d, -10], 400);
 	// tcu([-200, magLength/2, -20], 400);
 	// tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
+    // tcu([0-d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
     
-	display() translate([-105,0,0]) cordHandle();
-	display() translate([-60,0,0]) noHandle();
+	// display() translate([-105,0,0]) cordHandle();
+	// display() translate([-60,0,0]) noHandle();
     display() boltCatchNoRingTab();
-    display() translate([ 60,0,0]) boltCatchWithRingTab();
+    // display() translate([ 60,0,0]) boltCatchWithRingTab();
 
 	// display() cordHandle();
 	// display() translate([-60,0,0]) noHandle();
