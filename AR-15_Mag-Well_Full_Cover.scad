@@ -28,15 +28,11 @@ magBlockDia = 6;
 magBlockCZ = 2.2;
 
 topOfMagwellZ = 55;
-magBlockFrontZ = topOfMagwellZ - 5;
 
 magBlockCylindersZ = 100;
-magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
-
-echo(str("magBlockCylindersOffsetZ = ", magBlockCylindersOffsetZ));
 
 magLockRecessOffsetY = 39.2;
-magLockRecessOffsetZ = magBlockFrontZ - 18.5;
+magLockRecessOffsetZ = 31.5;
 magLockRecessX = 1.9;
 magLockRecessY = 11;
 magLockRecessZ = 6.6;
