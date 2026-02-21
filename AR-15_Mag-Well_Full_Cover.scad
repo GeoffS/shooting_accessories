@@ -41,14 +41,14 @@ magLockRecessX = 1.9;
 magLockRecessY = 11; //10.5;
 magLockRecessZ = 6.6;
 
-echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
+// echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
 
 magStopX = 1.6;
 
 module noHandle()
 {
     echo("--- noHandle() --------------------------------------");
-	magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false, addFrontRingTab=false);
+	magwellFiller(magBlockFrontZ=topOfMagwellZ-1, trimRib=false, addFrontRingTab=false);
 }
 
 module boltCatch(addFrontRingTab)
@@ -101,14 +101,15 @@ module cordHandle()
 
 module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
 {
-    magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
+    echo(str("magwellFiller() magBlockFrontZ = ", magBlockFrontZ));
+    echo(str("magwellFiller() trimRib = ", trimRib));
+    echo(str("magwellFiller() addFrontRingTab = ", addFrontRingTab));
 
-    echo(str("magwellFiller() topOfMagwellZ = ", topOfMagwellZ));
-    echo(str("magwellFiller() magBlockFrontZ-magBlockCZ-2 = ", magBlockFrontZ-magBlockCZ-2, " (old)"));
-    echo(str("magwellFiller() topOfMagwellZ+4 = ", topOfMagwellZ+4, " (new)"));
+    magBlockCylindersOffsetZ = magBlockFrontZ - magBlockCylindersZ;
 
 	difference()
     {
+        // Only used if trimRib = true.
         topOfMagCatch = topOfMagwellZ+4;
 
 	    union()
@@ -148,9 +149,9 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
 		// Ramp for mag-lock:
 		translate([0, magLockRecessOffsetY, magBlockFrontZ]) hull()
 		{
-			dx = max(magBlockCZ, magCatchProtrusionIntoMagWell + 1); //4.5;
+			dx = max(magBlockCZ, magCatchProtrusionIntoMagWell + 0.5);
 			dy = 2;
-			dz = 9;
+			dz = 13;
 
 			echo(str("Mag-Lock dx = ", dx));
 
@@ -164,7 +165,11 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
 		}
 
 		// Cartridge outline on top:
-        translate([0,51.5,magBlockFrontZ-3*layerHeight]) rotate([0,0,180]) scale(0.23) translate([-34.8,0,0]) 
+        cartrigeGraphicOffsetY = trimRib ? 51.5 : 57.0;
+        cartrigeGraphicScale   = trimRib ? 0.23 : 0.25;
+
+        translate([0, cartrigeGraphicOffsetY, magBlockFrontZ-3*layerHeight]) 
+            rotate([0,0,180]) scale(cartrigeGraphicScale) translate([-34.8,0,0]) 
             linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 	}
 
@@ -363,8 +368,8 @@ if(developmentRender)
 {
     
 	// display() translate([-105,0,0]) cordHandle();
-	// display() translate([-60,0,0]) noHandle();
-    display() boltCatchNoRingTab();
+	display() translate([-60,0,0]) boltCatchNoRingTab();
+    display() noHandle();
     // display() translate([ 60,0,0]) boltCatchWithRingTab();
 
 	// display() cordHandle();
