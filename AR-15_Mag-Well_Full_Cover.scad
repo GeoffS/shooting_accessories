@@ -78,7 +78,7 @@ module cordHandle()
     echo("--- cordHandle() --------------------------------------");
 	difference()
 	{
-		magwellFiller(magBlockFrontZ=magBlockFrontZ, trimRib=false, addFrontRingTab=false);
+		magwellFiller(magBlockFrontZ=topOfMagwellZ-1, trimRib=false, addFrontRingTab=false);
 
 		// Paracord handle:
         // MAGIC!!
@@ -363,13 +363,15 @@ module clip(d=0)
 if(developmentRender)
 {
     
-	// display() translate([-105,0,0]) cordHandle();
-	display() translate([-60,0,0]) boltCatchNoRingTab();
-    display() noHandle();
-    // display() translate([ 60,0,0]) boltCatchWithRingTab();
+	// display() translate([-60,0,0]) cordHandle();
+    // display() noHandle();
+	// display() translate([  60,0,0]) boltCatchNoRingTab();
+    // display() translate([ 105,0,0]) boltCatchWithRingTab();
 
-	// display() cordHandle();
-	// display() translate([-60,0,0]) noHandle();
+	display() translate([-105,0,0]) cordHandle();
+    display() translate([ -60,0,0]) noHandle();
+	display() boltCatchNoRingTab();
+    display() translate([  60,0,0]) boltCatchWithRingTab();
 }
 else
 {
