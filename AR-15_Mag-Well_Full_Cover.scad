@@ -114,7 +114,7 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
         {
             difference()
             {
-                magCore(magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
+                magCore(magBlockFrontZ=magBlockFrontZ, magBlockCylindersOffsetZ=magBlockCylindersOffsetZ);
             
                 // Trim a bit of the magazine body away to avoid binding
                 // on the front of the catch:
@@ -285,7 +285,7 @@ module maglockXform()
 	translate([0, magLockRecessOffsetY, magLockRecessOffsetZ]) children();
 }
 
-module magCore(magBlockCylindersOffsetZ)
+module magCore(magBlockFrontZ, magBlockCylindersOffsetZ)
 {
     frontDia = 12;
 
