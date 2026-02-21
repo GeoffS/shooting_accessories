@@ -32,10 +32,12 @@ topOfMagwellZ = 55;
 magBlockCylindersZ = 100;
 
 magLockRecessOffsetY = 39.2;
-magLockRecessOffsetZ = 31.5;
+magLockRecessOffsetZ = topOfMagwellZ - 23.5;
 magLockRecessX = 1.9;
 magLockRecessY = 11;
 magLockRecessZ = 6.6;
+
+echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
 
 magStopX = 1.6;
 
