@@ -304,12 +304,16 @@ module magCore(magBlockFrontZ, magBlockCylindersOffsetZ)
     noseStrake(posZ=6);
     // MAGIC!!
     //  Match the nose-strake top to the top chamfer.
-    //   --------------------------vvvv
-    noseStrake(posZ=magBlockFrontZ-12.3);
+    //   --------------------------vvvv <- When the top is below the mag-well
+    //                                  --vvvvvvvvvvvvvvvvv <- Fixed from top of mag-well.
+    topStrakeZ = min(magBlockFrontZ-12.3, topOfMagwellZ-9.5);
+    echo(str("topStrakeZ = ", topStrakeZ));
+    noseStrake(posZ=topStrakeZ);
 }
 
 module noseStrake(posZ)
 {
+    echo(str("noseStrake() posZ = ", posZ));
     translate([0,0,posZ]) hull() doubleX()
 	{
         flatZ = 3;
@@ -372,6 +376,8 @@ if(developmentRender)
     display() translate([ -60,0,0]) noHandle();
 	display() boltCatchNoRingTab();
     display() translate([  60,0,0]) boltCatchWithRingTab();
+
+    displayGhost() tcu([-200, -100, -400+topOfMagwellZ], 400);
 }
 else
 {
