@@ -38,10 +38,8 @@ echo(str("magBlockCylindersOffsetZ = ", magBlockCylindersOffsetZ));
 magLockRecessOffsetY = 39.2;
 magLockRecessOffsetZ = magBlockFrontZ - 18.5;
 magLockRecessX = 1.9;
-magLockRecessY = 11; //10.5;
+magLockRecessY = 11;
 magLockRecessZ = 6.6;
-
-// echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
 
 magStopX = 1.6;
 
