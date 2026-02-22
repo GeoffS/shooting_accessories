@@ -50,6 +50,8 @@ echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
 
 magStopX = 1.6;
 
+magwellBottomPlateZ = 7;
+
 module workbenchBaseXform(dia, x, y, dy, dz)
 {
     mwdx = x/2 - dia/2;
@@ -89,7 +91,7 @@ module workbenchStand()
         // Top (angled) part of the riser:
         magwellBottomPlate(magWellBottomAngle=magWellBottomAngle, addFrontRingTab=false);
         // Bottom (flat) part of the riser:
-        translate([0,0,-workbenchBaseOffsetZ+baseZ]) magwellBottomPlate(magWellBottomAngle=0, addFrontRingTab=false);
+        translate([0,0,-workbenchBaseOffsetZ+magwellBottomPlateZ]) magwellBottomPlate(magWellBottomAngle=0, addFrontRingTab=false);
     }
 
     workbenchBasePlate(
@@ -238,7 +240,6 @@ module magwellFillerCore(magBlockFrontZ, trimRib, addFrontRingTab, trimBottom=tr
             linear_extrude(height = 10, convexity = 10) import(file = "5.56 Outline.svg");
 	}
 }
-baseZ = 7;
 
 module magwellBottomPlate(magWellBottomAngle, addFrontRingTab)
 {
@@ -255,8 +256,8 @@ module magwellBottomPlate(magWellBottomAngle, addFrontRingTab)
     rotate([-magWellBottomAngle,0,0]) translate([0,baseY/2-extraXY,nothing])
     {
         %tcy([0,0,-30], d=1, h=50);
-        hull() doubleY() doubleX() translate([mwdx, mwdy, -baseZ]) 
-            simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+        hull() doubleY() doubleX() translate([mwdx, mwdy, -magwellBottomPlateZ]) 
+            simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=magwellBottomPlateZ, cz=basseCZ);
     }
 
     // Front ring tab:
@@ -265,7 +266,7 @@ module magwellBottomPlate(magWellBottomAngle, addFrontRingTab)
     {
         ringDX = 16;
 
-        translate([mwdx, baseCoiornerDia/2-extraXY, -baseZ+nothing]) difference()
+        translate([mwdx, baseCoiornerDia/2-extraXY, -magwellBottomPlateZ+nothing]) difference()
         {
             union()
             {
@@ -275,8 +276,8 @@ module magwellBottomPlate(magWellBottomAngle, addFrontRingTab)
                 {
                     ringXform(dx=0) 
                     {
-                        translate([0,0,baseZ/2]) simpleChamferedCylinder(d=21.2, h=baseZ/2, cz=1.6);
-                        translate([0,0,baseZ/2]) mirror([0,0,1]) simpleChamferedCylinder(d=22.5, h=baseZ/2, cz=2.26);
+                        translate([0,0,magwellBottomPlateZ/2]) simpleChamferedCylinder(d=21.2, h=magwellBottomPlateZ/2, cz=1.6);
+                        translate([0,0,magwellBottomPlateZ/2]) mirror([0,0,1]) simpleChamferedCylinder(d=22.5, h=magwellBottomPlateZ/2, cz=2.26);
                     }
                     ringXform(dx=ringDX) simpleChamferedCylinderDoubleEnded(d=10, h=2.5, cz=0.8);
                 }
@@ -286,7 +287,7 @@ module magwellBottomPlate(magWellBottomAngle, addFrontRingTab)
             {
                 d = 3.5;
                 tcy([0,0,-10], d=d, h=20);
-                translate([0,0,baseZ/2-d/2-1]) rotate([0,13.5,0]) cylinder(d2=20, d1=0, h=10);
+                translate([0,0,magwellBottomPlateZ/2-d/2-1]) rotate([0,13.5,0]) cylinder(d2=20, d1=0, h=10);
                 translate([0,0,-10+d/2+1.5]) cylinder(d2=0, d1=20, h=10);
             }
         }
