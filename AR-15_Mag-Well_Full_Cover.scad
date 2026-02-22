@@ -50,6 +50,10 @@ echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
 
 magStopX = 1.6;
 
+magwellBottomPlateBaseCornerDia = 22;
+magwellBottomPlateExtraXY = 7;
+magwellBottomPlateX = magWidth + 2*magwellBottomPlateExtraXY;
+magwellBottomPlateY = magRibLength/cos(magWellBottomAngle) + 2*magwellBottomPlateExtraXY;
 magwellBottomPlateZ = 7;
 
 module workbenchBaseXform(dia, x, y, dy, dz)
@@ -78,10 +82,10 @@ module workbenchStand()
     workbenchBaseY = 190 - workbenchBaseOffsetY;
     workbenchBaseZ = 10;
 
-    // Approzimate height to clear a pistol grip:
-    //   -------------------vv
-    workbenchBaseOffsetZ = workbenchBaseZ + 90;
-    // z = magStopHeight + supportRiserZ;
+    // Approx. height to clear a pistol grip:
+    //   -------------vv
+    workbenchRiserZ = 90;
+    workbenchBaseOffsetZ = workbenchBaseZ + workbenchRiserZ;
 
 	magwellFillerCore(magBlockFrontZ=topOfMagwellZ-1, trimRib=false, addFrontRingTab=false, trimBottom=false);
 
@@ -92,6 +96,18 @@ module workbenchStand()
         magwellBottomPlate(magWellBottomAngle=magWellBottomAngle, addFrontRingTab=false);
         // Bottom (flat) part of the riser:
         translate([0,0,-workbenchBaseOffsetZ+magwellBottomPlateZ]) magwellBottomPlate(magWellBottomAngle=0, addFrontRingTab=false);
+    }
+
+    // Chamfer between the workbanch base and the riser:
+    chamferBigDia = 45;
+    mwdx = magwellBottomPlateX/2 - magwellBottomPlateBaseCornerDia/2;
+    mwdy = magwellBottomPlateY/2 - magwellBottomPlateBaseCornerDia/2;
+
+    // MAGIC!!!
+    //  ---------------------------------------------------------------------------------v  7 sounds familiar, but...???
+    translate([0, magwellBottomPlateY/2-magwellBottomPlateExtraXY, -workbenchBaseOffsetZ+workbenchBaseZ+7.0])
+    {
+        hull() doubleY() doubleX() translate([mwdx, mwdy, -magwellBottomPlateZ]) cylinder(d1=chamferBigDia, d2=0, h=chamferBigDia/2);
     }
 
     workbenchBasePlate(
@@ -243,21 +259,16 @@ module magwellFillerCore(magBlockFrontZ, trimRib, addFrontRingTab, trimBottom=tr
 
 module magwellBottomPlate(magWellBottomAngle, addFrontRingTab)
 {
-    extraXY = 7;
-
-    baseX = magWidth + 2*extraXY;
-    baseY = magRibLength/cos(magWellBottomAngle) + 2*extraXY;
     basseCZ = 2;
-    baseCoiornerDia = 22;
 
-    mwdx = baseX/2 - baseCoiornerDia/2;
-    mwdy = baseY/2 - baseCoiornerDia/2;
+    mwdx = magwellBottomPlateX/2 - magwellBottomPlateBaseCornerDia/2;
+    mwdy = magwellBottomPlateY/2 - magwellBottomPlateBaseCornerDia/2;
 
-    rotate([-magWellBottomAngle,0,0]) translate([0,baseY/2-extraXY,nothing])
+    rotate([-magWellBottomAngle,0,0]) translate([0,magwellBottomPlateY/2-magwellBottomPlateExtraXY,nothing])
     {
         %tcy([0,0,-30], d=1, h=50);
         hull() doubleY() doubleX() translate([mwdx, mwdy, -magwellBottomPlateZ]) 
-            simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=magwellBottomPlateZ, cz=basseCZ);
+            simpleChamferedCylinderDoubleEnded(d=magwellBottomPlateBaseCornerDia, h=magwellBottomPlateZ, cz=basseCZ);
     }
 
     // Front ring tab:
@@ -266,7 +277,7 @@ module magwellBottomPlate(magWellBottomAngle, addFrontRingTab)
     {
         ringDX = 16;
 
-        translate([mwdx, baseCoiornerDia/2-extraXY, -magwellBottomPlateZ+nothing]) difference()
+        translate([mwdx, magwellBottomPlateBaseCornerDia/2-magwellBottomPlateExtraXY, -magwellBottomPlateZ+nothing]) difference()
         {
             union()
             {
@@ -431,6 +442,7 @@ module clip(d=0)
 	// tcu([-200, magLength/2, -20], 400);
 	// tcu([-200, magLockRecessOffsetY+magLockRecessY/2, -200], 400);
     // tcu([0-d, -200, -200], 400);
+    // tcu([-200, -400+nothing, -200], 400);
 }
 
 if(developmentRender)
@@ -453,7 +465,7 @@ if(developmentRender)
     display() translate([ -dx1,0,0]) noHandle();
     display() workbenchStand();
 	display() translate([  dx1,0,0]) boltCatchNoRingTab();
-    display() translate([ dx1+dx2,0,0]) boltCatchWithRingTab();
+    // display() translate([ dx1+dx2,0,0]) boltCatchWithRingTab();
 
     // displayGhost() tcu([-200, -100, -400+topOfMagwellZ], 400);
 }
