@@ -66,8 +66,8 @@ module workbenchStand()
     //   -------------------vv
     supportRiserZ = baseZ + 90;
     z = magStopHeight + supportRiserZ;
-    
-	magwellFiller(magBlockFrontZ=topOfMagwellZ-1, trimRib=false, addFrontRingTab=false);
+
+	magwellFiller(magBlockFrontZ=topOfMagwellZ-1, trimRib=false, addFrontRingTab=false, trimBottom=false);
 }
 
 module noHandle()
@@ -124,7 +124,7 @@ module cordHandle()
 	}
 }
 
-module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
+module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab, trimBottom=true)
 {
     echo(str("magwellFiller() magBlockFrontZ = ", magBlockFrontZ));
     echo(str("magwellFiller() trimRib = ", trimRib));
@@ -167,7 +167,7 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
         }
 
 		// Trim the bottom angle:
-		translate([0,0,0]) rotate([-magWellBottomAngle,0,0]) tcu([-200,-20,-400], 400);
+		if(trimBottom) translate([0,0,0]) rotate([-magWellBottomAngle,0,0]) tcu([-200,-20,-400], 400);
         
         maglockRecess();
 
