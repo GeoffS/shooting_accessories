@@ -50,13 +50,27 @@ echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
 
 magStopX = 1.6;
 
+module workbenchBaseXform(dia, x, y, dy, dz)
+{
+    mwdx = x/2 - dia/2;
+    mwdy = y/2 - dia/2;
+    translate([0, y/2+dy, -dz]) 
+        doubleX() doubleY() 
+            translate([mwdx, mwdy, 0]) children();
+}
+
+module workbenchBasePlate(x, y, z, dy, dz, baseCornerDia, baseCZ)
+{
+    hull() workbenchBaseXform(baseCornerDia, x, y, dy, dz) simpleChamferedCylinderDoubleEnded(d=baseCornerDia, h=z, cz=baseCZ);
+}
+
 module workbenchStand()
 {
     echo("--- workbenchStand() --------------------------------------");
     baseCornerDia = 20;
     baseCZ = 2;
 
-    baseOffsetY = -20;
+    baseOffsetY = -25;
 
     baseX = 100;
     baseY = 190 - baseOffsetY;
@@ -64,10 +78,11 @@ module workbenchStand()
 
     // Approzimate height to clear a pistol grip:
     //   -------------------vv
-    supportRiserZ = baseZ + 90;
-    z = magStopHeight + supportRiserZ;
+    baseOffsetZ = baseZ + 90;
+    // z = magStopHeight + supportRiserZ;
 
 	magwellFiller(magBlockFrontZ=topOfMagwellZ-1, trimRib=false, addFrontRingTab=false, trimBottom=false);
+    workbenchBasePlate(baseX, baseY, baseZ, baseOffsetY, baseOffsetZ, baseCornerDia, baseCZ);
 }
 
 module noHandle()
@@ -407,11 +422,13 @@ if(developmentRender)
 	// display() boltCatchNoRingTab();
     // display() translate([  60,0,0]) boltCatchWithRingTab();
 
-    display() translate([-105,0,0]) cordHandle();
-    display() translate([ -60,0,0]) noHandle();
+    dx1 = 80;
+    dx2 = 45;
+    display() translate([-dx1-dx2,0,0]) cordHandle();
+    display() translate([ -dx1,0,0]) noHandle();
     display() workbenchStand();
-	display() translate([  60,0,0]) boltCatchNoRingTab();
-    display() translate([ 105,0,0]) boltCatchWithRingTab();
+	display() translate([  dx1,0,0]) boltCatchNoRingTab();
+    display() translate([ dx1+dx2,0,0]) boltCatchWithRingTab();
 
     // displayGhost() tcu([-200, -100, -400+topOfMagwellZ], 400);
 }
