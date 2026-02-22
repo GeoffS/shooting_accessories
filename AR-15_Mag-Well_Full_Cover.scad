@@ -31,11 +31,20 @@ topOfMagwellZ = 55;
 
 magBlockCylindersZ = 100;
 
-magLockRecessOffsetY = 39.2;
-magLockRecessOffsetZ = topOfMagwellZ - 23.5;
+magLockCtrY = 44.7;
+
+magLockRampY = 11;
+magLockRampOffsetY = magLockCtrY - magLockRampY/2; //39.2;
+
 magLockRecessX = 1.9;
-magLockRecessY = 11;
+magLockRecessY = 9;
 magLockRecessZ = 6.6;
+
+magLockRecessOffsetY = magLockCtrY - magLockRecessY/2; //39.2;
+magLockRecessOffsetZ = topOfMagwellZ - 23.5;
+
+echo(str("magLockRampOffsetY = ", magLockRampOffsetY));
+echo(str("magLockRecessOffsetY = ", magLockRecessOffsetY));
 
 echo(str("magLockRecessOffsetZ = ", magLockRecessOffsetZ));
 
@@ -143,7 +152,7 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
         maglockRecess();
 
 		// Ramp for mag-lock:
-		translate([0, magLockRecessOffsetY, magBlockFrontZ]) hull()
+		translate([0, magLockRampOffsetY, magBlockFrontZ]) hull()
 		{
 			dx = max(magBlockCZ, magCatchProtrusionIntoMagWell + 0.5);
 			dy = 2;
@@ -154,10 +163,10 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab)
 			dx2 = dx*2;
 			dy2 = dy*2;
 
-			tcu([magWidth/2-dx,   0, 0], [10,     magLockRecessY, 0.1]);
-			tcu([magWidth/2,    -dy, 0], [10, magLockRecessY+dy2, 0.1]);
+			tcu([magWidth/2-dx,   0, 0], [10,     magLockRampY, 0.1]);
+			tcu([magWidth/2,    -dy, 0], [10, magLockRampY+dy2, 0.1]);
 
-			tcu([magWidth/2, 0, -dz-0.01], [dx, magLockRecessY, 0.01]);
+			tcu([magWidth/2, 0, -dz-0.01], [dx, magLockRampY, 0.01]);
 		}
 
 		// Cartridge outline on top:
@@ -366,6 +375,7 @@ module clip(d=0)
 
 if(developmentRender)
 {
+    // display() boltCatchNoRingTab();
     
 	// display() translate([-60,0,0]) cordHandle();
     // display() noHandle();
@@ -377,7 +387,7 @@ if(developmentRender)
 	display() boltCatchNoRingTab();
     display() translate([  60,0,0]) boltCatchWithRingTab();
 
-    displayGhost() tcu([-200, -100, -400+topOfMagwellZ], 400);
+    // displayGhost() tcu([-200, -100, -400+topOfMagwellZ], 400);
 }
 else
 {
