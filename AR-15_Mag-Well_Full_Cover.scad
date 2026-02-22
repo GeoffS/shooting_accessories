@@ -10,6 +10,7 @@ makeNoHandle = false;
 makeCordHandle = false;
 makeBoltCatchNoRingTab = false;
 makeBoltCatchWithRingTab = false;
+makeWorkbenchStand = false;
 
 // [9] = 8448639 PLATE, MAGAZINE CATCH0001
 
@@ -90,24 +91,27 @@ module workbenchStand()
 	magwellFillerCore(magBlockFrontZ=topOfMagwellZ-1, trimRib=false, addFrontRingTab=false, trimBottom=false);
 
     // Riser:
+    riserOffsetTweakY = -1.7;
+    riserScaleTweek = [1, 1.05, 1];
     hull()
     {
         // Top (angled) part of the riser:
         magwellBottomPlate(magWellBottomAngle=magWellBottomAngle, addFrontRingTab=false);
         // Bottom (flat) part of the riser:
-        translate([0,0,-workbenchBaseOffsetZ+magwellBottomPlateZ]) magwellBottomPlate(magWellBottomAngle=0, addFrontRingTab=false);
+        translate([0, riserOffsetTweakY, -workbenchBaseOffsetZ+magwellBottomPlateZ]) 
+            scale(riserScaleTweek) magwellBottomPlate(magWellBottomAngle=0, addFrontRingTab=false);
     }
 
     // Chamfer between the workbanch base and the riser:
-    chamferBigDia = 45;
+    chamferBigDia = 42;
     mwdx = magwellBottomPlateX/2 - magwellBottomPlateBaseCornerDia/2;
     mwdy = magwellBottomPlateY/2 - magwellBottomPlateBaseCornerDia/2;
 
     // MAGIC!!!
     //  ---------------------------------------------------------------------------------v  7 sounds familiar, but...???
-    translate([0, magwellBottomPlateY/2-magwellBottomPlateExtraXY, -workbenchBaseOffsetZ+workbenchBaseZ+7.0])
+    translate([0, magwellBottomPlateY/2-magwellBottomPlateExtraXY-0.5, -workbenchBaseOffsetZ+workbenchBaseZ+7.0])
     {
-        hull() doubleY() doubleX() translate([mwdx, mwdy, -magwellBottomPlateZ]) cylinder(d1=chamferBigDia, d2=0, h=chamferBigDia/2);
+        scale(riserScaleTweek) hull() doubleY() doubleX() translate([mwdx, mwdy, -magwellBottomPlateZ]) cylinder(d1=chamferBigDia, d2=0, h=chamferBigDia/2);
     }
 
     workbenchBasePlate(
@@ -461,10 +465,10 @@ if(developmentRender)
 
     dx1 = 80;
     dx2 = 45;
-    display() translate([-dx1-dx2,0,0]) cordHandle();
-    display() translate([ -dx1,0,0]) noHandle();
+    // display() translate([-dx1-dx2,0,0]) cordHandle();
+    // display() translate([ -dx1,0,0]) noHandle();
     display() workbenchStand();
-	display() translate([  dx1,0,0]) boltCatchNoRingTab();
+	// display() translate([  dx1,0,0]) boltCatchNoRingTab();
     // display() translate([ dx1+dx2,0,0]) boltCatchWithRingTab();
 
     // displayGhost() tcu([-200, -100, -400+topOfMagwellZ], 400);
@@ -475,4 +479,5 @@ else
 	if(makeCordHandle) cordHandle();
     if(makeBoltCatchNoRingTab) boltCatchNoRingTab();
     if(makeBoltCatchWithRingTab) boltCatchWithRingTab();
+    if(makeWorkbenchStand) workbenchStand();
 }
