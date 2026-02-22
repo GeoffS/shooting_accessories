@@ -216,54 +216,109 @@ module magwellFiller(magBlockFrontZ, trimRib, addFrontRingTab, trimBottom=true)
     // Add the base:
     rotate([-magWellBottomAngle,0,0])
     {
-        extraXY = 7;
+        magwellBottomPlate(magWellBottomAngle=magWellBottomAngle, addFrontRingTab=addFrontRingTab);
+        // extraXY = 7;
 
-        baseX = magWidth + 2*extraXY;
-        baseY = magRibLength/cos(magWellBottomAngle) + 2*extraXY;
-        baseZ = 7;
-        basseCZ = 2;
-        baseCoiornerDia = 22;
+        // baseX = magWidth + 2*extraXY;
+        // baseY = magRibLength/cos(magWellBottomAngle) + 2*extraXY;
+        // baseZ = 7;
+        // basseCZ = 2;
+        // baseCoiornerDia = 22;
 
-        mwdx = baseX/2 - baseCoiornerDia/2;
-        mwdy = baseY/2 - baseCoiornerDia/2;
+        // mwdx = baseX/2 - baseCoiornerDia/2;
+        // mwdy = baseY/2 - baseCoiornerDia/2;
 
-        translate([0,baseY/2-extraXY,nothing])
-        {
-            %tcy([0,0,-30], d=1, h=50);
-            hull() doubleY() doubleX() translate([mwdx, mwdy, -baseZ]) 
-                simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
-        }
+        // translate([0,baseY/2-extraXY,nothing])
+        // {
+        //     %tcy([0,0,-30], d=1, h=50);
+        //     hull() doubleY() doubleX() translate([mwdx, mwdy, -baseZ]) 
+        //         simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+        // }
         
-        // Front ring tab:
-        // This whole thjing is MAGIC!!
-        if(addFrontRingTab)
+        // // Front ring tab:
+        // // This whole thing is MAGIC!!
+        // if(addFrontRingTab)
+        // {
+        //     ringDX = 16;
+
+        //     translate([mwdx, baseCoiornerDia/2-extraXY, -baseZ+nothing]) difference()
+        //     {
+        //         union()
+        //         {
+        //             dX1 = -6;
+        //             dX2 = 0;
+        //             hull()
+        //             {
+        //                 ringXform(dx=0) 
+        //                 {
+        //                     translate([0,0,baseZ/2]) simpleChamferedCylinder(d=21.2, h=baseZ/2, cz=1.6);
+        //                     translate([0,0,baseZ/2]) mirror([0,0,1]) simpleChamferedCylinder(d=22.5, h=baseZ/2, cz=2.26);
+        //                 }
+        //                 ringXform(dx=ringDX) simpleChamferedCylinderDoubleEnded(d=10, h=2.5, cz=0.8);
+        //             }
+        //         }
+
+        //         ringXform(dx=ringDX)
+        //         {
+        //             d = 3.5;
+        //             tcy([0,0,-10], d=d, h=20);
+        //             translate([0,0,baseZ/2-d/2-1]) rotate([0,13.5,0]) cylinder(d2=20, d1=0, h=10);
+        //             translate([0,0,-10+d/2+1.5]) cylinder(d2=0, d1=20, h=10);
+        //         }
+        //     }
+        // }
+    }
+}
+
+module magwellBottomPlate(magWellBottomAngle, addFrontRingTab)
+{
+    extraXY = 7;
+
+    baseX = magWidth + 2*extraXY;
+    baseY = magRibLength/cos(magWellBottomAngle) + 2*extraXY;
+    baseZ = 7;
+    basseCZ = 2;
+    baseCoiornerDia = 22;
+
+    mwdx = baseX/2 - baseCoiornerDia/2;
+    mwdy = baseY/2 - baseCoiornerDia/2;
+
+    translate([0,baseY/2-extraXY,nothing])
+    {
+        %tcy([0,0,-30], d=1, h=50);
+        hull() doubleY() doubleX() translate([mwdx, mwdy, -baseZ]) 
+            simpleChamferedCylinderDoubleEnded(d=baseCoiornerDia, h=baseZ, cz=basseCZ);
+    }
+
+    // Front ring tab:
+    // This whole thing is MAGIC!!
+    if(addFrontRingTab)
+    {
+        ringDX = 16;
+
+        translate([mwdx, baseCoiornerDia/2-extraXY, -baseZ+nothing]) difference()
         {
-            ringDX = 16;
-
-            translate([mwdx, baseCoiornerDia/2-extraXY, -baseZ+nothing]) difference()
+            union()
             {
-                union()
+                dX1 = -6;
+                dX2 = 0;
+                hull()
                 {
-                    dX1 = -6;
-                    dX2 = 0;
-                    hull()
+                    ringXform(dx=0) 
                     {
-                        ringXform(dx=0) 
-                        {
-                            translate([0,0,baseZ/2]) simpleChamferedCylinder(d=21.2, h=baseZ/2, cz=1.6);
-                            translate([0,0,baseZ/2]) mirror([0,0,1]) simpleChamferedCylinder(d=22.5, h=baseZ/2, cz=2.26);
-                        }
-                        ringXform(dx=ringDX) simpleChamferedCylinderDoubleEnded(d=10, h=2.5, cz=0.8);
+                        translate([0,0,baseZ/2]) simpleChamferedCylinder(d=21.2, h=baseZ/2, cz=1.6);
+                        translate([0,0,baseZ/2]) mirror([0,0,1]) simpleChamferedCylinder(d=22.5, h=baseZ/2, cz=2.26);
                     }
+                    ringXform(dx=ringDX) simpleChamferedCylinderDoubleEnded(d=10, h=2.5, cz=0.8);
                 }
+            }
 
-                ringXform(dx=ringDX)
-                {
-                    d = 3.5;
-                    tcy([0,0,-10], d=d, h=20);
-                    translate([0,0,baseZ/2-d/2-1]) rotate([0,13.5,0]) cylinder(d2=20, d1=0, h=10);
-                    translate([0,0,-10+d/2+1.5]) cylinder(d2=0, d1=20, h=10);
-                }
+            ringXform(dx=ringDX)
+            {
+                d = 3.5;
+                tcy([0,0,-10], d=d, h=20);
+                translate([0,0,baseZ/2-d/2-1]) rotate([0,13.5,0]) cylinder(d2=20, d1=0, h=10);
+                translate([0,0,-10+d/2+1.5]) cylinder(d2=0, d1=20, h=10);
             }
         }
     }
