@@ -57,6 +57,8 @@ guideRodRearRecessZ = 20;
 guideRodRearOffsetZ = bufferSpringRearFromRearExtendedZ - guideRodRearRecessZ;
 guideRodZ = bufferFrontSpringRecessPositionAtFullCompressionZ - guideRodRearOffsetZ + guideRodFrontRecessZ - 3;
 
+echo(str("guideRodZ = ", guideRodZ));
+
 // $fn = 180;
 
 module bufferFrontPiece()
@@ -84,9 +86,16 @@ module bufferRearPiece()
     {
         simpleChamferedCylinderDoubleEnded(d=bufferOD, h=bufferRearZ, cz=bufferFrontCZ);
 
+        // Spring recess:
         tcy([0,0,bufferSpringRearFromRearExtendedZ], d=bufferSpringRecessDia, h=100);
         springCZ = 7*layerHeight;
         translate([0,0,bufferRearZ-bufferSpringRecessDia/2-springCZ]) cylinder(d2=40, d1=0, h=20);
+
+        // Guide-Rod recess:
+        d = guideRodOD + 0.4;
+        tcy([0,0,guideRodRearOffsetZ], d=d, h=100);
+        d2 = bufferSpringRecessDia - nothing;
+        translate([0,0,bufferSpringRearFromRearExtendedZ-d/2-4*layerHeight]) cylinder(d2=d2, d1=0, h=d2/2);
     }
 }
 
@@ -115,7 +124,8 @@ if(developmentRender)
     // translate([-40,0,0]) fullStack(compressionZ=0, showGuideRod=true);
     // translate([  0,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition, showGuideRod=true);
 
-    display() bufferFrontPiece();
+    // display() bufferFrontPiece();
+    display() bufferRearPiece();
     translate([-80,0,0]) fullStack(compressionZ=0, showGuideRod=true);
     translate([-40,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition, showGuideRod=true);
 }
