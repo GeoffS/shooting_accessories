@@ -117,15 +117,6 @@ if(developmentRender)
 	// display() bufferRearPiece();
     // display() translate([-40,0,0]) bufferFrontPiece();
 
-    // display() bufferRearPiece();
-    // display() translate([0,0,bufferTubeLength]) rotate([180,0,0]) bufferFrontPiece();
-    // displayGhost() tcy([0,0,bufferSpringRearFromRearExtendedZ], d=lightSpringOD, h=bufferSpringAtFullExtensionZ);
-    // displayGhost() difference()
-    // {
-    //     tcy([0,0,-3], d=bufferTubeID+4, h=bufferTubeLength+3);
-    //     tcy([0,0,0], d=bufferTubeID, h=200);
-    // };
-
     // translate([-40,0,0]) fullStack(compressionZ=0, showSpring=true);
     // translate([  0,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition, showSpring=true);
 
