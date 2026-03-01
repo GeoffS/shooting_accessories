@@ -37,6 +37,11 @@ bufferSpringFrontFromRearExtendedZ = bufferTubeLength - bufferSpringFrontFromFro
 
 bufferSpringRearFromRearExtendedZ = bufferSpringFrontFromRearExtendedZ - bufferSpringAtFullExtensionZ;
 
+bufferRearZ = 75;
+
+springLengthAfFullCompression = bufferSpringAtFullExtensionZ - bcgExtensionPastUpperWhenInRearPosition;
+spfcPct = springLengthAfFullCompression/lightSpringLength * 100;
+echo(str("Compressed Spring = ", springLengthAfFullCompression, "mm (", spfcPct, "%)"));
 
 module bufferFrontPiece()
 {
@@ -54,11 +59,11 @@ module bufferRearPiece()
 {
 	difference()
     {
-        simpleChamferedCylinderDoubleEnded(d=bufferOD, h=bufferFrontZ, cz=bufferFrontCZ);
+        simpleChamferedCylinderDoubleEnded(d=bufferOD, h=bufferRearZ, cz=bufferFrontCZ);
 
         tcy([0,0,bufferSpringRearFromRearExtendedZ], d=bufferSpringRecessDia, h=100);
         springCZ = 7*layerHeight;
-        translate([0,0,bufferFrontZ-bufferSpringRecessDia/2-springCZ]) cylinder(d2=40, d1=0, h=20);
+        translate([0,0,bufferRearZ-bufferSpringRecessDia/2-springCZ]) cylinder(d2=40, d1=0, h=20);
     }
 }
 
@@ -80,9 +85,9 @@ if(developmentRender)
     //     tcy([0,0,-3], d=bufferTubeID+4, h=bufferTubeLength+3);
     //     tcy([0,0,0], d=bufferTubeID, h=200);
     // };
-    
-    fullStack(compressionZ = 0);
-    translate([-40,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition);
+
+    translate([-40,0,0]) fullStack(compressionZ = 0);
+    translate([  0,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition);
 }
 else
 {
