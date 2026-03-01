@@ -24,6 +24,7 @@ guideRodOD = 10;
 bcgExtensionPastUpperWhenInRearPosition = 40; // Needs re-measurement.
 
 bufferOD = bufferTubeID - 1;
+bufferNubsOD = bufferTubeID - 0.4;
 bufferSpringRecessDia = lightSpringOD + 1;
 
 // Front piece calculations:
@@ -63,12 +64,30 @@ echo(str("guideRodZ = ", guideRodZ));
 
 // $fn = 180;
 
+module bufferExterior(Z)
+{
+    children();
+
+    nubDia = 6;
+    nubZ = 20;
+    nubOffsetZ = 1;
+
+    for(a = [0, 120, 240])
+    {
+        rotate([0,0,a]) translate([bufferNubsOD/2-nubDia/2,0,0]) 
+        {
+            translate([0,0,nubOffsetZ]) simpleChamferedCylinderDoubleEnded(d=nubDia, h=nubZ, cz=nubDia/2);
+            translate([0,0,Z-nubZ-nubOffsetZ]) simpleChamferedCylinderDoubleEnded(d=nubDia, h=nubZ, cz=nubDia/2);
+        }
+    }
+}
+
 module bufferFrontPiece(springGuide)
 {
 	difference()
     {
         // Exterior:
-        simpleChamferedCylinder(d=bufferOD, h=bufferFrontZ, cz=bufferFrontCZ);
+        bufferExterior(Z=bufferFrontZ) simpleChamferedCylinder(d=bufferOD, h=bufferFrontZ, cz=bufferFrontCZ);
 
         // Spring recess:
         tcy([0,0,bufferFrontZ-bufferFrontSpringRecessZ], d=bufferSpringRecessDia, h=100);
@@ -89,7 +108,7 @@ module bufferRearPiece(springGuide)
 {
 	difference()
     {
-        simpleChamferedCylinderDoubleEnded(d=bufferOD, h=bufferRearZ, cz=bufferFrontCZ);
+        bufferExterior(Z=bufferRearZ) simpleChamferedCylinderDoubleEnded(d=bufferOD, h=bufferRearZ, cz=bufferFrontCZ);
 
         // Spring recess:
         tcy([0,0,bufferSpringRearFromRearExtendedZ], d=bufferSpringRecessDia, h=100);
@@ -109,7 +128,7 @@ module bufferRearPiece(springGuide)
 
 module clip(d=0)
 {
-	tc([-200, -400-d, -10], 400);
+	// tc([-200, -400-d, -10], 400);
 }
 
 if(developmentRender)
@@ -125,6 +144,7 @@ if(developmentRender)
 
     display() bufferFrontPiece(springGuide=false);
     // display() bufferRearPiece(springGuide=false);
+    display() translate([40,0,0]) bufferRearPiece(springGuide=false);
     translate([-80,0,0]) fullStack(compressionZ=0, springGuide=false, showSpring=true);
     translate([-40,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition, springGuide=false, showSpring=true);
 }
