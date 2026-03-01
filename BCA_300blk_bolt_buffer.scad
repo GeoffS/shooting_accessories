@@ -12,7 +12,7 @@ makeBufferFrontPieceNoGuide = false;
 makeBufferRearPieceNoGuide = false;
 
 bufferTubeLength = 175 + 2.89; // Meas. from carbine lover kit.
-bufferTubeID = 1.0 * mm; // Meas. from carbine lower.
+bufferTubeID = 25.5; //1.0 * mm; // Meas. from carbine lower.
 
 // Approx measurements from Hillman #115 spring 540344
 // https://shop.hillmangroup.com/product/hillman-compression-spring-115-6-pack/01tTU000008Xg8oYAC
@@ -28,7 +28,7 @@ guideRodOD = 10;
 bcgExtensionPastUpperWhenInRearPosition = 40; // Needs re-measurement.
 
 bufferOD = bufferTubeID - 1;
-bufferNubsOD = bufferTubeID - 0.4;
+bufferNubsOD = bufferTubeID - 0.2;
 bufferSpringRecessDia = lightSpringOD + 1;
 
 // Front piece calculations:
@@ -66,7 +66,7 @@ guideRodZ = bufferFrontSpringRecessPositionAtFullCompressionZ - guideRodRearOffs
 
 echo(str("guideRodZ = ", guideRodZ));
 
-// $fn = 180;
+$fn = 180;
 
 module bufferExterior(Z)
 {
@@ -76,7 +76,7 @@ module bufferExterior(Z)
     nubZ = 20;
     nubOffsetZ = 1;
 
-    for(a = [0, 120, 240])
+    for(a = [0,60,120,180,240,300]) //[0, 120, 240])
     {
         rotate([0,0,a]) translate([bufferNubsOD/2-nubDia/2,0,0]) 
         {
