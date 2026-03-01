@@ -17,7 +17,7 @@ bufferTubeID = 1.0 * mm; // Meas. from carbine lower.
 lightSpringLength = 127; // Hillman from Ace Hardware.
 lightSpringOD = 16.5; // Approx. meas. Hillman from Ace Hardware.
 
-bufferSpringAtFullExtensionZ = lightSpringLength - 4; // Compressed 4mm
+bufferSpringAtFullExtensionZ = lightSpringLength - 10; // Compressed 10mm
 
 guideRodOD = 10;
 
