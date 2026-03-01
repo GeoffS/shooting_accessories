@@ -8,6 +8,8 @@ mm = 25.4;
 
 makeBufferFrontPiece = false;
 makeBufferRearPiece = false;
+makeBufferFrontPieceNoGuide = false;
+makeBufferRearPieceNoGuide = false;
 
 bufferTubeLength = 175 + 2.89; // Meas. from carbine lover kit.
 bufferTubeID = 1.0 * mm; // Meas. from carbine lower.
@@ -61,7 +63,7 @@ echo(str("guideRodZ = ", guideRodZ));
 
 // $fn = 180;
 
-module bufferFrontPiece()
+module bufferFrontPiece(springGuide)
 {
 	difference()
     {
@@ -74,13 +76,16 @@ module bufferFrontPiece()
         translate([0,0,bufferFrontZ-bufferSpringRecessDia/2-springCZ]) cylinder(d2=40, d1=0, h=20);
 
         // Guide-Rod recess:
-        tcy([0,0,bufferFrontZ-bufferFrontSpringRecessZ-guideRodFrontRecessZ], d=guideRodRecessDia, h=100);
-        d2 = bufferSpringRecessDia - nothing;
-        translate([0,0,bufferFrontZ-bufferFrontSpringRecessZ-guideRodRecessDia/2-1.5]) cylinder(d2=d2, d1=0, h=d2/2);
+        if(springGuide)
+        {
+            tcy([0,0,bufferFrontZ-bufferFrontSpringRecessZ-guideRodFrontRecessZ], d=guideRodRecessDia, h=100);
+            d2 = bufferSpringRecessDia - nothing;
+            translate([0,0,bufferFrontZ-bufferFrontSpringRecessZ-guideRodRecessDia/2-1.5]) cylinder(d2=d2, d1=0, h=d2/2);
+        }
     }
 }
 
-module bufferRearPiece()
+module bufferRearPiece(springGuide)
 {
 	difference()
     {
@@ -92,10 +97,13 @@ module bufferRearPiece()
         translate([0,0,bufferRearZ-bufferSpringRecessDia/2-springCZ]) cylinder(d2=40, d1=0, h=20);
 
         // Guide-Rod recess:
-        d = guideRodOD + 0.4;
-        tcy([0,0,guideRodRearOffsetZ], d=d, h=100);
-        d2 = bufferSpringRecessDia - nothing;
-        translate([0,0,bufferSpringRearFromRearExtendedZ-d/2-4*layerHeight]) cylinder(d2=d2, d1=0, h=d2/2);
+        if(springGuide)
+        {
+            d = guideRodOD + 0.4;
+            tcy([0,0,guideRodRearOffsetZ], d=d, h=100);
+            d2 = bufferSpringRecessDia - nothing;
+            translate([0,0,bufferSpringRearFromRearExtendedZ-d/2-4*layerHeight]) cylinder(d2=d2, d1=0, h=d2/2);
+        }
     }
 }
 
@@ -126,25 +134,27 @@ if(developmentRender)
 
     // display() bufferFrontPiece();
     display() bufferRearPiece();
-    translate([-80,0,0]) fullStack(compressionZ=0, showGuideRod=true);
-    translate([-40,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition, showGuideRod=true);
+    translate([-80,0,0]) fullStack(compressionZ=0, springGuide=false, showSpring=true);
+    translate([-40,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition, springGuide=false, showSpring=true);
 }
 else
 {
-	if(makeBufferFrontPiece) bufferFrontPiece();
-    if(makeBufferRearPiece) bufferRearPiece();
+	if(makeBufferFrontPiece) bufferFrontPiece(springGuide=true);
+    if(makeBufferRearPiece) bufferRearPiece(springGuide=true);
+	if(makeBufferFrontPieceNoGuide) bufferFrontPiece(springGuide=false);
+    if(makeBufferRearPieceNoGuide) bufferRearPiece(springGuide=false);
 }
 
-module fullStack(compressionZ, showSpring=false, showGuideRod=false)
+module fullStack(compressionZ, springGuide, showSpring=false, showGuideRod=false)
 {
-    display() bufferRearPiece();
-    display() translate([0,0,bufferTubeLength-compressionZ]) rotate([180,0,0]) bufferFrontPiece();
+    display() bufferRearPiece(springGuide=springGuide);
+    display() translate([0,0,bufferTubeLength-compressionZ]) rotate([180,0,0]) bufferFrontPiece(springGuide=springGuide);
 
     // Spring:
     if(showSpring) displayGhost() tcy([0,0,bufferSpringRearFromRearExtendedZ], d=lightSpringOD, h=bufferSpringAtFullExtensionZ-compressionZ);
 
     // Guide-Rod:
-    if(showGuideRod) displayGhost() tcy([0,0,guideRodRearOffsetZ], d=guideRodOD, h=guideRodZ);
+    if(showGuideRod && springGuide) displayGhost() tcy([0,0,guideRodRearOffsetZ], d=guideRodOD, h=guideRodZ);
     
     // BufferTube:
     displayGhost() difference()
