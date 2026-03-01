@@ -68,7 +68,7 @@ module bufferFrontPiece(springGuide)
 	difference()
     {
         // Exterior:
-        simpleChamferedCylinderDoubleEnded(d=bufferOD, h=bufferFrontZ, cz=bufferFrontCZ);
+        simpleChamferedCylinder(d=bufferOD, h=bufferFrontZ, cz=bufferFrontCZ);
 
         // Spring recess:
         tcy([0,0,bufferFrontZ-bufferFrontSpringRecessZ], d=bufferSpringRecessDia, h=100);
@@ -123,8 +123,8 @@ if(developmentRender)
     // translate([-40,0,0]) fullStack(compressionZ=0, showGuideRod=true);
     // translate([  0,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition, showGuideRod=true);
 
-    // display() bufferFrontPiece();
-    display() bufferRearPiece();
+    display() bufferFrontPiece(springGuide=false);
+    // display() bufferRearPiece(springGuide=false);
     translate([-80,0,0]) fullStack(compressionZ=0, springGuide=false, showSpring=true);
     translate([-40,0,0]) fullStack(compressionZ=bcgExtensionPastUpperWhenInRearPosition, springGuide=false, showSpring=true);
 }
