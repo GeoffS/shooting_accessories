@@ -14,8 +14,12 @@ makeBufferRearPieceNoGuide = false;
 bufferTubeLength = 175 + 2.89; // Meas. from carbine lover kit.
 bufferTubeID = 1.0 * mm; // Meas. from carbine lower.
 
-lightSpringLength = 127; // Hillman from Ace Hardware.
-lightSpringOD = 16.5; // Approx. meas. Hillman from Ace Hardware.
+// Approx measurements from Hillman #115 spring 540344
+// https://shop.hillmangroup.com/product/hillman-compression-spring-115-6-pack/01tTU000008Xg8oYAC
+// From Ace Hardware
+// Nominal dimensions: 5/8" dia, 5" long
+lightSpringLength = 127;
+lightSpringOD = 16.5;
 
 bufferSpringAtFullExtensionZ = lightSpringLength - 10; // Compressed 10mm
 
