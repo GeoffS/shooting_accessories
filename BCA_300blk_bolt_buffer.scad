@@ -28,7 +28,7 @@ guideRodOD = 10;
 bcgExtensionPastUpperWhenInRearPosition = 40; // Needs re-measurement.
 
 bufferOD = bufferTubeID - 1;
-bufferNubsOD = bufferTubeID - 0.2;
+bufferNubsOD = bufferTubeID + 0.1;
 bufferSpringRecessDia = lightSpringOD + 1;
 
 // Front piece calculations:
